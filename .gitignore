@@ -1,0 +1,56 @@
+# WordPress Core
+/wp-admin/
+/wp-includes/
+/index.php
+/wp-activate.php
+/wp-blog-header.php
+/wp-comments-post.php
+/wp-config-sample.php
+/wp-cron.php
+/wp-load.php
+/wp-login.php
+/wp-mail.php
+/wp-settings.php
+/wp-signin.php
+/wp-signup.php
+/wp-trackback.php
+/xmlrpc.php
+
+# WordPress Uploads
+/wp-content/uploads/
+
+# WordPress Plugins (except custom)
+/wp-content/plugins/*/
+!/wp-content/plugins/.gitkeep
+
+# WordPress Themes (keep only our custom theme)
+/wp-content/themes/*/
+!/wp-content/themes/care-towards-cure-theme/
+
+# Environment Files
+.env
+.env.local
+wp-config.php
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node (if any build tools are used)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+update-policies.php

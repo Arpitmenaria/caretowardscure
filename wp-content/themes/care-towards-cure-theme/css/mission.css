@@ -1,0 +1,296 @@
+/* ==========================================
+   CARE TOWARDS CURE - MISSION SECTION STYLES
+   Mobile-First Responsive Design
+   ========================================== */
+
+:root {
+	--mission-bg: #f0ecf8;
+	--mission-text-dark: #1a1a1a;
+	--mission-text-light: #666666;
+	--mission-white: #ffffff;
+	--mission-primary: #0066cc;
+	--mission-secondary: #00b4d8;
+	--mission-accent: #f72585;
+	--mission-border: #e0e0e0;
+	--mission-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================
+   MISSION SECTION - MAIN CONTAINER
+   ========================================== */
+
+.mission-section {
+	background-color: var(--mission-bg);
+	padding: 40px 20px;
+}
+
+.mission-section .container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+}
+
+.mission-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	align-items: stretch;
+}
+
+/* ==========================================
+   MISSION CONTENT - LEFT SIDE
+   ========================================== */
+
+.mission-content {
+	width: 100%;
+}
+
+.mission-title {
+	font-size: 1.75rem;
+	font-weight: 700;
+	color: var(--mission-text-dark);
+	margin-bottom: 20px;
+	line-height: 1.2;
+}
+
+.mission-description {
+	font-size: 0.95rem;
+	line-height: 1.7;
+	color: var(--mission-text-light);
+	margin-bottom: 20px;
+}
+
+.mission-description p {
+	margin-bottom: 16px;
+}
+
+.mission-description p:last-child {
+	margin-bottom: 0;
+}
+
+/* ==========================================
+   MISSION STATS GRID
+   ========================================== */
+
+.mission-stats-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 16px;
+	margin-top: 30px;
+}
+
+.mission-stat-card {
+	padding: 20px;
+	border-radius: 8px;
+	background-color: var(--mission-white);
+	border: 1px solid var(--mission-border);
+	box-shadow: var(--mission-shadow);
+	text-align: center;
+	transition: all 300ms ease-in-out;
+}
+
+.mission-stat-card:hover {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-2px);
+}
+
+.mission-stat-card.primary {
+	background-color: var(--mission-primary);
+	color: var(--mission-white);
+	border-color: var(--mission-primary);
+}
+
+.mission-stat-card.secondary {
+	background-color: var(--mission-secondary);
+	color: var(--mission-white);
+	border-color: var(--mission-secondary);
+}
+
+.mission-stat-value {
+	font-size: 1.75rem;
+	font-weight: 700;
+	line-height: 1;
+	margin-bottom: 8px;
+	display: block;
+}
+
+.mission-stat-label {
+	font-size: 0.9rem;
+	font-weight: 500;
+	line-height: 1.4;
+	opacity: 0.95;
+}
+
+.mission-stat-card.primary .mission-stat-label,
+.mission-stat-card.secondary .mission-stat-label {
+	color: inherit;
+}
+
+.mission-stat-card:not(.primary):not(.secondary) .mission-stat-label {
+	color: var(--mission-text-light);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN - TABLET (768px+)
+   ========================================== */
+
+@media (min-width: 768px) {
+	.mission-section {
+		padding: 60px 20px;
+	}
+
+	.mission-wrapper {
+		flex-direction: row;
+		gap: 50px;
+		align-items: flex-start;
+	}
+
+	.mission-content {
+		flex: 0 0 50%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.mission-title {
+		font-size: 2rem;
+		margin-bottom: 24px;
+	}
+
+	.mission-description {
+		font-size: 1rem;
+		margin-bottom: 24px;
+	}
+
+	.mission-stats-grid {
+		flex: 0 0 50%;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+		margin-top: 0;
+	}
+
+	.mission-stat-card {
+		padding: 24px 20px;
+	}
+
+	.mission-stat-value {
+		font-size: 2rem;
+	}
+
+	.mission-stat-label {
+		font-size: 0.95rem;
+	}
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN - DESKTOP (1024px+)
+   ========================================== */
+
+@media (min-width: 1024px) {
+	.mission-section {
+		padding: 80px 20px;
+	}
+
+	.mission-wrapper {
+		gap: 60px;
+	}
+
+	.mission-content {
+		flex: 0 0 45%;
+	}
+
+	.mission-stats-grid {
+		flex: 0 0 55%;
+	}
+
+	.mission-title {
+		font-size: 2.25rem;
+		margin-bottom: 28px;
+	}
+
+	.mission-description {
+		font-size: 1.0625rem;
+		line-height: 1.8;
+		margin-bottom: 28px;
+	}
+
+	.mission-stat-card {
+		padding: 28px 24px;
+	}
+
+	.mission-stat-value {
+		font-size: 2.25rem;
+		margin-bottom: 10px;
+	}
+
+	.mission-stat-label {
+		font-size: 1rem;
+	}
+}
+
+/* ==========================================
+   SMALL MOBILE OPTIMIZATION (< 480px)
+   ========================================== */
+
+@media (max-width: 480px) {
+	.mission-section {
+		padding: 30px 16px;
+	}
+
+	.mission-wrapper {
+		gap: 30px;
+	}
+
+	.mission-title {
+		font-size: 1.5rem;
+		margin-bottom: 16px;
+	}
+
+	.mission-description {
+		font-size: 0.9rem;
+		margin-bottom: 16px;
+	}
+
+	.mission-stats-grid {
+		gap: 12px;
+		margin-top: 24px;
+	}
+
+	.mission-stat-card {
+		padding: 16px;
+	}
+
+	.mission-stat-value {
+		font-size: 1.5rem;
+		margin-bottom: 6px;
+	}
+
+	.mission-stat-label {
+		font-size: 0.8rem;
+	}
+}
+
+/* ==========================================
+   ACCESSIBILITY & FOCUS STATES
+   ========================================== */
+
+.mission-stat-card:focus-visible {
+	outline: 2px solid var(--mission-primary);
+	outline-offset: 2px;
+}
+
+/* ==========================================
+   PRINT STYLES
+   ========================================== */
+
+@media print {
+	.mission-section {
+		background-color: var(--mission-white);
+		padding: 40px 0;
+	}
+
+	.mission-stat-card {
+		page-break-inside: avoid;
+	}
+}

@@ -1,0 +1,560 @@
+/* ==========================================
+   CARE TOWARDS CURE - FOOTER
+   Premium Professional Design
+   Mobile-First Responsive
+   ========================================== */
+
+:root {
+	--footer-bg: #0f1419;
+	--footer-bg-light: #1a1f2e;
+	--footer-accent-light: #2d3748;
+	--footer-text-light: #a0aec0;
+	--footer-text-white: #ffffff;
+	--footer-primary: #0066cc;
+	--footer-secondary: #00b4d8;
+	--footer-border: #2d3748;
+	--footer-divider: #1a1f2e;
+}
+
+/* ==========================================
+   FOOTER - MAIN CONTAINER
+   ========================================== */
+
+.site-footer {
+	background: linear-gradient(180deg, var(--footer-bg) 0%, var(--footer-bg-light) 100%);
+	color: var(--footer-text-light);
+	padding: 60px 20px 30px;
+	margin-top: 80px;
+	clear: both;
+	border-top: 1px solid var(--footer-border);
+}
+
+.site-footer .container {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+}
+
+/* ==========================================
+   FOOTER CONTENT WRAPPER
+   ========================================== */
+
+.footer-content {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 40px;
+	padding-bottom: 40px;
+	border-bottom: 1px solid var(--footer-border);
+	margin-bottom: 30px;
+}
+
+/* ==========================================
+   FOOTER BRANDING
+   ========================================== */
+
+.footer-branding {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding-right: 20px;
+	border-right: 1px solid var(--footer-border);
+	flex: 1.5;
+}
+
+.footer-logo-name {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--footer-text-white);
+	margin: 0;
+	letter-spacing: -0.5px;
+}
+
+.footer-tagline {
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: var(--footer-text-light);
+	margin: 0;
+	max-width: 300px;
+}
+
+/* ==========================================
+   SOCIAL MEDIA LINKS
+   ========================================== */
+
+.footer-social {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.footer-social-title {
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--footer-text-white);
+	margin: 0;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.social-links {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.social-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: var(--footer-bg-light);
+	color: var(--footer-secondary);
+	text-decoration: none;
+	font-size: 1.1rem;
+	transition: all 300ms ease;
+	border: 1px solid var(--footer-border);
+}
+
+.social-link:hover {
+	background-color: var(--footer-primary);
+	color: var(--footer-text-white);
+	border-color: var(--footer-primary);
+	transform: translateY(-2px);
+}
+
+/* ==========================================
+   FOOTER QUICK LINKS
+   ========================================== */
+
+.footer-links-section {
+	flex: 1;
+	padding: 0 20px;
+	border-right: 1px solid var(--footer-border);
+}
+
+.footer-section-title {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--footer-text-white);
+	margin: 0 0 20px 0;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-size: 0.95rem;
+}
+
+.footer-links-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px 20px;
+}
+
+.footer-links-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.footer-links-list li {
+	margin: 0;
+}
+
+.footer-links-list a {
+	color: var(--footer-text-light);
+	text-decoration: none;
+	font-size: 0.9rem;
+	transition: all 300ms ease;
+	display: inline-block;
+}
+
+.footer-links-list a:hover {
+	color: var(--footer-secondary);
+	transform: translateX(4px);
+}
+
+/* ==========================================
+   FOOTER CONTACT INFO
+   ========================================== */
+
+.footer-contact {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	flex: 1;
+	padding-left: 0;
+}
+
+.footer-contact h3 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--footer-text-white);
+	margin: 0 0 15px 0;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-size: 0.95rem;
+}
+
+.contact-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 0.9rem;
+	margin-bottom: 12px;
+}
+
+.contact-item-icon {
+	font-size: 1.2rem;
+	color: var(--footer-secondary);
+	min-width: 24px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.contact-item-text {
+	color: var(--footer-text-light);
+	margin: 0;
+	word-break: break-word;
+	line-height: 1.5;
+}
+
+.contact-item-text a {
+	color: var(--footer-secondary);
+	text-decoration: none;
+	transition: color 300ms ease;
+}
+
+.contact-item-text a:hover {
+	color: var(--footer-text-white);
+	text-decoration: underline;
+}
+
+/* ==========================================
+   FOOTER BOTTOM
+   ========================================== */
+
+.footer-bottom {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+	padding-top: 20px;
+	text-align: center;
+}
+
+.footer-copyright {
+	font-size: 0.85rem;
+	color: var(--footer-text-light);
+	margin: 0;
+}
+
+.footer-links {
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+	justify-content: center;
+	font-size: 0.85rem;
+}
+
+.footer-links a {
+	color: var(--footer-secondary);
+	text-decoration: none;
+	transition: color 300ms ease;
+}
+
+.footer-links a:hover {
+	color: var(--footer-text-white);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN - TABLET (768px+)
+   ========================================== */
+
+@media (min-width: 768px) {
+	.site-footer {
+		padding: 50px 20px 30px;
+	}
+
+	.footer-content {
+		grid-template-columns: 1.5fr 1fr 1fr;
+		gap: 40px;
+		padding-bottom: 40px;
+		margin-bottom: 30px;
+		display: flex;
+		align-items: flex-start;
+	}
+
+	.footer-branding {
+		gap: 16px;
+		padding-right: 20px;
+		border-right: 1px solid var(--footer-border);
+		flex: 1.5;
+	}
+
+	.footer-logo-name {
+		font-size: 1.4rem;
+	}
+
+	.footer-tagline {
+		font-size: 0.95rem;
+	}
+
+	.footer-links-section {
+		flex: 1;
+		padding: 0 20px;
+		border-right: 1px solid var(--footer-border);
+	}
+
+	.footer-links-grid {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.footer-contact {
+		flex: 1;
+		gap: 20px;
+		padding-left: 0;
+	}
+
+	.contact-item {
+		font-size: 0.9rem;
+	}
+
+	.footer-bottom {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		text-align: left;
+		gap: 20px;
+	}
+
+	.footer-copyright {
+		flex: 1;
+		text-align: left;
+		font-size: 0.85rem;
+	}
+
+	.footer-links {
+		justify-content: flex-end;
+		gap: 20px;
+	}
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN - DESKTOP (1024px+)
+   ========================================== */
+
+@media (min-width: 1024px) {
+	.site-footer {
+		padding: 60px 20px 40px;
+	}
+
+	.footer-content {
+		grid-template-columns: 1.5fr 1fr 1fr;
+		gap: 50px;
+		padding-bottom: 50px;
+		margin-bottom: 40px;
+		display: flex;
+		align-items: flex-start;
+	}
+
+	.footer-branding {
+		gap: 20px;
+		padding-right: 30px;
+		flex: 1.5;
+	}
+
+	.footer-logo-name {
+		font-size: 1.6rem;
+		letter-spacing: -0.5px;
+	}
+
+	.footer-tagline {
+		font-size: 1rem;
+		line-height: 1.7;
+		max-width: 350px;
+	}
+
+	.footer-links-section {
+		flex: 1;
+		padding: 0 30px;
+	}
+
+	.footer-section-title {
+		font-size: 1rem;
+		margin-bottom: 20px;
+		letter-spacing: 1px;
+	}
+
+	.footer-links-grid {
+		gap: 10px;
+	}
+
+	.footer-links-list a {
+		font-size: 0.95rem;
+	}
+
+	.footer-contact {
+		flex: 1;
+	}
+
+	.footer-contact h3 {
+		font-size: 1rem;
+		margin-bottom: 20px;
+		letter-spacing: 1px;
+	}
+
+	.contact-item {
+		font-size: 0.95rem;
+		margin-bottom: 16px;
+	}
+
+	.contact-item-icon {
+		font-size: 1.3rem;
+		min-width: 28px;
+	}
+
+	.footer-copyright {
+		font-size: 0.9rem;
+	}
+
+	.footer-links {
+		font-size: 0.9rem;
+		gap: 30px;
+	}
+}
+
+/* ==========================================
+   SMALL MOBILE OPTIMIZATION (< 480px)
+   ========================================== */
+
+@media (max-width: 480px) {
+	.site-footer {
+		padding: 40px 16px 20px;
+		margin-top: 60px;
+	}
+
+	.footer-content {
+		grid-template-columns: 1fr;
+		gap: 30px;
+		padding-bottom: 30px;
+		margin-bottom: 20px;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.footer-branding {
+		padding-right: 0;
+		border-right: none;
+		border-bottom: 1px solid var(--footer-border);
+		padding-bottom: 20px;
+		gap: 12px;
+	}
+
+	.footer-logo-name {
+		font-size: 1.2rem;
+	}
+
+	.footer-tagline {
+		font-size: 0.85rem;
+		max-width: 100%;
+	}
+
+	.footer-links-section {
+		padding: 0;
+		border-right: none;
+		border-bottom: 1px solid var(--footer-border);
+		padding-bottom: 20px;
+	}
+
+	.footer-section-title {
+		font-size: 0.9rem;
+		margin-bottom: 15px;
+	}
+
+	.footer-links-grid {
+		gap: 10px 15px;
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.footer-links-list a {
+		font-size: 0.85rem;
+	}
+
+	.footer-contact {
+		padding-left: 0;
+		gap: 15px;
+	}
+
+	.footer-contact h3 {
+		font-size: 0.9rem;
+		margin-bottom: 12px;
+	}
+
+	.contact-item {
+		font-size: 0.85rem;
+		margin-bottom: 12px;
+	}
+
+	.contact-item-icon {
+		font-size: 1.1rem;
+		min-width: 22px;
+	}
+
+	.footer-bottom {
+		gap: 12px;
+		padding-top: 20px;
+		flex-direction: column;
+	}
+
+	.footer-copyright {
+		font-size: 0.8rem;
+		text-align: center;
+	}
+
+	.footer-links {
+		font-size: 0.8rem;
+		gap: 12px;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.footer-links a {
+		display: inline-block;
+	}
+}
+
+/* ==========================================
+   ACCESSIBILITY & FOCUS STATES
+   ========================================== */
+
+.social-link:focus-visible,
+.footer-links a:focus-visible {
+	outline: 2px solid var(--footer-secondary);
+	outline-offset: 2px;
+}
+
+/* ==========================================
+   PRINT STYLES
+   ========================================== */
+
+@media print {
+	.site-footer {
+		background-color: var(--footer-text-white);
+		color: var(--footer-bg);
+		page-break-inside: avoid;
+	}
+
+	.social-link,
+	.footer-links a {
+		print-color-adjust: exact;
+		-webkit-print-color-adjust: exact;
+	}
+}

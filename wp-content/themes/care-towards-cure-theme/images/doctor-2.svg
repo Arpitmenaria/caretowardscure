@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <defs>
+    <style>
+      .background { fill: #e6f0ff; }
+      .head { fill: #c9a88a; }
+      .body { fill: #0066cc; }
+      .collar { fill: #ffffff; }
+      .button { fill: #004a99; }
+      .hair { fill: #2d1b0a; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="background" width="400" height="500"/>
+
+  <!-- Head -->
+  <circle class="head" cx="200" cy="120" r="60"/>
+
+  <!-- Hair -->
+  <path class="hair" d="M 140 105 Q 140 50, 200 40 Q 260 50, 260 105 Q 260 145, 245 155 Q 155 155, 140 105" stroke="none"/>
+
+  <!-- Hair accents (longer) -->
+  <path class="hair" d="M 140 95 Q 130 105, 128 125"/>
+  <path class="hair" d="M 260 95 Q 270 105, 272 125"/>
+
+  <!-- Body/Medical Coat -->
+  <rect class="body" x="130" y="180" width="140" height="210" rx="10"/>
+
+  <!-- Coat Collar Left -->
+  <polygon class="collar" points="200,180 165,205 165,245 200,220"/>
+
+  <!-- Coat Collar Right -->
+  <polygon class="collar" points="200,180 235,205 235,245 200,220"/>
+
+  <!-- Coat Buttons -->
+  <circle class="button" cx="200" cy="220" r="5"/>
+  <circle class="button" cx="200" cy="260" r="5"/>
+  <circle class="button" cx="200" cy="300" r="5"/>
+  <circle class="button" cx="200" cy="340" r="5"/>
+
+  <!-- Shirt -->
+  <rect class="collar" x="145" y="180" width="110" height="40"/>
+
+  <!-- Stethoscope ear pieces -->
+  <circle cx="180" cy="160" r="4" fill="#666"/>
+  <circle cx="220" cy="160" r="4" fill="#666"/>
+
+  <!-- Stethoscope tubes -->
+  <path stroke="#666" stroke-width="2.5" fill="none" d="M 180 164 Q 175 180, 170 200"/>
+  <path stroke="#666" stroke-width="2.5" fill="none" d="M 220 164 Q 225 180, 230 200"/>
+
+  <!-- Stethoscope chest piece -->
+  <circle cx="200" cy="270" r="6" fill="#666"/>
+  <circle cx="200" cy="270" r="4" fill="#0066cc"/>
+
+  <!-- Eyes -->
+  <circle cx="185" cy="105" r="5" fill="#333"/>
+  <circle cx="215" cy="105" r="5" fill="#333"/>
+
+  <!-- Eyebrows -->
+  <path stroke="#2d1b0a" stroke-width="1.5" fill="none" d="M 180 98 Q 185 96, 190 98"/>
+  <path stroke="#2d1b0a" stroke-width="1.5" fill="none" d="M 210 98 Q 215 96, 220 98"/>
+
+  <!-- Nose -->
+  <path stroke="#333" stroke-width="1" fill="none" d="M 200 105 L 200 115"/>
+
+  <!-- Mouth (warm smile) -->
+  <path stroke="#333" stroke-width="1.5" fill="none" d="M 188 128 Q 200 134, 212 128"/>
+
+  <!-- Hands -->
+  <ellipse cx="125" cy="280" rx="12" ry="25" fill="#c9a88a"/>
+  <ellipse cx="275" cy="280" rx="12" ry="25" fill="#c9a88a"/>
+
+  <!-- Name badge area -->
+  <rect x="145" y="410" width="110" height="30" rx="4" fill="rgba(255,255,255,0.3)" stroke="#0066cc" stroke-width="1"/>
+
+  <!-- Decorative element - small accent -->
+  <circle cx="200" cy="75" r="3" fill="#ff6b9d" opacity="0.6"/>
+</svg>
