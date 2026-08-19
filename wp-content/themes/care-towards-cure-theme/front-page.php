@@ -17,20 +17,30 @@ get_header();
 		<?php
 		$hero_image = get_theme_mod( 'care_hero_image_1' );
 		$hero_style = $hero_image ? ' style="background-image: url(' . esc_url( $hero_image ) . '); background-size: cover; background-position: center;"' : '';
+
+		// Get customizer values (these can be edited by client in admin)
+		$hero_badge = get_theme_mod( 'care_hero_badge', __( 'TRUSTED HEALTHCARE PROVIDER', 'care-towards-cure' ) );
+		$hero_title = get_theme_mod( 'care_hero_title', __( 'Your Health Deserves Personalised Care.', 'care-towards-cure' ) );
+		$hero_subtitle = get_theme_mod( 'care_hero_subtitle', __( 'Professional healthcare consultation designed around you — with convenient online access from wherever you are.', 'care-towards-cure' ) );
+		$hero_btn1_text = get_theme_mod( 'care_hero_btn1_text', __( 'Book an Appointment', 'care-towards-cure' ) );
+		$hero_btn2_text = get_theme_mod( 'care_hero_btn2_text', __( 'Start Online Consultation', 'care-towards-cure' ) );
 		?>
 		<section class="hero-section" role="region" aria-label="<?php esc_attr_e( 'Hero Section', 'care-towards-cure' ); ?>" data-reveal<?php echo $hero_style; // phpcs:ignore WordPress.Security.EscapedOutput ?>>
 			<div class="container">
 				<div class="hero-content">
-					<h1 class="hero-title"><?php esc_html_e( 'Your Health Deserves Personalised Care.', 'care-towards-cure' ); ?></h1>
+					<?php if ( ! empty( $hero_badge ) ) : ?>
+						<div class="hero-badge"><?php echo esc_html( $hero_badge ); ?></div>
+					<?php endif; ?>
+					<h1 class="hero-title"><?php echo esc_html( $hero_title ); ?></h1>
 					<p class="hero-description">
-						<?php esc_html_e( 'Professional healthcare consultation designed around you — with convenient online access from wherever you are.', 'care-towards-cure' ); ?>
+						<?php echo esc_html( $hero_subtitle ); ?>
 					</p>
 					<div class="hero-buttons">
 						<button type="button" class="btn btn-primary" data-open-modal="appointmentModal">
-							<?php esc_html_e( 'Book an Appointment', 'care-towards-cure' ); ?>
+							<?php echo esc_html( $hero_btn1_text ); ?>
 						</button>
 						<a href="#contact" class="btn btn-secondary">
-							<?php esc_html_e( 'Start Online Consultation', 'care-towards-cure' ); ?>
+							<?php echo esc_html( $hero_btn2_text ); ?>
 						</a>
 					</div>
 				</div>
@@ -38,33 +48,31 @@ get_header();
 		</section>
 
 		<!-- ===== WELCOME SECTION ===== -->
+		<?php
+		$welcome_title = get_theme_mod( 'care_welcome_title', __( 'Welcome to Care Towards Cure', 'care-towards-cure' ) );
+		$welcome_para_1 = get_theme_mod( 'care_welcome_para_1', __( 'At Care Towards Cure, we believe that healthcare should be personal, accessible and focused on the individual — not just the symptoms.', 'care-towards-cure' ) );
+		$welcome_para_2 = get_theme_mod( 'care_welcome_para_2', __( 'We provide personalised consultations and treatment guidance with an emphasis on understanding each patient\'s health concerns, medical history, lifestyle and individual needs.', 'care-towards-cure' ) );
+		$welcome_para_3 = get_theme_mod( 'care_welcome_para_3', __( 'Whether you are looking for guidance for a new health concern or continuing care for an existing condition, our goal is to make quality healthcare more accessible and convenient.', 'care-towards-cure' ) );
+		$welcome_image_id = get_theme_mod( 'care_welcome_image' );
+		$welcome_image_url = $welcome_image_id ? wp_get_attachment_url( $welcome_image_id ) : get_template_directory_uri() . '/images/placeholder-welcome.svg';
+		?>
 		<section class="welcome-section" id="welcome" data-reveal>
 			<div class="container">
 				<div class="welcome-wrapper">
 					<div class="welcome-content">
-						<h2><?php esc_html_e( 'Welcome to Care Towards Cure', 'care-towards-cure' ); ?></h2>
-						<p>
-							<?php esc_html_e( 'At Care Towards Cure, we believe that healthcare should be personal, accessible and focused on the individual — not just the symptoms.', 'care-towards-cure' ); ?>
-						</p>
-						<p>
-							<?php esc_html_e( 'We provide personalised consultations and treatment guidance with an emphasis on understanding each patient\'s health concerns, medical history, lifestyle and individual needs.', 'care-towards-cure' ); ?>
-						</p>
-						<p>
-							<?php esc_html_e( 'Whether you are looking for guidance for a new health concern or continuing care for an existing condition, our goal is to make quality healthcare more accessible and convenient.', 'care-towards-cure' ); ?>
-						</p>
+						<h2><?php echo esc_html( $welcome_title ); ?></h2>
+						<p><?php echo esc_html( $welcome_para_1 ); ?></p>
+						<p><?php echo esc_html( $welcome_para_2 ); ?></p>
+						<p><?php echo esc_html( $welcome_para_3 ); ?></p>
 						<div class="welcome-buttons">
 							<button type="button" class="btn btn-primary" data-open-modal="appointmentModal">
-								<?php esc_html_e( 'Book an Appointment', 'care-towards-cure' ); ?>
+								<?php echo esc_html( $hero_btn1_text ); ?>
 							</button>
-							<button type="button" class="btn btn-secondary" data-open-modal="consultationModal">
-								<?php esc_html_e( 'Start Online Consultation', 'care-towards-cure' ); ?>
-							</button>
+							<a href="#contact" class="btn btn-secondary">
+								<?php echo esc_html( $hero_btn2_text ); ?>
+							</a>
 						</div>
 					</div>
-					<?php
-					$welcome_image_id = get_theme_mod( 'care_welcome_image' );
-					$welcome_image_url = $welcome_image_id ? wp_get_attachment_url( $welcome_image_id ) : get_template_directory_uri() . '/images/placeholder-welcome.svg';
-					?>
 					<div class="welcome-image">
 						<img src="<?php echo esc_url( $welcome_image_url ); ?>" alt="<?php esc_attr_e( 'Welcome Section', 'care-towards-cure' ); ?>" class="welcome-img">
 					</div>

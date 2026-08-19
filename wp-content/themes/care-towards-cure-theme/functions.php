@@ -1747,6 +1747,73 @@ function care_customize_register( $wp_customize ) {
 		'type'        => 'textarea',
 		'input_attrs' => array( 'rows' => 2 ),
 	) );
+
+	// =============================================
+	// WELCOME SECTION PANEL
+	// =============================================
+	$wp_customize->add_panel( 'care_welcome_panel', array(
+		'title'       => __( 'Welcome Section', 'care-towards-cure' ),
+		'priority'    => 25,
+		'description' => __( 'Customize the welcome section content', 'care-towards-cure' ),
+	) );
+
+	// Welcome Content Section
+	$wp_customize->add_section( 'care_welcome_content', array(
+		'title'       => __( 'Welcome Content', 'care-towards-cure' ),
+		'panel'       => 'care_welcome_panel',
+		'priority'    => 10,
+	) );
+
+	// Welcome Title
+	$wp_customize->add_setting( 'care_welcome_title', array(
+		'default'           => __( 'Welcome to Care Towards Cure', 'care-towards-cure' ),
+		'sanitize_callback' => 'sanitize_text_field',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( 'care_welcome_title', array(
+		'label'       => __( 'Section Title', 'care-towards-cure' ),
+		'section'     => 'care_welcome_content',
+		'type'        => 'text',
+	) );
+
+	// Welcome Paragraph 1
+	$wp_customize->add_setting( 'care_welcome_para_1', array(
+		'default'           => __( 'At Care Towards Cure, we believe that healthcare should be personal, accessible and focused on the individual — not just the symptoms.', 'care-towards-cure' ),
+		'sanitize_callback' => 'sanitize_textarea_field',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( 'care_welcome_para_1', array(
+		'label'       => __( 'Paragraph 1', 'care-towards-cure' ),
+		'section'     => 'care_welcome_content',
+		'type'        => 'textarea',
+		'input_attrs' => array( 'rows' => 3 ),
+	) );
+
+	// Welcome Paragraph 2
+	$wp_customize->add_setting( 'care_welcome_para_2', array(
+		'default'           => __( 'We provide personalised consultations and treatment guidance with an emphasis on understanding each patient\'s health concerns, medical history, lifestyle and individual needs.', 'care-towards-cure' ),
+		'sanitize_callback' => 'sanitize_textarea_field',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( 'care_welcome_para_2', array(
+		'label'       => __( 'Paragraph 2', 'care-towards-cure' ),
+		'section'     => 'care_welcome_content',
+		'type'        => 'textarea',
+		'input_attrs' => array( 'rows' => 3 ),
+	) );
+
+	// Welcome Paragraph 3
+	$wp_customize->add_setting( 'care_welcome_para_3', array(
+		'default'           => __( 'Whether you are looking for guidance for a new health concern or continuing care for an existing condition, our goal is to make quality healthcare more accessible and convenient.', 'care-towards-cure' ),
+		'sanitize_callback' => 'sanitize_textarea_field',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( 'care_welcome_para_3', array(
+		'label'       => __( 'Paragraph 3', 'care-towards-cure' ),
+		'section'     => 'care_welcome_content',
+		'type'        => 'textarea',
+		'input_attrs' => array( 'rows' => 3 ),
+	) );
 }
 add_action( 'customize_register', 'care_customize_register' );
 
