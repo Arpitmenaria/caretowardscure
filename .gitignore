@@ -16,8 +16,10 @@
 /wp-trackback.php
 /xmlrpc.php
 
-# WordPress Uploads
+# WordPress Uploads & Backups
 /wp-content/uploads/
+/wp-content/ai1wm-backups/
+/wp-content/backup*
 
 # WordPress Plugins (except custom)
 /wp-content/plugins/*/
