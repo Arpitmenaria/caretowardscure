@@ -57,7 +57,7 @@
 	background-position: center;
 	background-attachment: fixed;
 	color: white;
-	padding: 120px 20px;
+	padding: 120px 20px 0;
 	text-align: center;
 	min-height: 600px;
 	display: flex;
@@ -151,7 +151,7 @@
 
 .welcome-section {
 	background-color: var(--section-bg-light);
-	padding: 80px 20px;
+	padding: 60px 20px 80px;
 }
 
 .welcome-section .container {
