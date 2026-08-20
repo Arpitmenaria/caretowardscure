@@ -148,6 +148,7 @@ defined( 'ABSPATH' ) || exit;
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="modal-btn modal-btn-cancel"><?php esc_html_e( 'Cancel', 'care-towards-cure' ); ?></button>
+				<button type="button" class="modal-btn modal-btn-reset"><?php esc_html_e( 'Reset', 'care-towards-cure' ); ?></button>
 				<button type="submit" form="appointmentForm" class="modal-btn modal-btn-submit"><?php esc_html_e( 'Submit Inquiry', 'care-towards-cure' ); ?></button>
 			</div>
 		</div>

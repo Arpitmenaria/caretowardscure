@@ -282,6 +282,22 @@ input[type="time"]:focus::-webkit-calendar-picker-indicator {
 	background-color: var(--modal-border);
 }
 
+.modal-btn-reset {
+	background-color: #ffa500;
+	color: white;
+	border: none;
+}
+
+.modal-btn-reset:hover {
+	background-color: #ff8c00;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
+}
+
+.modal-btn-reset:active {
+	transform: translateY(0);
+}
+
 .modal-btn-submit {
 	background-color: var(--modal-primary);
 	color: white;
