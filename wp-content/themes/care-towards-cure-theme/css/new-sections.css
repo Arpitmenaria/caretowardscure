@@ -623,7 +623,7 @@
 	}
 
 	.welcome-section {
-		padding: 60px 20px;
+		padding: 40px 20px 60px;
 	}
 
 	.welcome-wrapper {
@@ -748,6 +748,10 @@
 
 	.hero-buttons .btn {
 		width: 100%;
+	}
+
+	.welcome-section {
+		padding: 30px 16px 50px;
 	}
 
 	.listenps-approach {
