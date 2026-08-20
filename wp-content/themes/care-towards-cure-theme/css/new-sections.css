@@ -57,14 +57,14 @@
 	background-position: center;
 	background-attachment: fixed;
 	color: white;
-	padding: 120px 20px 0;
+	padding: 120px 20px 40px;
 	text-align: center;
 	min-height: 600px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	overflow: hidden;
+	overflow: visible;
 }
 
 .hero-section::before {
@@ -151,7 +151,7 @@
 
 .welcome-section {
 	background-color: var(--section-bg-light);
-	padding: 60px 20px 80px;
+	padding: 0 20px 80px;
 }
 
 .welcome-section .container {
@@ -599,7 +599,7 @@
 
 @media (max-width: 768px) {
 	.hero-section {
-		padding: 80px 20px 0;
+		padding: 80px 20px 40px;
 		min-height: auto;
 	}
 
@@ -623,7 +623,7 @@
 	}
 
 	.welcome-section {
-		padding: 40px 20px 60px;
+		padding: 0 20px 60px;
 	}
 
 	.welcome-wrapper {
@@ -730,7 +730,7 @@
 
 @media (max-width: 480px) {
 	.hero-section {
-		padding: 60px 16px 0;
+		padding: 60px 16px 40px;
 	}
 
 	.hero-title {
@@ -751,7 +751,7 @@
 	}
 
 	.welcome-section {
-		padding: 30px 16px 50px;
+		padding: 0 16px 50px;
 	}
 
 	.listenps-approach {
