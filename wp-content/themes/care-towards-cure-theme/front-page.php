@@ -965,8 +965,8 @@ get_header();
 								<div class="contact-details">
 									<p class="contact-label"><?php esc_html_e( 'Consultation Hours', 'care-towards-cure' ); ?></p>
 									<p class="contact-value">
-										<?php esc_html_e( 'Morning 10AM to 2PM', 'care-towards-cure' ); ?><br>
-										<?php esc_html_e( 'Evening 6PM to 10PM', 'care-towards-cure' ); ?>
+										<?php esc_html_e( 'Morning 10 AM to 2 PM', 'care-towards-cure' ); ?><br>
+										<?php esc_html_e( 'Evening 6 PM to 10 PM', 'care-towards-cure' ); ?>
 									</p>
 								</div>
 							</div>
