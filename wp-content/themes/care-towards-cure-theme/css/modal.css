@@ -141,7 +141,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	margin-bottom: 16px;
+	margin-bottom: 18px;
 }
 
 .form-label {
@@ -217,7 +217,7 @@ input[type="time"]::-webkit-input-placeholder {
 	display: flex;
 	gap: 16px;
 	width: 100%;
-	margin-bottom: 16px;
+	margin-bottom: 18px;
 }
 
 .form-row.two-col {
