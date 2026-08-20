@@ -599,7 +599,7 @@
 
 @media (max-width: 768px) {
 	.hero-section {
-		padding: 80px 20px;
+		padding: 80px 20px 0;
 		min-height: auto;
 	}
 
@@ -730,7 +730,7 @@
 
 @media (max-width: 480px) {
 	.hero-section {
-		padding: 60px 16px;
+		padding: 60px 16px 0;
 	}
 
 	.hero-title {
