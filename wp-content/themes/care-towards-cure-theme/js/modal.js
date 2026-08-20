@@ -56,12 +56,21 @@
 			setDefaultDateTime();
 		});
 
-		// Validate date on change
+		// Validate date on change - prevent old dates
 		dateInput?.addEventListener('change', function() {
+			const selectedDate = new Date(this.value + 'T00:00:00');
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+
+			if (selectedDate < today) {
+				alert('Please select a future date.');
+				setDefaultDateTime();
+				return;
+			}
 			validateDateTime();
 		});
 
-		// Validate time on change
+		// Validate time on change - prevent old times
 		timeInput?.addEventListener('change', function() {
 			validateDateTime();
 		});
