@@ -977,9 +977,9 @@ get_header();
 						<button type="button" class="btn btn-primary btn-lg" data-open-modal="appointmentModal">
 							<?php esc_html_e( 'Book an Appointment', 'care-towards-cure' ); ?>
 						</button>
-						<button type="button" class="btn btn-secondary btn-lg" data-open-modal="contactModal">
+						<a href="https://wa.me/919414311475" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-lg">
 							<?php esc_html_e( 'Contact Us', 'care-towards-cure' ); ?>
-						</button>
+						</a>
 					</div>
 				</div>
 			</div>
