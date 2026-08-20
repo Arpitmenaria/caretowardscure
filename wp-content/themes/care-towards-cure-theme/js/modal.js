@@ -56,6 +56,16 @@
 			setDefaultDateTime();
 		});
 
+		// Validate date on change
+		dateInput?.addEventListener('change', function() {
+			validateDateTime();
+		});
+
+		// Validate time on change
+		timeInput?.addEventListener('change', function() {
+			validateDateTime();
+		});
+
 		// Close success modal
 		closeSuccessBtn?.addEventListener('click', () => {
 			closeModal(successModal);
@@ -77,6 +87,12 @@
 
 		// Handle form submission
 		form?.addEventListener('submit', function(e) {
+			// Validate date and time before submission
+			if (!isValidDateTime()) {
+				e.preventDefault();
+				alert('Please select a future date and time for your appointment.');
+				return false;
+			}
 			handleFormSubmit.call(this, e, modal, successModal);
 		});
 
@@ -218,6 +234,73 @@
 			const minDate = `${year}-${month}-${day}`;
 			dateInput.min = minDate;
 		}
+	}
+
+	/**
+	 * Validate selected date and time
+	 */
+	function validateDateTime() {
+		const dateInput = document.getElementById('appointment_date');
+		const timeInput = document.getElementById('appointment_time');
+
+		if (!dateInput || !dateInput.value) {
+			return;
+		}
+
+		const today = new Date();
+		const selectedDate = new Date(dateInput.value + 'T00:00:00');
+		const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+		// If selected date is today, validate time
+		if (selectedDate.getTime() === todayDate.getTime()) {
+			if (timeInput && timeInput.value) {
+				const [hours, minutes] = timeInput.value.split(':').map(Number);
+				const selectedTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes);
+
+				if (selectedTime < today) {
+					timeInput.value = '';
+					alert('Please select a future time for today.');
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check if selected date and time is valid (not in past)
+	 */
+	function isValidDateTime() {
+		const dateInput = document.getElementById('appointment_date');
+		const timeInput = document.getElementById('appointment_time');
+
+		// If no date selected, let other validation handle it
+		if (!dateInput || !dateInput.value) {
+			return true;
+		}
+
+		const today = new Date();
+		const selectedDate = new Date(dateInput.value + 'T00:00:00');
+		const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+		// Check if selected date is in past
+		if (selectedDate < todayDate) {
+			return false;
+		}
+
+		// If selected date is today, check if time is in past
+		if (selectedDate.getTime() === todayDate.getTime()) {
+			if (!timeInput || !timeInput.value) {
+				return true; // Time not required
+			}
+
+			const [hours, minutes] = timeInput.value.split(':').map(Number);
+			const selectedTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes);
+
+			if (selectedTime < today) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
