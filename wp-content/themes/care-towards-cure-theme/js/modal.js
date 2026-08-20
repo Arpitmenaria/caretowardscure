@@ -15,17 +15,27 @@
 		const openBtns = document.querySelectorAll('[data-open-modal="appointmentModal"]');
 		const closeBtn = document.querySelector('.modal-close');
 		const cancelBtn = document.querySelector('.modal-btn-cancel');
+		const resetBtn = document.querySelector('.modal-btn-reset');
 		const closeSuccessBtn = document.querySelector('[data-close-success="successModal"]');
 		const form = document.getElementById('appointmentForm');
+		const dateInput = document.getElementById('appointment_date');
+		const timeInput = document.getElementById('appointment_time');
 
 		if (!modal) {
 			return;
 		}
 
+		// Set default date and time
+		setDefaultDateTime();
+
+		// Disable past dates
+		disablePastDates();
+
 		// Open modal
 		openBtns.forEach((btn) => {
 			btn.addEventListener('click', (e) => {
 				e.preventDefault();
+				setDefaultDateTime();
 				openModal(modal);
 			});
 		});
@@ -37,6 +47,13 @@
 
 		cancelBtn?.addEventListener('click', () => {
 			closeModal(modal);
+		});
+
+		// Reset form
+		resetBtn?.addEventListener('click', (e) => {
+			e.preventDefault();
+			form.reset();
+			setDefaultDateTime();
 		});
 
 		// Close success modal
@@ -75,6 +92,13 @@
 	 * Open modal
 	 */
 	function openModal(modal) {
+		// Reset form before opening
+		const form = document.getElementById('appointmentForm');
+		if (form) {
+			form.reset();
+			setDefaultDateTime();
+		}
+
 		modal.classList.add('active');
 		document.body.style.overflow = 'hidden';
 		// Hide navbar on mobile
@@ -154,6 +178,46 @@
 					submitBtn.textContent = 'Submit Inquiry';
 				}
 			});
+	}
+
+	/**
+	 * Set default date to today and time to current time
+	 */
+	function setDefaultDateTime() {
+		const dateInput = document.getElementById('appointment_date');
+		const timeInput = document.getElementById('appointment_time');
+
+		if (dateInput) {
+			const today = new Date();
+			const year = today.getFullYear();
+			const month = String(today.getMonth() + 1).padStart(2, '0');
+			const day = String(today.getDate()).padStart(2, '0');
+			dateInput.value = `${year}-${month}-${day}`;
+			dateInput.min = `${year}-${month}-${day}`;
+		}
+
+		if (timeInput) {
+			const now = new Date();
+			const hours = String(now.getHours()).padStart(2, '0');
+			const minutes = String(now.getMinutes()).padStart(2, '0');
+			timeInput.value = `${hours}:${minutes}`;
+		}
+	}
+
+	/**
+	 * Disable past dates in date picker
+	 */
+	function disablePastDates() {
+		const dateInput = document.getElementById('appointment_date');
+
+		if (dateInput) {
+			const today = new Date();
+			const year = today.getFullYear();
+			const month = String(today.getMonth() + 1).padStart(2, '0');
+			const day = String(today.getDate()).padStart(2, '0');
+			const minDate = `${year}-${month}-${day}`;
+			dateInput.min = minDate;
+		}
 	}
 
 	/**
