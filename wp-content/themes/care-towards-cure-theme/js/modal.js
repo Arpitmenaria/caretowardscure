@@ -70,7 +70,7 @@
 			}
 		});
 
-		// Validate date on change - reset past dates to today
+		// Validate date on change - reset past dates to today and update time min
 		dateInput?.addEventListener('change', function() {
 			if (!this.value) return;
 
@@ -80,6 +80,27 @@
 
 			if (selectedDate < today) {
 				setDefaultDateTime();
+				return;
+			}
+
+			// If date is today, set time min to current time; otherwise clear it
+			if (selectedDate.getTime() === today.getTime()) {
+				const now = new Date();
+				const hours = String(now.getHours()).padStart(2, '0');
+				const minutes = String(now.getMinutes()).padStart(2, '0');
+				timeInput.min = `${hours}:${minutes}`;
+
+				// Reset time if it's now in the past
+				if (timeInput.value) {
+					const [selectedHours, selectedMinutes] = timeInput.value.split(':').map(Number);
+					const selectedTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), selectedHours, selectedMinutes);
+					if (selectedTime < now) {
+						timeInput.value = `${hours}:${minutes}`;
+					}
+				}
+			} else {
+				// For future dates, allow any time
+				timeInput.min = '';
 			}
 		});
 
@@ -92,6 +113,28 @@
 		modal.addEventListener('click', (e) => {
 			if (e.target === modal) {
 				closeModal(modal);
+			}
+		});
+
+		// Validate time on change - prevent selecting past times on today's date
+		timeInput?.addEventListener('change', function() {
+			if (!this.value || !dateInput.value) return;
+
+			const today = new Date();
+			const selectedDate = new Date(dateInput.value + 'T00:00:00');
+			const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+			// Only validate time if date is today
+			if (selectedDate.getTime() === todayDate.getTime()) {
+				const [hours, minutes] = this.value.split(':').map(Number);
+				const selectedTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes);
+
+				if (selectedTime < today) {
+					// Reset to current time
+					const currentHours = String(today.getHours()).padStart(2, '0');
+					const currentMinutes = String(today.getMinutes()).padStart(2, '0');
+					this.value = `${currentHours}:${currentMinutes}`;
+				}
 			}
 		});
 
@@ -236,7 +279,10 @@
 			const now = new Date();
 			const hours = String(now.getHours()).padStart(2, '0');
 			const minutes = String(now.getMinutes()).padStart(2, '0');
-			timeInput.value = `${hours}:${minutes}`;
+			const currentTimeString = `${hours}:${minutes}`;
+
+			timeInput.value = currentTimeString;
+			timeInput.min = currentTimeString; // Prevent selecting past times today
 		}
 	}
 
