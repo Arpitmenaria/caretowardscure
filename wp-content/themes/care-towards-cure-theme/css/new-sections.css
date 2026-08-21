@@ -151,7 +151,7 @@
 
 .welcome-section {
 	background-color: var(--section-bg-light);
-	padding: 0 20px 80px;
+	padding: 50px 20px 80px;
 }
 
 .welcome-section .container {
@@ -623,7 +623,7 @@
 	}
 
 	.welcome-section {
-		padding: 0 20px 60px;
+		padding: 40px 20px 60px;
 	}
 
 	.welcome-wrapper {
@@ -751,7 +751,7 @@
 	}
 
 	.welcome-section {
-		padding: 0 16px 50px;
+		padding: 30px 16px 50px;
 	}
 
 	.listenps-approach {
