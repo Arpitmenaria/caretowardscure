@@ -479,10 +479,10 @@ function care_handle_inquiry_form(): void {
 		) );
 	}
 
-	// Validate phone format (basic check)
-	if ( ! preg_match( '/^[0-9\-\+\(\)\s]{10,}$/', $phone ) ) {
+	// Validate phone format - exactly 10 digits
+	if ( ! preg_match( '/^[0-9]{10}$/', $phone ) ) {
 		wp_send_json_error( array(
-			'message' => __( 'Please enter a valid phone number.', 'care-towards-cure' ),
+			'message' => __( 'Please enter a valid 10-digit phone number.', 'care-towards-cure' ),
 		) );
 	}
 

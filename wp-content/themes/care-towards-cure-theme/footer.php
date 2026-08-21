@@ -110,7 +110,7 @@ defined( 'ABSPATH' ) || exit;
 
 					<div class="form-field">
 						<label class="form-label" for="phone"><?php esc_html_e( 'Phone Number', 'care-towards-cure' ); ?> <span style="color: #e74c3c;">*</span></label>
-						<input class="form-input" type="tel" id="phone" name="phone" required placeholder="<?php esc_attr_e( 'Enter your phone number', 'care-towards-cure' ); ?>">
+						<input class="form-input" type="tel" id="phone" name="phone" required maxlength="10" pattern="[0-9]{10}" inputmode="numeric" placeholder="<?php esc_attr_e( '10 digit mobile number', 'care-towards-cure' ); ?>">
 					</div>
 
 					<div class="form-field">
