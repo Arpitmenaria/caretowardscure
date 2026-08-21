@@ -37,7 +37,7 @@ defined( 'ABSPATH' ) || exit;
 					<h3><?php esc_html_e( 'Contact Info', 'care-towards-cure' ); ?></h3>
 					<?php
 					$footer_phone = get_theme_mod( 'care_footer_phone', '9414311475' );
-					$footer_email = get_theme_mod( 'care_footer_email', 'info@caretowardscure.com' );
+					$footer_email = get_theme_mod( 'care_footer_email', 'enquiry@caretowardscure.com' );
 					$footer_address = get_theme_mod( 'care_footer_address', '2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020' );
 					?>
 
