@@ -67,11 +67,10 @@
 			if (selectedDate < today) {
 				// Silently reset to today on mobile without alert
 				setDefaultDateTime();
-				return;
 			}
 		});
 
-		// Validate date on change - final validation
+		// Validate date on change - reset past dates to today
 		dateInput?.addEventListener('change', function() {
 			if (!this.value) return;
 
@@ -81,14 +80,7 @@
 
 			if (selectedDate < today) {
 				setDefaultDateTime();
-				return;
 			}
-			validateDateTime();
-		});
-
-		// Validate time on change - prevent old times
-		timeInput?.addEventListener('change', function() {
-			validateDateTime();
 		});
 
 		// Close success modal
@@ -238,9 +230,6 @@
 			dateInput.value = todayString;
 			dateInput.min = todayString;
 			dateInput.max = ''; // Clear any max restriction
-
-			// Force update for mobile browsers
-			dateInput.dispatchEvent(new Event('change', { bubbles: true }));
 		}
 
 		if (timeInput) {
