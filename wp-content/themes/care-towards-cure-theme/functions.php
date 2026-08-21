@@ -121,6 +121,38 @@ function care_enqueue_styles(): void {
 		CARE_THEME_VERSION,
 		'all'
 	);
+
+	// Inline CSS for welcome section (fixes deployment issue)
+	$welcome_css = '
+	.welcome-section {
+		padding: 50px 20px 80px;
+	}
+	.welcome-buttons {
+		display: flex;
+		gap: 20px;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin-top: 40px;
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.welcome-buttons .btn {
+		flex: 1;
+		min-width: 160px;
+	}
+	@media (max-width: 768px) {
+		.welcome-section {
+			padding: 40px 20px 60px;
+		}
+	}
+	@media (max-width: 480px) {
+		.welcome-section {
+			padding: 30px 16px 50px;
+		}
+	}
+	';
+	wp_add_inline_style( 'care-new-sections', $welcome_css );
 }
 add_action( 'wp_enqueue_scripts', 'care_enqueue_styles' );
 
