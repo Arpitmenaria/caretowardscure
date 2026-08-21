@@ -67,7 +67,9 @@ defined( 'ABSPATH' ) || exit;
 						<div class="contact-item">
 							<span class="contact-item-icon">📍</span>
 							<div class="contact-item-text">
-								<?php echo esc_html( $footer_address ); ?>
+								<a href="https://maps.app.goo.gl/5tx4B5ngJrVzMGRW8" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+									<?php echo esc_html( $footer_address ); ?>
+								</a>
 							</div>
 						</div>
 					<?php endif; ?>

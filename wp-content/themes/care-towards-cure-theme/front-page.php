@@ -914,7 +914,9 @@ get_header();
 								<div class="contact-details">
 									<p class="contact-label"><?php esc_html_e( 'Clinic Address', 'care-towards-cure' ); ?></p>
 									<p class="contact-value">
-										<?php esc_html_e( '2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020', 'care-towards-cure' ); ?>
+										<a href="https://maps.app.goo.gl/5tx4B5ngJrVzMGRW8" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+											<?php esc_html_e( '2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020', 'care-towards-cure' ); ?>
+										</a>
 									</p>
 								</div>
 							</div>
