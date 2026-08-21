@@ -421,6 +421,35 @@ function care_defer_scripts( $tag, $handle ) {
 add_filter( 'script_loader_tag', 'care_defer_scripts', 10, 2 );
 
 /**
+ * Save inquiry and send email notification
+ *
+ * Handles saving inquiry and sending email to admin
+ */
+function care_save_inquiry_handler( $data ): void {
+	$admin_email = 'menariaarpit2@gmail.com';
+
+	$subject = 'New Appointment Inquiry - Care Towards Cure';
+
+	$message = "
+	<h2>New Appointment Inquiry</h2>
+	<p><strong>Patient Name:</strong> " . esc_html( $data['patient_name'] ) . "</p>
+	<p><strong>Phone:</strong> " . esc_html( $data['phone'] ) . "</p>
+	<p><strong>Email:</strong> " . esc_html( $data['email'] ) . "</p>
+	<p><strong>Preferred Date:</strong> " . esc_html( $data['date'] ) . "</p>
+	<p><strong>Preferred Time:</strong> " . esc_html( $data['time'] ) . "</p>
+	<p><strong>Reason for Consultation:</strong></p>
+	<p>" . nl2br( esc_html( $data['message'] ) ) . "</p>
+	<hr>
+	<p><em>Submitted on: " . current_time( 'Y-m-d H:i:s' ) . "</em></p>
+	";
+
+	$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+	wp_mail( $admin_email, $subject, $message, $headers );
+}
+add_action( 'care_save_inquiry', 'care_save_inquiry_handler' );
+
+/**
  * WordPress AJAX handler for inquiry form
  *
  * Handles secure AJAX submission for the appointment inquiry form.
