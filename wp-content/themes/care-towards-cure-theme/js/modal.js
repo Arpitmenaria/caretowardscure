@@ -56,14 +56,30 @@
 			setDefaultDateTime();
 		});
 
-		// Validate date on change - prevent old dates
-		dateInput?.addEventListener('change', function() {
+		// Validate date on input - prevent old dates immediately (mobile compatibility)
+		dateInput?.addEventListener('input', function() {
+			if (!this.value) return;
+
 			const selectedDate = new Date(this.value + 'T00:00:00');
 			const today = new Date();
 			today.setHours(0, 0, 0, 0);
 
 			if (selectedDate < today) {
-				alert('Please select a future date.');
+				// Silently reset to today on mobile without alert
+				setDefaultDateTime();
+				return;
+			}
+		});
+
+		// Validate date on change - final validation
+		dateInput?.addEventListener('change', function() {
+			if (!this.value) return;
+
+			const selectedDate = new Date(this.value + 'T00:00:00');
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+
+			if (selectedDate < today) {
 				setDefaultDateTime();
 				return;
 			}
@@ -217,8 +233,14 @@
 			const year = today.getFullYear();
 			const month = String(today.getMonth() + 1).padStart(2, '0');
 			const day = String(today.getDate()).padStart(2, '0');
-			dateInput.value = `${year}-${month}-${day}`;
-			dateInput.min = `${year}-${month}-${day}`;
+			const todayString = `${year}-${month}-${day}`;
+
+			dateInput.value = todayString;
+			dateInput.min = todayString;
+			dateInput.max = ''; // Clear any max restriction
+
+			// Force update for mobile browsers
+			dateInput.dispatchEvent(new Event('change', { bubbles: true }));
 		}
 
 		if (timeInput) {
