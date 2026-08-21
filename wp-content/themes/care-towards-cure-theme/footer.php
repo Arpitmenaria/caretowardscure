@@ -22,27 +22,14 @@ defined( 'ABSPATH' ) || exit;
 					</p>
 				</div>
 
-				<!-- Quick Links -->
+				<!-- Policies -->
 				<div class="footer-links-section">
-					<h3 class="footer-section-title"><?php esc_html_e( 'Quick Links', 'care-towards-cure' ); ?></h3>
-					<div class="footer-links-grid">
-						<ul class="footer-links-list">
-							<li><a href="#"><?php esc_html_e( 'Home', 'care-towards-cure' ); ?></a></li>
-							<li><a href="#about"><?php esc_html_e( 'About Us', 'care-towards-cure' ); ?></a></li>
-							<li><a href="#doctors"><?php esc_html_e( 'Doctors', 'care-towards-cure' ); ?></a></li>
-							<li><a href="#services"><?php esc_html_e( 'Services', 'care-towards-cure' ); ?></a></li>
-							<li><a href="#consultation"><?php esc_html_e( 'Online Consultation', 'care-towards-cure' ); ?></a></li>
-							<li><a href="#appointment"><?php esc_html_e( 'Book Appointment', 'care-towards-cure' ); ?></a></li>
-						</ul>
-						<ul class="footer-links-list">
-							<li><a href="<?php echo esc_url( home_url( '/#faq' ) ); ?>"><?php esc_html_e( 'FAQs', 'care-towards-cure' ); ?></a></li>
-							<li><a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>"><?php esc_html_e( 'Contact', 'care-towards-cure' ); ?></a></li>
-							<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'privacy-policy' ) ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'care-towards-cure' ); ?></a></li>
-							<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'terms-conditions' ) ) ); ?>"><?php esc_html_e( 'Terms & Conditions', 'care-towards-cure' ); ?></a></li>
-							<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'refund-cancellation-policy' ) ) ); ?>"><?php esc_html_e( 'Refund & Cancellation Policy', 'care-towards-cure' ); ?></a></li>
-							<li><a href="<?php echo esc_url( home_url( '/#disclaimer' ) ); ?>"><?php esc_html_e( 'Medical Disclaimer', 'care-towards-cure' ); ?></a></li>
-						</ul>
-					</div>
+					<h3 class="footer-section-title"><?php esc_html_e( 'Policies', 'care-towards-cure' ); ?></h3>
+					<ul class="footer-links-list">
+						<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'privacy-policy' ) ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'care-towards-cure' ); ?></a></li>
+						<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'terms-conditions' ) ) ); ?>"><?php esc_html_e( 'Terms & Conditions', 'care-towards-cure' ); ?></a></li>
+						<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'refund-cancellation-policy' ) ) ); ?>"><?php esc_html_e( 'Refund & Cancellation Policy', 'care-towards-cure' ); ?></a></li>
+					</ul>
 				</div>
 
 				<!-- Contact Details -->
