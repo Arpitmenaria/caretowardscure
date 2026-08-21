@@ -204,6 +204,14 @@
 	justify-content: center;
 	flex-wrap: wrap;
 	margin-top: 40px;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.welcome-buttons .btn {
+	flex: 1;
+	min-width: 160px;
 }
 
 /* ==========================================
