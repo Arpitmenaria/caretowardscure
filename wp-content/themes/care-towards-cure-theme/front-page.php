@@ -211,54 +211,50 @@ get_header();
 				</div>
 
 				<?php
-				$doctor_1_image_id = get_theme_mod( 'care_doctor_image_1' );
-				$doctor_1_image_url = $doctor_1_image_id ? wp_get_attachment_url( $doctor_1_image_id ) : get_template_directory_uri() . '/images/placeholder-doctor-1.svg';
-
-				$doctor_2_image_id = get_theme_mod( 'care_doctor_image_2' );
-				$doctor_2_image_url = $doctor_2_image_id ? wp_get_attachment_url( $doctor_2_image_id ) : get_template_directory_uri() . '/images/placeholder-doctor-2.svg';
+				// Get all doctors from the Doctor CPT
+				$doctors_query = new WP_Query( array(
+					'post_type'      => 'care_doctor',
+					'posts_per_page' => -1,
+					'orderby'        => 'menu_order',
+					'order'          => 'ASC',
+				) );
 				?>
 				<div class="doctors-grid" data-reveal-group>
-					<!-- Doctor 1 -->
-					<div class="doctor-card">
-						<div class="doctor-image-wrapper">
-							<img src="<?php echo esc_url( $doctor_1_image_url ); ?>" alt="<?php esc_attr_e( 'Dr. M.K. Saini', 'care-towards-cure' ); ?>" class="doctor-image">
-						</div>
-						<div class="doctor-info">
-							<h3 class="doctor-name"><?php esc_html_e( 'Dr. M.K. Saini', 'care-towards-cure' ); ?></h3>
-							<p class="doctor-title"><?php esc_html_e( 'Doctor | Care Towards Cure', 'care-towards-cure' ); ?></p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'Dr. M.K. Saini believes that effective healthcare begins with understanding the patient as an individual.', 'care-towards-cure' ); ?>
-							</p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'Every consultation is an opportunity to listen to the patient\'s concerns, understand their health history and provide thoughtful guidance based on their individual needs.', 'care-towards-cure' ); ?>
-							</p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'At Care Towards Cure, Dr. M.K. Saini focuses on clear communication and personalised care, helping patients better understand their health concerns and the treatment approach recommended for them.', 'care-towards-cure' ); ?>
-							</p>
-							<a href="#" class="doctor-button"><?php esc_html_e( 'View Profile', 'care-towards-cure' ); ?></a>
-						</div>
-					</div>
-
-					<!-- Doctor 2 -->
-					<div class="doctor-card">
-						<div class="doctor-image-wrapper">
-							<img src="<?php echo esc_url( $doctor_2_image_url ); ?>" alt="<?php esc_attr_e( 'Dr. Jyoti Jain', 'care-towards-cure' ); ?>" class="doctor-image">
-						</div>
-						<div class="doctor-info">
-							<h3 class="doctor-name"><?php esc_html_e( 'Dr. Jyoti Jain', 'care-towards-cure' ); ?></h3>
-							<p class="doctor-title"><?php esc_html_e( 'Doctor | Care Towards Cure', 'care-towards-cure' ); ?></p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'Dr. Jyoti Jain is committed to providing compassionate and patient-centred care.', 'care-towards-cure' ); ?>
-							</p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'Her approach focuses on listening to patients carefully, understanding their concerns and creating a comfortable environment where patients can openly discuss their health.', 'care-towards-cure' ); ?>
-							</p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'At Care Towards Cure, Dr. Jyoti Jain believes in treating every patient with individual attention and providing healthcare guidance based on their specific needs.', 'care-towards-cure' ); ?>
-							</p>
-							<a href="#" class="doctor-button"><?php esc_html_e( 'View Profile', 'care-towards-cure' ); ?></a>
-						</div>
-					</div>
+					<?php
+					if ( $doctors_query->have_posts() ) {
+						while ( $doctors_query->have_posts() ) {
+							$doctors_query->the_post();
+							$doctor_id = get_the_ID();
+							$designation = get_post_meta( $doctor_id, 'doctor_designation', true );
+							$excerpt = get_the_excerpt();
+							?>
+							<div class="doctor-card">
+								<?php if ( has_post_thumbnail() ) : ?>
+									<div class="doctor-image">
+										<?php the_post_thumbnail( 'care-card' ); ?>
+									</div>
+								<?php endif; ?>
+								<div class="doctor-content">
+									<h3 class="doctor-name"><?php the_title(); ?></h3>
+									<?php if ( $designation ) : ?>
+										<p class="doctor-designation"><?php echo esc_html( $designation ); ?></p>
+									<?php endif; ?>
+									<?php if ( $excerpt ) : ?>
+										<p class="doctor-bio"><?php echo wp_kses_post( $excerpt ); ?></p>
+										<?php if ( strlen( wp_strip_all_tags( get_the_content() ) ) > 150 ) : ?>
+											<button class="doctor-show-more-btn" type="button"><?php esc_html_e( 'Show More', 'care-towards-cure' ); ?></button>
+										<?php endif; ?>
+									<?php endif; ?>
+									<div class="doctor-actions">
+										<a href="<?php the_permalink(); ?>" class="btn btn-secondary"><?php esc_html_e( 'View Profile', 'care-towards-cure' ); ?></a>
+									</div>
+								</div>
+							</div>
+							<?php
+						}
+						wp_reset_postdata();
+					}
+					?>
 				</div>
 
 				<div class="doctors-footer">
