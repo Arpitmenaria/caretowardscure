@@ -2530,10 +2530,10 @@ function care_register_services_cpt(): void {
 	$args = array(
 		'label'               => __( 'Services', 'care-towards-cure' ),
 		'description'         => __( 'Clinic services and offerings', 'care-towards-cure' ),
-		'public'              => false,
+		'public'              => true,
 		'hierarchical'        => false,
-		'exclude_from_search' => true,
-		'publicly_queryable'  => false,
+		'exclude_from_search' => false,
+		'publicly_queryable'  => true,
 		'show_ui'             => true,
 		'show_in_menu'        => true,
 		'show_in_nav_menus'   => false,
