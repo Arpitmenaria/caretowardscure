@@ -444,7 +444,7 @@ add_filter( 'script_loader_tag', 'care_defer_scripts', 10, 2 );
  * Handles saving inquiry and sending email to admin
  */
 function care_save_inquiry_handler( $data ): void {
-	$admin_email = get_theme_mod( 'care_footer_email', 'enquiry@caretowardscure.com' );
+	$admin_email = get_theme_mod( 'care_footer_email', 'info@caretowardscure.com' );
 
 	$subject = 'New Appointment Inquiry - Care Towards Cure';
 

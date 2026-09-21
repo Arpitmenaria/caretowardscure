@@ -751,7 +751,7 @@ get_header();
 									<p class="contact-label"><?php esc_html_e( 'Email', 'care-towards-cure' ); ?></p>
 									<p class="contact-value">
 										<?php
-										$contact_email = get_theme_mod( 'care_footer_email', 'enquiry@caretowardscure.com' );
+										$contact_email = get_theme_mod( 'care_footer_email', 'info@caretowardscure.com' );
 										?>
 										<a href="mailto:<?php echo esc_attr( $contact_email ); ?>">
 											<?php echo esc_html( $contact_email ); ?>
