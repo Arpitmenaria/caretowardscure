@@ -47,7 +47,7 @@ defined( 'ABSPATH' ) || exit;
 			<!-- Center Navigation Menu -->
 			<nav class="main-navigation" id="main-navigation" role="navigation" aria-label="<?php esc_attr_e( 'Primary Menu', 'care-towards-cure' ); ?>">
 				<ul class="menu navbar-menu">
-					<li><a href="<?php echo esc_url( home_url( '/#about' ) ); ?>" class="navbar-link" data-scroll-target="about"><?php esc_html_e( 'About', 'care-towards-cure' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/#about' ) ); ?>" class="navbar-link" data-scroll-target="about"><?php esc_html_e( 'About Us', 'care-towards-cure' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/#services' ) ); ?>" class="navbar-link" data-scroll-target="services"><?php esc_html_e( 'Services', 'care-towards-cure' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/#doctors' ) ); ?>" class="navbar-link" data-scroll-target="doctors"><?php esc_html_e( 'Doctors', 'care-towards-cure' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="navbar-link" data-scroll-target="contact"><?php esc_html_e( 'Contact', 'care-towards-cure' ); ?></a></li>
