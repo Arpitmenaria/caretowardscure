@@ -26,9 +26,23 @@ defined( 'ABSPATH' ) || exit;
 				<div class="footer-links-section">
 					<h3 class="footer-section-title"><?php esc_html_e( 'Policies', 'care-towards-cure' ); ?></h3>
 					<ul class="footer-links-list">
-						<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'privacy-policy' ) ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'care-towards-cure' ); ?></a></li>
-						<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'terms-conditions' ) ) ); ?>"><?php esc_html_e( 'Terms & Conditions', 'care-towards-cure' ); ?></a></li>
-						<li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'refund-cancellation-policy' ) ) ); ?>"><?php esc_html_e( 'Refund & Cancellation Policy', 'care-towards-cure' ); ?></a></li>
+						<?php
+						$policy_pages = array(
+							array( 'slug' => 'privacy-policy', 'label' => 'Privacy Policy' ),
+							array( 'slug' => 'terms-conditions', 'label' => 'Terms & Conditions' ),
+							array( 'slug' => 'refund-cancellation-policy', 'label' => 'Refund & Cancellation Policy' ),
+						);
+
+						foreach ( $policy_pages as $policy ) {
+							$page = get_page_by_path( $policy['slug'] );
+							if ( $page && $page->ID ) {
+								$url = get_permalink( $page->ID );
+								if ( $url ) {
+									echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $policy['label'] ) . '</a></li>';
+								}
+							}
+						}
+						?>
 					</ul>
 				</div>
 
