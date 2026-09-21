@@ -122,6 +122,142 @@ function care_enqueue_styles(): void {
 		'all'
 	);
 
+	// Inline gallery CSS for Hostinger compatibility
+	$gallery_css = '
+		.gallery-section {
+			padding: 60px 20px;
+			background-color: #f8f9fa;
+		}
+		.gallery-section .container {
+			max-width: 1200px;
+			margin: 0 auto;
+		}
+		.gallery-header {
+			text-align: center;
+			margin-bottom: 50px;
+		}
+		.gallery-header h2 {
+			font-size: 2.5rem;
+			font-weight: 700;
+			color: #1a1a1a;
+			margin: 0 0 15px 0;
+		}
+		.gallery-header p {
+			font-size: 1.1rem;
+			color: #666;
+			margin: 0;
+		}
+		.gallery-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			auto-rows: 250px;
+			gap: 20px;
+			padding: 20px 0;
+		}
+		.gallery-item {
+			overflow: hidden;
+			border-radius: 12px;
+			background: white;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			cursor: pointer;
+			position: relative;
+		}
+		.gallery-item:hover {
+			transform: translateY(-8px);
+			box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+		}
+		.gallery-item:nth-child(1) {
+			grid-column: span 2;
+			grid-row: span 1;
+		}
+		.gallery-item:nth-child(2) {
+			grid-row: span 1;
+		}
+		.gallery-item:nth-child(4) {
+			grid-row: span 2;
+		}
+		.gallery-item:nth-child(5) {
+			grid-column: span 2;
+		}
+		.gallery-item:nth-child(7) {
+			grid-column: span 1;
+		}
+		.gallery-item:nth-child(8) {
+			grid-column: span 2;
+		}
+		.gallery-image-wrapper {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			transition: transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		}
+		.gallery-item:hover .gallery-image-wrapper img {
+			transform: scale(1.08) rotate(1deg);
+		}
+		@media (max-width: 1024px) {
+			.gallery-grid {
+				grid-template-columns: repeat(2, 1fr);
+				auto-rows: 200px;
+				gap: 15px;
+			}
+			.gallery-item:nth-child(1) {
+				grid-column: span 2;
+			}
+			.gallery-item:nth-child(4) {
+				grid-row: span 1;
+			}
+			.gallery-item:nth-child(5) {
+				grid-column: span 1;
+			}
+			.gallery-item:nth-child(8) {
+				grid-column: span 2;
+			}
+		}
+		@media (max-width: 768px) {
+			.gallery-header h2 {
+				font-size: 1.8rem;
+			}
+			.gallery-grid {
+				grid-template-columns: repeat(2, 1fr);
+				auto-rows: 180px;
+				gap: 12px;
+			}
+			.gallery-item:nth-child(1) {
+				grid-column: span 1;
+			}
+			.gallery-item:nth-child(4) {
+				grid-row: span 1;
+			}
+			.gallery-item:nth-child(5) {
+				grid-column: span 2;
+			}
+			.gallery-item:nth-child(8) {
+				grid-column: span 1;
+			}
+		}
+		@media (max-width: 480px) {
+			.gallery-section {
+				padding: 40px 15px;
+			}
+			.gallery-header h2 {
+				font-size: 1.5rem;
+			}
+			.gallery-header p {
+				font-size: 1rem;
+			}
+			.gallery-grid {
+				grid-template-columns: 1fr;
+				auto-rows: 200px;
+				gap: 10px;
+			}
+			.gallery-item {
+				grid-column: span 1 !important;
+				grid-row: span 1 !important;
+			}
+		}
+	';
+	wp_add_inline_style( 'care-new-sections', $gallery_css );
+
 	// Doctor styles
 	wp_enqueue_style(
 		'care-doctors',
