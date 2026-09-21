@@ -79,6 +79,56 @@
 }
 
 /* ==========================================
+   FOOTER SOCIAL MEDIA ICONS
+   ========================================== */
+
+.footer-social-media {
+	display: flex;
+	gap: 12px;
+	margin-top: 20px;
+}
+
+.social-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.1);
+	color: var(--footer-text-white);
+	text-decoration: none;
+	transition: all 300ms ease;
+	border: 2px solid transparent;
+}
+
+.social-icon:hover {
+	transform: translateY(-3px);
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.social-icon svg {
+	width: 20px;
+	height: 20px;
+	fill: currentColor;
+}
+
+.social-icon.facebook:hover {
+	background-color: #1877f2;
+	border-color: #1877f2;
+}
+
+.social-icon.instagram:hover {
+	background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+	border-color: #e6683c;
+}
+
+.social-icon.whatsapp:hover {
+	background-color: #25d366;
+	border-color: #25d366;
+}
+
+/* ==========================================
    SOCIAL MEDIA LINKS
    ========================================== */
 
@@ -465,6 +515,21 @@
 	.footer-tagline {
 		font-size: 0.85rem;
 		max-width: 100%;
+	}
+
+	.footer-social-media {
+		gap: 10px;
+		margin-top: 15px;
+	}
+
+	.social-icon {
+		width: 36px;
+		height: 36px;
+	}
+
+	.social-icon svg {
+		width: 18px;
+		height: 18px;
 	}
 
 	.footer-links-section {

@@ -1856,6 +1856,57 @@ function care_customize_register( $wp_customize ) {
 	) );
 
 	// =============================================
+	// SOCIAL MEDIA SECTION
+	// =============================================
+	$wp_customize->add_section( 'care_social_media', array(
+		'title'       => __( 'Social Media', 'care-towards-cure' ),
+		'panel'       => 'care_footer_panel',
+		'priority'    => 50,
+	) );
+
+	// Facebook URL
+	$wp_customize->add_setting( 'care_facebook_url', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( 'care_facebook_url', array(
+		'label'       => __( 'Facebook URL', 'care-towards-cure' ),
+		'description' => __( 'Enter your Facebook page/profile URL', 'care-towards-cure' ),
+		'section'     => 'care_social_media',
+		'type'        => 'url',
+		'input_attrs' => array( 'placeholder' => 'https://facebook.com/...' ),
+	) );
+
+	// Instagram URL
+	$wp_customize->add_setting( 'care_instagram_url', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( 'care_instagram_url', array(
+		'label'       => __( 'Instagram URL', 'care-towards-cure' ),
+		'description' => __( 'Enter your Instagram profile URL', 'care-towards-cure' ),
+		'section'     => 'care_social_media',
+		'type'        => 'url',
+		'input_attrs' => array( 'placeholder' => 'https://instagram.com/...' ),
+	) );
+
+	// WhatsApp URL
+	$wp_customize->add_setting( 'care_whatsapp_url', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( 'care_whatsapp_url', array(
+		'label'       => __( 'WhatsApp URL', 'care-towards-cure' ),
+		'description' => __( 'Enter WhatsApp link (e.g., https://wa.me/919414311475)', 'care-towards-cure' ),
+		'section'     => 'care_social_media',
+		'type'        => 'url',
+		'input_attrs' => array( 'placeholder' => 'https://wa.me/...' ),
+	) );
+
+	// =============================================
 	// WELCOME SECTION PANEL
 	// =============================================
 	$wp_customize->add_panel( 'care_welcome_panel', array(
