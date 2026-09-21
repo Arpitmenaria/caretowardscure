@@ -971,7 +971,7 @@ get_header();
 									<p class="contact-label"><?php esc_html_e( 'Consultation Hours', 'care-towards-cure' ); ?></p>
 									<p class="contact-value">
 										<?php esc_html_e( 'Morning 10 AM to 2 PM', 'care-towards-cure' ); ?><br>
-										<?php esc_html_e( 'Evening 6 PM to 10 PM', 'care-towards-cure' ); ?>
+										<?php esc_html_e( 'Evening 5:30 PM to 9 PM', 'care-towards-cure' ); ?>
 									</p>
 								</div>
 							</div>
