@@ -2594,7 +2594,7 @@ function care_register_gallery_cpt(): void {
 		'show_in_menu'        => true,
 		'show_in_nav_menus'   => false,
 		'show_in_admin_bar'   => false,
-		'supports'            => array( 'title', 'thumbnail' ),
+		'supports'            => array( 'thumbnail' ),
 		'menu_icon'           => 'dashicons-format-gallery',
 		'menu_position'       => 23,
 	);
@@ -2602,6 +2602,47 @@ function care_register_gallery_cpt(): void {
 	register_post_type( 'care_gallery', $args );
 }
 add_action( 'init', 'care_register_gallery_cpt' );
+
+/**
+ * Auto-generate Gallery Post Title from Image
+ *
+ * Automatically creates a title based on the featured image when saving.
+ */
+function care_auto_title_gallery_image( int $post_id ): void {
+	if ( get_post_type( $post_id ) !== 'care_gallery' ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	$post = get_post( $post_id );
+
+	// If post has no title, generate one from featured image
+	if ( empty( $post->post_title ) ) {
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+
+		if ( $thumbnail_id ) {
+			$image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
+			$image_alt = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
+
+			$title = $image_alt ?: wp_get_attachment_caption( $thumbnail_id ) ?: 'Gallery Image ' . $post_id;
+
+			// Remove the 'auto_title_gallery_image' action to avoid infinite loop
+			remove_action( 'save_post', 'care_auto_title_gallery_image' );
+
+			wp_update_post( array(
+				'ID'         => $post_id,
+				'post_title' => sanitize_text_field( $title ),
+			) );
+
+			// Re-add the action
+			add_action( 'save_post', 'care_auto_title_gallery_image' );
+		}
+	}
+}
+add_action( 'save_post', 'care_auto_title_gallery_image' );
 
 /**
  * Register Inquiry Custom Post Type
