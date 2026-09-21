@@ -122,6 +122,15 @@ function care_enqueue_styles(): void {
 		'all'
 	);
 
+	// Doctor styles
+	wp_enqueue_style(
+		'care-doctors',
+		CARE_THEME_URI . '/css/doctors.css',
+		array( 'care-main' ),
+		CARE_THEME_VERSION,
+		'all'
+	);
+
 	// Inline CSS for welcome section (fixes deployment issue)
 	$welcome_css = '
 	.welcome-section {
@@ -211,6 +220,15 @@ function care_enqueue_scripts(): void {
 	wp_enqueue_script(
 		'care-mission-stats',
 		CARE_THEME_URI . '/js/mission-stats.js',
+		array(),
+		CARE_THEME_VERSION,
+		true
+	);
+
+	// Doctor profile script
+	wp_enqueue_script(
+		'care-doctor-profile',
+		CARE_THEME_URI . '/js/doctor-profile.js',
 		array(),
 		CARE_THEME_VERSION,
 		true
@@ -1884,6 +1902,117 @@ function care_customize_register( $wp_customize ) {
 add_action( 'customize_register', 'care_customize_register' );
 
 /**
+ * Register Doctor Custom Post Type
+ *
+ * Creates a custom post type for managing doctor profiles with custom fields.
+ */
+function care_register_doctor_cpt(): void {
+	$args = array(
+		'label'               => __( 'Doctors', 'care-towards-cure' ),
+		'description'         => __( 'Doctor profiles and information', 'care-towards-cure' ),
+		'public'              => true,
+		'hierarchical'        => false,
+		'exclude_from_search' => false,
+		'publicly_queryable'  => true,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => true,
+		'show_in_admin_bar'   => true,
+		'supports'            => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+		'rewrite'             => array(
+			'slug'       => 'doctor',
+			'with_front' => true,
+		),
+		'menu_icon'           => 'dashicons-businessman',
+	);
+
+	register_post_type( 'care_doctor', $args );
+}
+add_action( 'init', 'care_register_doctor_cpt' );
+
+/**
+ * Add Doctor Meta Boxes
+ *
+ * Adds custom fields for doctor information in the admin.
+ */
+function care_add_doctor_meta_boxes(): void {
+	add_meta_box(
+		'doctor_info',
+		__( 'Doctor Information', 'care-towards-cure' ),
+		'care_render_doctor_meta_box',
+		'care_doctor',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'care_add_doctor_meta_boxes' );
+
+/**
+ * Render Doctor Meta Box
+ *
+ * @param WP_Post $post The post object.
+ */
+function care_render_doctor_meta_box( WP_Post $post ): void {
+	wp_nonce_field( 'care_doctor_nonce', 'care_doctor_nonce' );
+
+	$designation   = get_post_meta( $post->ID, 'doctor_designation', true );
+	$qualifications = get_post_meta( $post->ID, 'doctor_qualifications', true );
+	$specialties   = get_post_meta( $post->ID, 'doctor_specialties', true );
+	$experience    = get_post_meta( $post->ID, 'doctor_experience', true );
+	?>
+	<div style="padding: 20px 0;">
+		<p>
+			<label for="doctor_designation"><?php esc_html_e( 'Designation/Title:', 'care-towards-cure' ); ?></label><br>
+			<input type="text" id="doctor_designation" name="doctor_designation" value="<?php echo esc_attr( $designation ); ?>" style="width: 100%; padding: 8px; margin-top: 5px;" placeholder="e.g., General Physician, Cardiologist">
+		</p>
+
+		<p>
+			<label for="doctor_qualifications"><?php esc_html_e( 'Qualifications:', 'care-towards-cure' ); ?></label><br>
+			<textarea id="doctor_qualifications" name="doctor_qualifications" style="width: 100%; padding: 8px; margin-top: 5px; height: 100px;" placeholder="e.g., MBBS, MD, etc."><?php echo esc_textarea( $qualifications ); ?></textarea>
+		</p>
+
+		<p>
+			<label for="doctor_specialties"><?php esc_html_e( 'Specialties:', 'care-towards-cure' ); ?></label><br>
+			<textarea id="doctor_specialties" name="doctor_specialties" style="width: 100%; padding: 8px; margin-top: 5px; height: 100px;" placeholder="List the doctor's specialties"><?php echo esc_textarea( $specialties ); ?></textarea>
+		</p>
+
+		<p>
+			<label for="doctor_experience"><?php esc_html_e( 'Experience:', 'care-towards-cure' ); ?></label><br>
+			<textarea id="doctor_experience" name="doctor_experience" style="width: 100%; padding: 8px; margin-top: 5px; height: 100px;" placeholder="Years of experience and background"><?php echo esc_textarea( $experience ); ?></textarea>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Save Doctor Meta Box Data
+ *
+ * @param int $post_id The post ID.
+ */
+function care_save_doctor_meta_box( int $post_id ): void {
+	if ( ! isset( $_POST['care_doctor_nonce'] ) || ! wp_verify_nonce( $_POST['care_doctor_nonce'], 'care_doctor_nonce' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	$fields = array( 'doctor_designation', 'doctor_qualifications', 'doctor_specialties', 'doctor_experience' );
+
+	foreach ( $fields as $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			update_post_meta( $post_id, $field, sanitize_textarea_field( $_POST[ $field ] ) );
+		}
+	}
+}
+add_action( 'save_post_care_doctor', 'care_save_doctor_meta_box' );
+
+/**
  * Create Policy Pages
  *
  * Creates Privacy Policy, Terms & Conditions, and Refund & Cancellation Policy pages
@@ -2182,10 +2311,67 @@ For any questions regarding refunds, cancellations, or our policies, please don\
 	}
 }
 
+/**
+ * Create Sample Doctors
+ *
+ * Creates sample doctor posts if none exist. Can be removed once doctors are manually created.
+ */
+function care_create_sample_doctors(): void {
+	$doctors_count = new WP_Query(
+		array(
+			'post_type'  => 'care_doctor',
+			'posts_per_page' => -1,
+			'fields'     => 'ids',
+		)
+	);
+
+	// Only create sample doctors if none exist
+	if ( $doctors_count->found_posts === 0 ) {
+		$sample_doctors = array(
+			array(
+				'title'           => 'Dr. M.K. Saini',
+				'content'         => 'Dr. M.K. Saini believes that effective healthcare begins with understanding the patient as an individual.',
+				'designation'     => 'General Physician',
+				'qualifications'  => 'MBBS, MD',
+				'specialties'     => 'General Medicine, Internal Medicine',
+				'experience'      => '15+ years of clinical experience in patient care and consultation',
+			),
+			array(
+				'title'           => 'Dr. Jyoti Jain',
+				'content'         => 'Dr. Jyoti Jain is committed to providing compassionate and patient-centred care.',
+				'designation'     => 'General Physician',
+				'qualifications'  => 'MBBS, MD',
+				'specialties'     => 'General Medicine, Pediatrics',
+				'experience'      => '12+ years of experience in comprehensive healthcare management',
+			),
+		);
+
+		foreach ( $sample_doctors as $doctor ) {
+			$post_id = wp_insert_post(
+				array(
+					'post_type'    => 'care_doctor',
+					'post_title'   => $doctor['title'],
+					'post_content' => $doctor['content'],
+					'post_excerpt' => $doctor['content'],
+					'post_status'  => 'publish',
+				)
+			);
+
+			if ( ! is_wp_error( $post_id ) ) {
+				update_post_meta( $post_id, 'doctor_designation', $doctor['designation'] );
+				update_post_meta( $post_id, 'doctor_qualifications', $doctor['qualifications'] );
+				update_post_meta( $post_id, 'doctor_specialties', $doctor['specialties'] );
+				update_post_meta( $post_id, 'doctor_experience', $doctor['experience'] );
+			}
+		}
+	}
+}
+
 // Create policy pages on theme activation
 add_action( 'after_switch_theme', 'care_create_policy_pages' );
 
 // Also run on every admin page load as a fallback (can be removed later once pages are created)
 if ( is_admin() ) {
 	add_action( 'admin_init', 'care_create_policy_pages' );
+	add_action( 'admin_init', 'care_create_sample_doctors' );
 }
