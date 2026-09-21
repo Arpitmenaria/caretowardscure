@@ -611,154 +611,52 @@ get_header();
 					<h2><?php esc_html_e( 'FREQUENTLY ASKED QUESTIONS', 'care-towards-cure' ); ?></h2>
 				</div>
 
+				<?php
+				// Get all FAQs from the FAQ CPT
+				$faqs_query = new WP_Query( array(
+					'post_type'      => 'care_faq',
+					'posts_per_page' => -1,
+					'orderby'        => 'menu_order',
+					'order'          => 'ASC',
+					'meta_query'     => array(
+						array(
+							'key'     => 'faq_visible',
+							'value'   => 'yes',
+							'compare' => '=',
+						),
+					),
+				) );
+				?>
+
 				<div class="faq-grid" data-reveal-group>
-					<!-- FAQ 1 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<circle cx="12" cy="12" r="10"></circle>
-								<path d="M12 16v-4"></path>
-								<path d="M12 8h.01"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Is online consultation available?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Yes. Care Towards Cure provides online consultation for conditions that can be appropriately assessed through a remote consultation.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 2 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-								<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'How do I book an appointment?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Click Book Appointment, select your preferred consultation option and complete the appointment form.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 3 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Will I receive a prescription?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'A prescription may be provided when clinically appropriate following the doctor\'s consultation and assessment.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 4 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-								<polyline points="14 2 14 8 20 8"></polyline>
-								<path d="M12 19l-4-4 1-1 3 3 6-6"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Can I share my previous medical reports?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Yes. You can upload or share relevant medical reports and prescriptions during the appointment process.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 5 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M12 2c6.627 0 12 5.373 12 12s-5.373 12-12 12S0 20.627 0 14 5.373 2 12 2z"></path>
-								<path d="M12 6v6l4 2.5"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Can I book a follow-up consultation?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Yes. Follow-up consultations can be booked when recommended or required.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 6 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<polyline points="3 6 5 4 7 6"></polyline>
-								<line x1="4" y1="4" x2="4" y2="16"></line>
-								<polyline points="21 18 19 20 17 18"></polyline>
-								<line x1="20" y1="20" x2="20" y2="8"></line>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Can I cancel my appointment?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Please refer to our cancellation and refund policy for the applicable terms.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 7 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
-								<path d="M15.5 11H9v3h6.5"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Is online consultation suitable for every medical condition?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'No. Some conditions require physical examination, investigations or emergency medical care. The doctor will advise you if an in-person consultation is necessary.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
+					<?php
+					if ( $faqs_query->have_posts() ) {
+						while ( $faqs_query->have_posts() ) {
+							$faqs_query->the_post();
+							?>
+							<div class="faq-card">
+								<div class="faq-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<circle cx="12" cy="12" r="10"></circle>
+										<path d="M12 16v-4"></path>
+										<path d="M12 8h.01"></path>
+									</svg>
+								</div>
+								<h3 class="faq-question"><?php the_title(); ?></h3>
+								<p class="faq-answer">
+									<?php echo wp_kses_post( get_the_content() ); ?>
+								</p>
+							</div>
+							<?php
+						}
+						wp_reset_postdata();
+					}
+					?>
 				</div>
 			</div>
 		</section>
 
-		<!-- ===== MEDICAL DISCLAIMER SECTION ===== -->
-		<section class="disclaimer-section" id="disclaimer" data-reveal>
-			<div class="container">
-				<div class="disclaimer-header">
-					<div class="disclaimer-icon">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<circle cx="12" cy="12" r="10"></circle>
-							<path d="M12 16v-4"></path>
-							<path d="M12 8h.01"></path>
-						</svg>
-					</div>
-					<h2><?php esc_html_e( 'MEDICAL DISCLAIMER', 'care-towards-cure' ); ?></h2>
-				</div>
-
-				<div class="disclaimer-content">
-					<div class="disclaimer-item">
-						<p>
-							<?php esc_html_e( 'Care Towards Cure provides healthcare consultation services for eligible medical concerns.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<div class="disclaimer-item">
-						<p>
-							<?php esc_html_e( 'Online consultation has limitations and may not be appropriate for every medical condition. A remote consultation cannot always replace a physical examination, diagnostic testing or in-person medical care.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<div class="disclaimer-item warning">
-						<p>
-							<?php esc_html_e( 'In case of a medical emergency, severe symptoms or a rapidly deteriorating condition, please seek immediate medical attention at the nearest emergency healthcare facility.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<div class="disclaimer-item">
-						<p>
-							<?php esc_html_e( 'Treatment recommendations are based on the information provided by the patient and the doctor\'s clinical assessment.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ===== PRIVACY & PATIENT CONFIDENTIALITY SECTION ===== -->
+<!-- ===== PRIVACY & PATIENT CONFIDENTIALITY SECTION ===== -->
 		<section class="privacy-section" id="privacy" data-reveal>
 			<div class="container">
 				<div class="privacy-content">

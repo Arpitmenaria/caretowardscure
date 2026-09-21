@@ -2013,6 +2013,113 @@ function care_save_doctor_meta_box( int $post_id ): void {
 add_action( 'save_post_care_doctor', 'care_save_doctor_meta_box' );
 
 /**
+ * Register FAQ Custom Post Type
+ *
+ * Creates a custom post type for managing FAQs with admin interface.
+ */
+function care_register_faq_cpt(): void {
+	$args = array(
+		'label'               => __( 'FAQs', 'care-towards-cure' ),
+		'description'         => __( 'Frequently Asked Questions', 'care-towards-cure' ),
+		'public'              => false,
+		'hierarchical'        => false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => true,
+		'supports'            => array( 'title', 'editor' ),
+		'menu_icon'           => 'dashicons-format-chat',
+		'menu_position'       => 22,
+	);
+
+	register_post_type( 'care_faq', $args );
+}
+add_action( 'init', 'care_register_faq_cpt' );
+
+/**
+ * Add FAQ Meta Boxes
+ *
+ * Adds custom fields for FAQ visibility and ordering in the admin.
+ */
+function care_add_faq_meta_boxes(): void {
+	add_meta_box(
+		'faq_visibility',
+		__( 'FAQ Settings', 'care-towards-cure' ),
+		'care_render_faq_meta_box',
+		'care_faq',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'care_add_faq_meta_boxes' );
+
+/**
+ * Render FAQ Meta Box
+ *
+ * @param WP_Post $post The post object.
+ */
+function care_render_faq_meta_box( WP_Post $post ): void {
+	wp_nonce_field( 'care_faq_nonce', 'care_faq_nonce' );
+
+	$visible = get_post_meta( $post->ID, 'faq_visible', true );
+	$order   = get_post_meta( $post->ID, 'faq_order', true );
+
+	if ( ! $visible ) {
+		$visible = 'yes';
+	}
+	if ( ! $order ) {
+		$order = $post->menu_order;
+	}
+	?>
+	<div style="padding: 20px 0;">
+		<p>
+			<label for="faq_visible"><?php esc_html_e( 'Display on Website:', 'care-towards-cure' ); ?></label><br>
+			<select id="faq_visible" name="faq_visible" style="width: 100%; padding: 8px; margin-top: 5px;">
+				<option value="yes" <?php selected( $visible, 'yes' ); ?>><?php esc_html_e( 'Yes, display this FAQ', 'care-towards-cure' ); ?></option>
+				<option value="no" <?php selected( $visible, 'no' ); ?>><?php esc_html_e( 'No, hide this FAQ', 'care-towards-cure' ); ?></option>
+			</select>
+		</p>
+
+		<p>
+			<label for="faq_order"><?php esc_html_e( 'Display Order:', 'care-towards-cure' ); ?></label><br>
+			<input type="number" id="faq_order" name="faq_order" value="<?php echo esc_attr( $order ); ?>" style="width: 100%; padding: 8px; margin-top: 5px;" placeholder="0" min="0">
+			<small style="color: #666;"><?php esc_html_e( 'Lower numbers appear first. Increment by 10 for easier reordering.', 'care-towards-cure' ); ?></small>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Save FAQ Meta Box Data
+ *
+ * @param int $post_id The post ID.
+ */
+function care_save_faq_meta_box( int $post_id ): void {
+	if ( ! isset( $_POST['care_faq_nonce'] ) || ! wp_verify_nonce( $_POST['care_faq_nonce'], 'care_faq_nonce' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['faq_visible'] ) ) {
+		update_post_meta( $post_id, 'faq_visible', sanitize_text_field( $_POST['faq_visible'] ) );
+	}
+
+	if ( isset( $_POST['faq_order'] ) ) {
+		update_post_meta( $post_id, 'faq_order', intval( $_POST['faq_order'] ) );
+	}
+}
+add_action( 'save_post_care_faq', 'care_save_faq_meta_box' );
+
+/**
  * Create Policy Pages
  *
  * Creates Privacy Policy and Terms & Conditions pages
@@ -2266,6 +2373,79 @@ function care_create_sample_doctors(): void {
 	}
 }
 
+/**
+ * Create Sample FAQs
+ *
+ * Creates sample FAQ posts if none exist. Can be removed once FAQs are manually created.
+ */
+function care_create_sample_faqs(): void {
+	$faqs_count = new WP_Query(
+		array(
+			'post_type'  => 'care_faq',
+			'posts_per_page' => -1,
+			'fields'     => 'ids',
+		)
+	);
+
+	// Only create sample FAQs if none exist
+	if ( $faqs_count->found_posts === 0 ) {
+		$sample_faqs = array(
+			array(
+				'title'   => 'Is online consultation available?',
+				'content' => 'Yes. Care Towards Cure provides online consultation for conditions that can be appropriately assessed through a remote consultation.',
+				'order'   => 10,
+			),
+			array(
+				'title'   => 'How do I book an appointment?',
+				'content' => 'Click Book Appointment, select your preferred consultation option and complete the appointment form.',
+				'order'   => 20,
+			),
+			array(
+				'title'   => 'Will I receive a prescription?',
+				'content' => 'A prescription may be provided when clinically appropriate following the doctor\'s consultation and assessment.',
+				'order'   => 30,
+			),
+			array(
+				'title'   => 'Can I share my previous medical reports?',
+				'content' => 'Yes. You can upload or share relevant medical reports and prescriptions during the appointment process.',
+				'order'   => 40,
+			),
+			array(
+				'title'   => 'Can I book a follow-up consultation?',
+				'content' => 'Yes. Follow-up consultations can be booked when recommended or required.',
+				'order'   => 50,
+			),
+			array(
+				'title'   => 'Can I cancel my appointment?',
+				'content' => 'Please refer to our cancellation and refund policy for the applicable terms.',
+				'order'   => 60,
+			),
+			array(
+				'title'   => 'Is online consultation suitable for every medical condition?',
+				'content' => 'No. Some conditions require physical examination, investigations or emergency medical care. The doctor will advise you if an in-person consultation is necessary.',
+				'order'   => 70,
+			),
+		);
+
+		foreach ( $sample_faqs as $faq ) {
+			$post_id = wp_insert_post(
+				array(
+					'post_type'   => 'care_faq',
+					'post_title'  => $faq['title'],
+					'post_content' => $faq['content'],
+					'post_status' => 'publish',
+					'menu_order'  => $faq['order'],
+				)
+			);
+
+			if ( ! is_wp_error( $post_id ) ) {
+				update_post_meta( $post_id, 'faq_visible', 'yes' );
+				update_post_meta( $post_id, 'faq_order', $faq['order'] );
+			}
+		}
+	}
+}
+
 // Create policy pages on theme activation
 add_action( 'after_switch_theme', 'care_create_policy_pages' );
 
@@ -2273,4 +2453,5 @@ add_action( 'after_switch_theme', 'care_create_policy_pages' );
 if ( is_admin() ) {
 	add_action( 'admin_init', 'care_create_policy_pages' );
 	add_action( 'admin_init', 'care_create_sample_doctors' );
+	add_action( 'admin_init', 'care_create_sample_faqs' );
 }
