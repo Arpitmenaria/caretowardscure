@@ -151,14 +151,15 @@ defined( 'ABSPATH' ) || exit;
 									<option value="13:00">1:00 PM</option>
 									<option value="13:30">1:30 PM</option>
 								</optgroup>
-								<optgroup label="<?php esc_attr_e( 'Evening (5:30 PM - 9:00 PM)', 'care-towards-cure' ); ?>">
-									<option value="17:30">5:30 PM</option>
+								<optgroup label="<?php esc_attr_e( 'Evening (6:00 PM - 10:00 PM)', 'care-towards-cure' ); ?>">
 									<option value="18:00">6:00 PM</option>
 									<option value="18:30">6:30 PM</option>
 									<option value="19:00">7:00 PM</option>
 									<option value="19:30">7:30 PM</option>
 									<option value="20:00">8:00 PM</option>
 									<option value="20:30">8:30 PM</option>
+									<option value="21:00">9:00 PM</option>
+									<option value="21:30">9:30 PM</option>
 								</optgroup>
 							</select>
 						</div>
