@@ -526,7 +526,6 @@ get_header();
 			<div class="container">
 				<div class="appointment-header">
 					<h2><?php esc_html_e( 'APPOINTMENT & ONLINE CONSULTATION', 'care-towards-cure' ); ?></h2>
-					<h3 class="appointment-subtitle"><?php esc_html_e( 'How to Book an Appointment', 'care-towards-cure' ); ?></h3>
 				</div>
 
 				<div class="steps-container">
