@@ -219,6 +219,14 @@ function care_enqueue_styles(): void {
 		'all'
 	);
 
+	// Inline CSS for navbar (fixes right-alignment on Hostinger)
+	$navbar_css = '
+		.main-navigation {
+			justify-content: flex-end !important;
+		}
+	';
+	wp_add_inline_style( 'care-main', $navbar_css );
+
 	// Inline CSS for welcome section (fixes deployment issue)
 	$welcome_css = '
 	.welcome-section {
