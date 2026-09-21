@@ -3262,46 +3262,6 @@
 	transform: scale(1.08) rotate(1deg);
 }
 
-.gallery-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(0, 102, 204, 0.8);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	opacity: 0;
-	transition: opacity 300ms ease;
-	backdrop-filter: blur(2px);
-}
-
-.gallery-item:hover .gallery-overlay {
-	opacity: 1;
-}
-
-.gallery-expand {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 60px;
-	height: 60px;
-	background: white;
-	border-radius: 50%;
-	color: #0066cc;
-	font-size: 32px;
-	font-weight: bold;
-	text-decoration: none;
-	transition: all 300ms ease;
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-.gallery-expand:hover {
-	transform: scale(1.15) rotate(-10deg);
-	background: #0066cc;
-	color: white;
-}
 
 @media (max-width: 1024px) {
 	.gallery-grid {

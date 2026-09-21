@@ -108,11 +108,6 @@ get_header();
 								<div class="gallery-item">
 									<div class="gallery-image-wrapper">
 										<?php the_post_thumbnail( 'care-card' ); ?>
-										<div class="gallery-overlay">
-											<a href="<?php echo esc_url( wp_get_attachment_url( get_post_thumbnail_id() ) ); ?>" class="gallery-expand" data-lightbox="gallery" title="<?php the_title_attribute(); ?>">
-												<span class="expand-icon">+</span>
-											</a>
-										</div>
 									</div>
 								</div>
 								<?php
