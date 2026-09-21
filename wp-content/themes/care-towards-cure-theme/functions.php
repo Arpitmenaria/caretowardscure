@@ -654,7 +654,7 @@ function care_customize_register( $wp_customize ) {
 
 	// Button 2 - Secondary
 	$wp_customize->add_setting( 'care_hero_btn2_text', array(
-		'default'           => __( 'Call Now', 'care-towards-cure' ),
+		'default'           => __( 'Inquire Now', 'care-towards-cure' ),
 		'sanitize_callback' => 'sanitize_text_field',
 		'transport'         => 'postMessage',
 	) );

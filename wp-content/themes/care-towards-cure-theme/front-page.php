@@ -23,7 +23,7 @@ get_header();
 		$hero_title = get_theme_mod( 'care_hero_title', __( 'Your Health Deserves Personalised Care.', 'care-towards-cure' ) );
 		$hero_subtitle = get_theme_mod( 'care_hero_subtitle', __( 'Professional healthcare consultation designed around you — with convenient online access from wherever you are.', 'care-towards-cure' ) );
 		$hero_btn1_text = get_theme_mod( 'care_hero_btn1_text', __( 'Book an Appointment', 'care-towards-cure' ) );
-		$hero_btn2_text = get_theme_mod( 'care_hero_btn2_text', __( 'Start Online Consultation', 'care-towards-cure' ) );
+		$hero_btn2_text = get_theme_mod( 'care_hero_btn2_text', __( 'Inquire Now', 'care-towards-cure' ) );
 		?>
 		<section class="hero-section" role="region" aria-label="<?php esc_attr_e( 'Hero Section', 'care-towards-cure' ); ?>" data-reveal<?php echo $hero_style; // phpcs:ignore WordPress.Security.EscapedOutput ?>>
 			<div class="container">
@@ -227,7 +227,7 @@ get_header();
 				</div>
 				<div class="consultation-button">
 					<button type="button" class="btn btn-primary btn-lg" data-open-modal="consultationModal">
-						<?php esc_html_e( 'Book Online Consultation', 'care-towards-cure' ); ?>
+						<?php esc_html_e( 'Inquire Now', 'care-towards-cure' ); ?>
 					</button>
 				</div>
 			</div>
