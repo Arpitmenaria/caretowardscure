@@ -30,8 +30,7 @@ defined( 'ABSPATH' ) || exit;
 						$policy_pages = array(
 							array( 'slug' => 'privacy-policy', 'label' => 'Privacy Policy' ),
 							array( 'slug' => 'terms-conditions', 'label' => 'Terms & Conditions' ),
-							array( 'slug' => 'refund-cancellation-policy', 'label' => 'Refund & Cancellation Policy' ),
-						);
+							);
 
 						foreach ( $policy_pages as $policy ) {
 							$page = get_page_by_path( $policy['slug'] );

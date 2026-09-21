@@ -2015,7 +2015,7 @@ add_action( 'save_post_care_doctor', 'care_save_doctor_meta_box' );
 /**
  * Create Policy Pages
  *
- * Creates Privacy Policy, Terms & Conditions, and Refund & Cancellation Policy pages
+ * Creates Privacy Policy and Terms & Conditions pages
  * if they don't already exist. Hooked to after_theme_switch for automatic creation.
  */
 function care_create_policy_pages(): void {
@@ -2182,107 +2182,6 @@ Email: info@caretowardscure.com
 Phone: 9414311475
 
 By using this Site, you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions.',
-		),
-		array(
-			'post_title'   => 'Refund & Cancellation Policy',
-			'post_name'    => 'refund-cancellation-policy',
-			'post_content' => '# Refund & Cancellation Policy
-
-**Last Updated: August 11, 2026**
-
-At Care Towards Cure, we understand that plans can change. This policy outlines our procedures for appointment cancellations, rescheduling, and refunds.
-
-## 1. Appointment Cancellations
-
-- Patients may cancel or reschedule an appointment up to **24 hours before** the scheduled time without any charge.
-- Cancellations made **less than 24 hours** before the appointment may be subject to a cancellation fee equivalent to 50% of the consultation fee.
-- **No-shows** (failure to attend without prior notice) will be charged the full consultation fee.
-- Emergency cancellations may be subject to management discretion and case-by-case review.
-
-## 2. How to Cancel or Reschedule
-
-You can cancel or reschedule your appointment by:
-- **Calling us:** 9414311475
-- **Emailing us:** info@caretowardscure.com
-- **Using our online booking portal:** care-towards-cure.local
-- **Visiting our clinic:** 2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020
-
-Please provide your appointment details and reason for cancellation to expedite the process.
-
-## 3. Refunds for Paid Consultations
-
-- If you paid in advance and cancel **within 24 hours of booking**, you will receive a **full refund** (100%).
-- If you cancel **24-48 hours before** your appointment, you will receive a **75% refund**.
-- If you cancel **less than 24 hours before** your appointment, you will receive a **50% refund**.
-- **No-shows** and cancellations made **after** the appointment time are generally **non-refundable**.
-- **Exception:** Refunds may be considered in cases of documented medical emergencies, serious illness, or service failure on our part (subject to management discretion).
-
-## 4. Refund Processing
-
-- Approved refunds will be processed within **5-7 business days** and credited back via the original payment method.
-- Processing times may vary depending on your bank or payment provider — some banks may take an additional 2-3 business days.
-- If you do not see the refund within 7-10 business days, please contact us immediately at info@caretowardscure.com.
-
-## 5. Clinic-Initiated Cancellations
-
-If **we** need to cancel or reschedule your appointment due to:
-- Doctor unavailability
-- Medical emergencies
-- Unforeseen circumstances
-- System/technical issues
-
-We will notify you **as soon as possible** and offer:
-- A **rescheduled appointment** at your earliest convenience, or
-- A **full refund** if a new appointment time does not work for you
-
-In cases of clinic-initiated cancellations, you may also request to be placed on a priority cancellation list for future appointments.
-
-## 6. Online Consultation Refunds
-
-- **Online consultations** follow the same cancellation and refund policy as in-clinic appointments.
-- If technical issues prevent the consultation from occurring on our end, a full refund will be issued immediately.
-- If the patient is unavailable at the scheduled time, the standard cancellation policy applies.
-
-## 7. Package/Subscription Refunds
-
-- Clinic packages or subscription services are **generally non-refundable** once purchased and any services have commenced.
-- Unused portions of a package may be refunded at management discretion if requested within 30 days of purchase.
-- Partial refunds for completed services are evaluated on a case-by-case basis.
-
-## 8. Special Circumstances
-
-The following situations may qualify for full or partial refund consideration:
-- Documented medical emergency or severe illness preventing attendance
-- Death in the family or major personal hardship (with supporting documentation)
-- Significant miscommunication regarding appointment time/date
-- Service failure or negligence on our part
-
-Please contact us at info@caretowardscure.com or call 9414311475 to discuss your specific situation.
-
-## 9. Dispute Resolution
-
-If you believe a cancellation fee or refund decision was made in error:
-1. Contact us within **14 days** of the disputed charge
-2. Provide your appointment details, proof of payment, and reason for dispute
-3. Our management team will review and respond within **5 business days**
-4. If you remain unsatisfied, you may escalate to our clinic director for final review
-
-## 10. Changes to This Policy
-
-We reserve the right to update this Refund & Cancellation Policy at any time. Changes will be effective immediately upon posting to this website, with an updated "Last Updated" date. Continued use of our services after policy changes constitutes acceptance of the updated policy.
-
-## 11. Contact for Refund or Cancellation Requests
-
-**Phone:** 9414311475
-**Email:** info@caretowardscure.com
-**Address:** 2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020
-
-**Operating Hours:**
-- Monday – Friday: 9:00 AM – 6:00 PM
-- Saturday: 10:00 AM – 4:00 PM
-- Sunday: Closed
-
-For any questions regarding refunds, cancellations, or our policies, please don\'t hesitate to contact us. Your satisfaction and trust are important to us.',
 		),
 	);
 
