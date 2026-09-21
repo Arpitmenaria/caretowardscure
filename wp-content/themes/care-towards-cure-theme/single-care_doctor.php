@@ -70,8 +70,11 @@ get_header();
 						</div>
 					<?php endif; ?>
 
-					<!-- Back Link -->
-					<div class="doctor-back">
+					<!-- Action Buttons -->
+					<div class="doctor-actions">
+						<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="btn btn-primary">
+							<?php esc_html_e( 'Book Appointment', 'care-towards-cure' ); ?>
+						</a>
 						<a href="<?php echo esc_url( home_url( '/#doctors' ) ); ?>" class="btn btn-secondary">
 							<?php esc_html_e( '← Back to Doctors', 'care-towards-cure' ); ?>
 						</a>
@@ -158,13 +161,16 @@ get_header();
 			line-height: 1.8;
 		}
 
-		.doctor-back {
+		.doctor-actions {
 			margin-top: 40px;
 			padding-top: 40px;
 			border-top: 1px solid #e0e0e0;
+			display: flex;
+			gap: 15px;
+			flex-wrap: wrap;
 		}
 
-		.doctor-back a {
+		.doctor-actions .btn {
 			display: inline-block;
 		}
 
