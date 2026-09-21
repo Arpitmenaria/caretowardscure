@@ -28,7 +28,6 @@ defined( 'ABSPATH' ) || exit;
 					<ul class="footer-links-list">
 						<?php
 						$policy_pages = array(
-							array( 'slug' => 'privacy-policy', 'label' => 'Privacy Policy' ),
 							array( 'slug' => 'terms-conditions', 'label' => 'Terms & Conditions' ),
 							);
 
