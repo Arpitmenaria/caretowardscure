@@ -315,9 +315,10 @@ get_header();
 		<!-- ===== ABOUT CARE TOWARDS CURE SECTION ===== -->
 		<section class="about-section" id="about" data-reveal>
 			<div class="container">
+				<!-- 1. WELCOME TO CARE TOWARDS CURE -->
 				<div class="about-header">
-					<h2><?php esc_html_e( 'ABOUT CARE TOWARDS CURE', 'care-towards-cure' ); ?></h2>
-					<h3 class="about-subtitle"><?php esc_html_e( 'More Than a Consultation', 'care-towards-cure' ); ?></h3>
+					<h2><?php esc_html_e( 'WELCOME TO CARE TOWARDS CURE', 'care-towards-cure' ); ?></h2>
+					<h3 class="about-subtitle"><?php esc_html_e( 'Personalised Healthcare With a Patient-First Approach', 'care-towards-cure' ); ?></h3>
 				</div>
 
 				<div class="about-content">
@@ -335,8 +336,43 @@ get_header();
 					</p>
 				</div>
 
-				<div class="about-values">
-					<h3 class="values-title"><?php esc_html_e( 'Our Values', 'care-towards-cure' ); ?></h3>
+				<!-- 2. OUR APPROACH -->
+				<div class="about-approach" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #e0e0e0;">
+					<h3 style="font-size: 2rem; font-weight: 700; color: #1a1a1a; margin-bottom: 30px; text-align: center;"><?php esc_html_e( 'OUR APPROACH', 'care-towards-cure' ); ?></h3>
+					<p style="text-align: center; font-size: 1.1rem; color: #666; margin-bottom: 40px;">
+						<?php esc_html_e( 'Listen. Understand. Treat. Follow Up.', 'care-towards-cure' ); ?>
+					</p>
+					<p style="text-align: center; color: #555; line-height: 1.8; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+						<?php esc_html_e( 'Every patient is different, and healthcare should not follow a one-size-fits-all approach. At Care Towards Cure, we take time to understand your concerns before recommending a treatment approach. Our consultation process focuses on:', 'care-towards-cure' ); ?>
+					</p>
+					<div class="approach-steps" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px;">
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Understanding your symptoms and concerns', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Reviewing your relevant medical history', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Assessing your individual needs', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Providing personalised treatment guidance', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Explaining the recommended treatment clearly', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Following up on your progress when required', 'care-towards-cure' ); ?></h4>
+						</div>
+					</div>
+					<p style="text-align: center; color: #555; line-height: 1.8; font-size: 1.05rem;">
+						<?php esc_html_e( 'Our aim is to create a healthcare experience where patients feel heard, informed and supported.', 'care-towards-cure' ); ?>
+					</p>
+				</div>
+
+				<!-- 3. OUR VALUES -->
+				<div class="about-values" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #e0e0e0;">
+					<h3 class="values-title" style="font-size: 2rem; font-weight: 700; color: #1a1a1a; margin-bottom: 40px; text-align: center;"><?php esc_html_e( 'OUR VALUES', 'care-towards-cure' ); ?></h3>
 
 					<div class="values-grid">
 						<div class="value-card">
