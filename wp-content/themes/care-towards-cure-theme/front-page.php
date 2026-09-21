@@ -450,46 +450,43 @@ get_header();
 					<h3 class="services-subtitle"><?php esc_html_e( 'Consultation & Treatment', 'care-towards-cure' ); ?></h3>
 				</div>
 
+				<?php
+				// Get all services from the Service CPT
+				$services_query = new WP_Query( array(
+					'post_type'      => 'care_service',
+					'posts_per_page' => -1,
+					'orderby'        => 'menu_order',
+					'order'          => 'ASC',
+					'meta_query'     => array(
+						array(
+							'key'     => 'service_visible',
+							'value'   => 'yes',
+							'compare' => '=',
+						),
+					),
+				) );
+				?>
+
 				<div class="services-grid" data-reveal-group>
-					<!-- Service 1 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Online Doctor Consultation', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'Consult with our doctor remotely from the comfort of your home.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- Service 2 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Personalised Treatment Guidance', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'Treatment recommendations based on your individual health concerns and consultation.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- Service 3 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Follow-Up Consultation', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'Continue monitoring your progress and discuss changes or concerns during follow-up consultations.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- Service 4 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Medical Document Review', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'Relevant reports, prescriptions and medical documents can be reviewed as part of the consultation when required.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- Service 5 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Second Opinion', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'If you have already received a diagnosis or treatment recommendation, you can discuss your case with our doctor for an additional professional opinion.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
+					<?php
+					if ( $services_query->have_posts() ) {
+						while ( $services_query->have_posts() ) {
+							$services_query->the_post();
+							?>
+							<a href="<?php the_permalink(); ?>" class="service-card service-card-link">
+								<h4 class="service-title"><?php the_title(); ?></h4>
+								<p class="service-description">
+									<?php echo wp_kses_post( get_the_excerpt() ); ?>
+								</p>
+								<div class="service-cta">
+									<?php esc_html_e( 'Learn More →', 'care-towards-cure' ); ?>
+								</div>
+							</a>
+							<?php
+						}
+						wp_reset_postdata();
+					}
+					?>
 				</div>
 
 				<div class="services-disclaimer">
