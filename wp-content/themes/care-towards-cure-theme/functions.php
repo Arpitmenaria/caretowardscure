@@ -1894,7 +1894,7 @@ function care_customize_register( $wp_customize ) {
 
 	// WhatsApp URL
 	$wp_customize->add_setting( 'care_whatsapp_url', array(
-		'default'           => '',
+		'default'           => 'https://wa.me/919414311475',
 		'sanitize_callback' => 'esc_url_raw',
 	) );
 
