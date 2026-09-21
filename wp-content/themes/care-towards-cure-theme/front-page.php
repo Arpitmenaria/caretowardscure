@@ -80,6 +80,51 @@ get_header();
 			</div>
 		</section>
 
+		<!-- ===== CLINIC GALLERY SECTION ===== -->
+		<section class="gallery-section" id="gallery" data-reveal>
+			<div class="container">
+				<div class="gallery-header">
+					<h2><?php esc_html_e( 'OUR CLINIC', 'care-towards-cure' ); ?></h2>
+					<p class="gallery-subtitle"><?php esc_html_e( 'A Look Inside Care Towards Cure', 'care-towards-cure' ); ?></p>
+				</div>
+
+				<?php
+				// Get all gallery images from the Gallery CPT
+				$gallery_query = new WP_Query( array(
+					'post_type'      => 'care_gallery',
+					'posts_per_page' => -1,
+					'orderby'        => 'menu_order date',
+					'order'          => 'ASC',
+				) );
+				?>
+
+				<?php if ( $gallery_query->have_posts() ) : ?>
+					<div class="gallery-grid" data-reveal-group>
+						<?php
+						while ( $gallery_query->have_posts() ) {
+							$gallery_query->the_post();
+							if ( has_post_thumbnail() ) {
+								?>
+								<div class="gallery-item">
+									<div class="gallery-image-wrapper">
+										<?php the_post_thumbnail( 'care-card' ); ?>
+										<div class="gallery-overlay">
+											<a href="<?php echo esc_url( wp_get_attachment_url( get_post_thumbnail_id() ) ); ?>" class="gallery-expand" data-lightbox="gallery" title="<?php the_title_attribute(); ?>">
+												<span class="expand-icon">+</span>
+											</a>
+										</div>
+									</div>
+								</div>
+								<?php
+							}
+						}
+						wp_reset_postdata();
+						?>
+					</div>
+				<?php endif; ?>
+			</div>
+		</section>
+
 		<!-- ===== HEALTHCARE THAT LISTENS SECTION ===== -->
 		<section class="listens-section" data-reveal>
 			<div class="container">
