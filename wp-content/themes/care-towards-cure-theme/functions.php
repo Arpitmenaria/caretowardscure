@@ -455,7 +455,12 @@ add_action( 'care_save_inquiry', 'care_save_inquiry_handler' );
  * Handles secure AJAX submission for the appointment inquiry form.
  */
 function care_handle_inquiry_form(): void {
-	check_ajax_referer( 'care_nonce', 'nonce' );
+	// Verify nonce
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'care_nonce' ) ) {
+		wp_send_json_error( array(
+			'message' => __( 'Security check failed. Please refresh and try again.', 'care-towards-cure' ),
+		) );
+	}
 
 	// Sanitize and validate input
 	$patient_name = sanitize_text_field( $_POST['patient_name'] ?? '' );
