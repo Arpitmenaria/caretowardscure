@@ -509,16 +509,39 @@ function care_handle_inquiry_form(): void {
 		) );
 	}
 
-	// If a custom inquiry plugin exists, delegate to it
-	if ( has_action( 'care_save_inquiry' ) ) {
-		do_action( 'care_save_inquiry', array(
-			'patient_name' => $patient_name,
-			'phone'        => $phone,
-			'email'        => $email,
-			'date'         => $date,
-			'time'         => $time,
-			'message'      => $message,
-		) );
+	// Save inquiry to database
+	$post_title = $patient_name . ' - ' . $date . ' ' . $time;
+	$inquiry_id = wp_insert_post( array(
+		'post_type'    => 'care_inquiry',
+		'post_title'   => $post_title,
+		'post_status'  => 'publish',
+		'post_author'  => get_current_user_id() ?: 1,
+	) );
+
+	if ( ! is_wp_error( $inquiry_id ) ) {
+		// Save inquiry meta data
+		update_post_meta( $inquiry_id, 'inquiry_patient_name', $patient_name );
+		update_post_meta( $inquiry_id, 'inquiry_patient_phone', $phone );
+		update_post_meta( $inquiry_id, 'inquiry_patient_email', $email );
+		update_post_meta( $inquiry_id, 'inquiry_appointment_date', $date );
+		update_post_meta( $inquiry_id, 'inquiry_appointment_time', $time );
+		update_post_meta( $inquiry_id, 'inquiry_reason', $message );
+		update_post_meta( $inquiry_id, 'inquiry_submitted_date', current_time( 'mysql' ) );
+
+		// Send email notification
+		$admin_email = get_theme_mod( 'care_footer_email', 'info@caretowardscure.com' );
+		$subject     = __( 'New Appointment Inquiry from ', 'care-towards-cure' ) . $patient_name;
+		$body        = sprintf(
+			__( "New appointment inquiry received:\n\nName: %s\nPhone: %s\nEmail: %s\nPreferred Date: %s\nPreferred Time: %s\nReason: %s\n\nView this inquiry in WordPress Admin", 'care-towards-cure' ),
+			$patient_name,
+			$phone,
+			$email,
+			$date,
+			$time,
+			$message
+		);
+
+		wp_mail( $admin_email, $subject, $body );
 
 		wp_send_json_success( array(
 			'message' => __( 'Your inquiry has been submitted successfully. We will contact you soon.', 'care-towards-cure' ),
@@ -2447,6 +2470,236 @@ function care_create_sample_faqs(): void {
 }
 
 // Create policy pages on theme activation
+/**
+ * Register Services Custom Post Type
+ *
+ * Creates a custom post type for managing clinic services with admin interface.
+ */
+function care_register_services_cpt(): void {
+	$args = array(
+		'label'               => __( 'Services', 'care-towards-cure' ),
+		'description'         => __( 'Clinic services and offerings', 'care-towards-cure' ),
+		'public'              => false,
+		'hierarchical'        => false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => true,
+		'supports'            => array( 'title', 'editor', 'thumbnail' ),
+		'menu_icon'           => 'dashicons-heart',
+		'menu_position'       => 21,
+	);
+
+	register_post_type( 'care_service', $args );
+}
+add_action( 'init', 'care_register_services_cpt' );
+
+/**
+ * Add Service Meta Boxes
+ *
+ * Adds custom fields for service visibility in the admin.
+ */
+function care_add_service_meta_boxes(): void {
+	add_meta_box(
+		'service_visibility',
+		__( 'Service Settings', 'care-towards-cure' ),
+		'care_render_service_meta_box',
+		'care_service',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'care_add_service_meta_boxes' );
+
+/**
+ * Render Service Meta Box
+ *
+ * @param WP_Post $post The post object.
+ */
+function care_render_service_meta_box( WP_Post $post ): void {
+	wp_nonce_field( 'care_service_nonce', 'care_service_nonce' );
+
+	$visible = get_post_meta( $post->ID, 'service_visible', true );
+	$order   = get_post_meta( $post->ID, 'service_order', true );
+
+	if ( ! $visible ) {
+		$visible = 'yes';
+	}
+	if ( ! $order ) {
+		$order = $post->menu_order;
+	}
+	?>
+	<div style="padding: 20px 0;">
+		<p>
+			<label for="service_visible"><?php esc_html_e( 'Display on Website:', 'care-towards-cure' ); ?></label><br>
+			<select id="service_visible" name="service_visible" style="width: 100%; padding: 8px; margin-top: 5px;">
+				<option value="yes" <?php selected( $visible, 'yes' ); ?>><?php esc_html_e( 'Yes, display this service', 'care-towards-cure' ); ?></option>
+				<option value="no" <?php selected( $visible, 'no' ); ?>><?php esc_html_e( 'No, hide this service', 'care-towards-cure' ); ?></option>
+			</select>
+		</p>
+
+		<p>
+			<label for="service_order"><?php esc_html_e( 'Display Order:', 'care-towards-cure' ); ?></label><br>
+			<input type="number" id="service_order" name="service_order" value="<?php echo esc_attr( $order ); ?>" style="width: 100%; padding: 8px; margin-top: 5px;" placeholder="0" min="0">
+			<small style="color: #666;"><?php esc_html_e( 'Lower numbers appear first. Increment by 10 for easier reordering.', 'care-towards-cure' ); ?></small>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Save Service Meta Box Data
+ *
+ * @param int $post_id The post ID.
+ */
+function care_save_service_meta_box( int $post_id ): void {
+	if ( ! isset( $_POST['care_service_nonce'] ) || ! wp_verify_nonce( $_POST['care_service_nonce'], 'care_service_nonce' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['service_visible'] ) ) {
+		update_post_meta( $post_id, 'service_visible', sanitize_text_field( $_POST['service_visible'] ) );
+	}
+
+	if ( isset( $_POST['service_order'] ) ) {
+		update_post_meta( $post_id, 'service_order', intval( $_POST['service_order'] ) );
+	}
+}
+add_action( 'save_post_care_service', 'care_save_service_meta_box' );
+
+/**
+ * Register Gallery Custom Post Type
+ *
+ * Creates a custom post type for managing clinic gallery images.
+ */
+function care_register_gallery_cpt(): void {
+	$args = array(
+		'label'               => __( 'Gallery', 'care-towards-cure' ),
+		'description'         => __( 'Clinic gallery and images', 'care-towards-cure' ),
+		'public'              => false,
+		'hierarchical'        => false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => false,
+		'supports'            => array( 'title', 'thumbnail' ),
+		'menu_icon'           => 'dashicons-format-gallery',
+		'menu_position'       => 23,
+	);
+
+	register_post_type( 'care_gallery', $args );
+}
+add_action( 'init', 'care_register_gallery_cpt' );
+
+/**
+ * Register Inquiry Custom Post Type
+ *
+ * Creates a custom post type for storing submitted appointment inquiries.
+ */
+function care_register_inquiry_cpt(): void {
+	$args = array(
+		'label'               => __( 'Inquiries', 'care-towards-cure' ),
+		'description'         => __( 'Appointment inquiry submissions', 'care-towards-cure' ),
+		'public'              => false,
+		'hierarchical'        => false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => true,
+		'supports'            => array( 'title' ),
+		'menu_icon'           => 'dashicons-email-alt',
+		'menu_position'       => 24,
+		'capability_type'     => 'post',
+		'capabilities'        => array(
+			'create_posts' => false,
+		),
+		'map_meta_cap'        => true,
+	);
+
+	register_post_type( 'care_inquiry', $args );
+}
+add_action( 'init', 'care_register_inquiry_cpt' );
+
+/**
+ * Add Inquiry Meta Boxes
+ *
+ * Displays inquiry details in the admin.
+ */
+function care_add_inquiry_meta_boxes(): void {
+	add_meta_box(
+		'inquiry_details',
+		__( 'Inquiry Details', 'care-towards-cure' ),
+		'care_render_inquiry_meta_box',
+		'care_inquiry',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'care_add_inquiry_meta_boxes' );
+
+/**
+ * Render Inquiry Meta Box
+ *
+ * @param WP_Post $post The post object.
+ */
+function care_render_inquiry_meta_box( WP_Post $post ): void {
+	$patient_name     = get_post_meta( $post->ID, 'inquiry_patient_name', true );
+	$patient_phone    = get_post_meta( $post->ID, 'inquiry_patient_phone', true );
+	$patient_email    = get_post_meta( $post->ID, 'inquiry_patient_email', true );
+	$appointment_date = get_post_meta( $post->ID, 'inquiry_appointment_date', true );
+	$appointment_time = get_post_meta( $post->ID, 'inquiry_appointment_time', true );
+	$reason           = get_post_meta( $post->ID, 'inquiry_reason', true );
+	$submitted_date   = get_post_meta( $post->ID, 'inquiry_submitted_date', true );
+	?>
+	<div style="padding: 20px 0;">
+		<table style="width: 100%; border-collapse: collapse;">
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; width: 30%;">Patient Name:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><?php echo esc_html( $patient_name ); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Phone:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="tel:<?php echo esc_attr( $patient_phone ); ?>"><?php echo esc_html( $patient_phone ); ?></a></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Email:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:<?php echo esc_attr( $patient_email ); ?>"><?php echo esc_html( $patient_email ); ?></a></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Preferred Date:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><?php echo esc_html( $appointment_date ); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Preferred Time:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><?php echo esc_html( $appointment_time ); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Reason:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><?php echo esc_html( $reason ); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; font-weight: bold;">Submitted:</td>
+				<td style="padding: 10px;"><?php echo esc_html( $submitted_date ); ?></td>
+			</tr>
+		</table>
+	</div>
+	<?php
+}
+
 add_action( 'after_switch_theme', 'care_create_policy_pages' );
 
 // Also run on every admin page load as a fallback (can be removed later once pages are created)
