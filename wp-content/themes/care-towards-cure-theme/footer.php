@@ -29,13 +29,13 @@ defined( 'ABSPATH' ) || exit;
 						<?php
 						$policy_pages = array(
 							array( 'slug' => 'terms-conditions', 'label' => 'Terms & Conditions' ),
-							);
+						);
 
 						foreach ( $policy_pages as $policy ) {
 							$page = get_page_by_path( $policy['slug'] );
-							if ( $page && $page->ID ) {
+							if ( $page && $page->ID && ! is_admin() ) {
 								$url = get_permalink( $page->ID );
-								if ( $url ) {
+								if ( $url && strpos( $url, 'wp-admin' ) === false ) {
 									echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $policy['label'] ) . '</a></li>';
 								}
 							}
@@ -44,48 +44,6 @@ defined( 'ABSPATH' ) || exit;
 					</ul>
 				</div>
 
-				<!-- Contact Details -->
-				<div class="footer-contact">
-					<h3><?php esc_html_e( 'Contact Info', 'care-towards-cure' ); ?></h3>
-					<?php
-					$footer_phone = get_theme_mod( 'care_footer_phone', '9414311475' );
-					$footer_email = get_theme_mod( 'care_footer_email', 'info@caretowardscure.com' );
-					$footer_address = get_theme_mod( 'care_footer_address', '2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020' );
-					?>
-
-					<?php if ( $footer_phone ) : ?>
-						<div class="contact-item">
-							<span class="contact-item-icon">📞</span>
-							<div class="contact-item-text">
-								<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $footer_phone ) ); ?>">
-									<?php echo esc_html( $footer_phone ); ?>
-								</a>
-							</div>
-						</div>
-					<?php endif; ?>
-
-					<?php if ( $footer_email ) : ?>
-						<div class="contact-item">
-							<span class="contact-item-icon">✉️</span>
-							<div class="contact-item-text">
-								<a href="mailto:<?php echo esc_attr( $footer_email ); ?>">
-									<?php echo esc_html( $footer_email ); ?>
-								</a>
-							</div>
-						</div>
-					<?php endif; ?>
-
-					<?php if ( $footer_address ) : ?>
-						<div class="contact-item">
-							<span class="contact-item-icon">📍</span>
-							<div class="contact-item-text">
-								<a href="https://maps.app.goo.gl/5tx4B5ngJrVzMGRW8" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-									<?php echo esc_html( $footer_address ); ?>
-								</a>
-							</div>
-						</div>
-					<?php endif; ?>
-				</div>
 			</div>
 
 			<!-- Footer Bottom -->
