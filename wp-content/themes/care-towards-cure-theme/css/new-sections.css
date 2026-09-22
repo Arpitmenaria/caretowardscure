@@ -834,22 +834,49 @@
 	}
 }
 
-@media (max-width: 480px) {
-	.hero-section {
-		padding: 60px 16px 40px;
-	}
-
+@media (max-width: 640px) {
 	.hero-title {
-		font-size: 1.75rem;
+		font-size: 1.5rem;
 		line-height: 1.3;
+		margin: 0 0 20px 0;
 	}
 
 	.hero-description {
 		font-size: 0.95rem;
 	}
 
+	.hero-badge {
+		font-size: 0.75rem;
+		margin-bottom: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.hero-section {
+		padding: 50px 14px 30px;
+	}
+
+	.hero-title {
+		font-size: 1.15rem;
+		line-height: 1.25;
+		margin: 0 0 15px 0;
+	}
+
+	.hero-description {
+		font-size: 0.85rem;
+		margin: 0 0 20px 0;
+		line-height: 1.6;
+	}
+
+	.hero-badge {
+		font-size: 0.65rem;
+		margin-bottom: 10px;
+	}
+
 	.hero-buttons {
 		flex-direction: column;
+		gap: 10px;
+		margin-top: 15px;
 	}
 
 	.hero-buttons .btn {
