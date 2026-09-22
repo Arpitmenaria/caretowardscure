@@ -23,9 +23,9 @@ defined( 'ABSPATH' ) || exit;
 					<!-- Social Media Icons -->
 					<div class="footer-social-media">
 						<?php
-						$facebook_url = get_theme_mod( 'care_facebook_url', '' );
-						$instagram_url = get_theme_mod( 'care_instagram_url', '' );
-						$whatsapp_url = get_theme_mod( 'care_whatsapp_url', '' );
+						$facebook_url = get_theme_mod( 'care_facebook_url', 'https://www.facebook.com/share/1C77R1zW6E/?mibextid=wwXIfr' );
+						$instagram_url = get_theme_mod( 'care_instagram_url', 'https://www.instagram.com/care_towards_cure?stkn=djByem5oMDgydTdj' );
+						$whatsapp_url = get_theme_mod( 'care_whatsapp_url', 'https://wa.me/919414311475' );
 						?>
 
 						<?php if ( $facebook_url ) : ?>
