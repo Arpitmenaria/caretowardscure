@@ -886,7 +886,7 @@ get_header();
 				<div class="container">
 					<h3 style="text-align: center; font-size: 1.8rem; margin-bottom: 40px; font-weight: 700;"><?php esc_html_e( 'Our Clinic Locations', 'care-towards-cure' ); ?></h3>
 					<div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.6789!2d75.7812467!3d26.8666793!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db5b581ba7fad%3A0xff2dc658bdf92ade!2sCare%20Towards%20Cure!5e0!3m2!1sen!2sin!4v1695000000000" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+						<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3558.123!2d75.775!3d26.875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1scare+towards+cure+jaipur!5e0!3m2!1sen!2sin!4v1695000000000&markers=color:red%7Clabel:Triveni%7C26.8666793,75.7812467&markers=color:red%7Clabel:Gangori%7C26.8116667,75.8233333" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 					</div>
 				</div>
 			</div>
