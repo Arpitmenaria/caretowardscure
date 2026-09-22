@@ -1962,7 +1962,7 @@ function care_customize_register( $wp_customize ) {
 
 	// Facebook URL
 	$wp_customize->add_setting( 'care_facebook_url', array(
-		'default'           => '',
+		'default'           => 'https://www.facebook.com/share/1C77R1zW6E/?mibextid=wwXIfr',
 		'sanitize_callback' => 'esc_url_raw',
 	) );
 
@@ -1976,7 +1976,7 @@ function care_customize_register( $wp_customize ) {
 
 	// Instagram URL
 	$wp_customize->add_setting( 'care_instagram_url', array(
-		'default'           => '',
+		'default'           => 'https://www.instagram.com/care_towards_cure?stkn=djByem5oMDgydTdj',
 		'sanitize_callback' => 'esc_url_raw',
 	) );
 
