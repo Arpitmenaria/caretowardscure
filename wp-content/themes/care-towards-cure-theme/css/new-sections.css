@@ -219,6 +219,100 @@
 }
 
 /* ==========================================
+   WELCOME SECTION - RESPONSIVE
+   ========================================== */
+
+@media (max-width: 1024px) {
+	.welcome-wrapper {
+		grid-template-columns: 1fr 0.9fr;
+		gap: 30px;
+	}
+
+	.welcome-section h2 {
+		font-size: 1.6rem;
+	}
+
+	.welcome-section p {
+		font-size: 1rem;
+	}
+
+	.welcome-image {
+		max-width: 100%;
+	}
+}
+
+@media (max-width: 768px) {
+	.welcome-section {
+		padding: 50px 20px 70px;
+	}
+
+	.welcome-wrapper {
+		grid-template-columns: 1fr;
+		gap: 30px;
+	}
+
+	.welcome-section h2 {
+		font-size: 1.4rem;
+		white-space: normal;
+		margin-bottom: 15px;
+	}
+
+	.welcome-section p {
+		font-size: 0.95rem;
+		line-height: 1.7;
+	}
+
+	.welcome-image {
+		order: -1;
+		max-width: 100%;
+	}
+
+	.welcome-buttons {
+		max-width: 100%;
+		margin-top: 30px;
+	}
+
+	.welcome-buttons .btn {
+		min-width: 120px;
+		font-size: 0.9rem;
+		padding: 10px 16px;
+	}
+}
+
+@media (max-width: 480px) {
+	.welcome-section {
+		padding: 40px 16px 60px;
+	}
+
+	.welcome-section h2 {
+		font-size: 1.2rem;
+		margin-bottom: 12px;
+	}
+
+	.welcome-section p {
+		font-size: 0.9rem;
+		margin: 0 0 12px 0;
+	}
+
+	.welcome-buttons {
+		gap: 12px;
+		margin-top: 25px;
+	}
+
+	.welcome-buttons .btn {
+		min-width: 100px;
+		font-size: 0.85rem;
+		padding: 8px 14px;
+		flex: 1;
+	}
+
+	.welcome-image {
+		max-width: 100%;
+		margin-bottom: 20px;
+	}
+}
+
+/* ==========================================
    HEALTHCARE THAT LISTENS SECTION
    ========================================== */
 
