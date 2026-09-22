@@ -2002,6 +2002,20 @@ function care_customize_register( $wp_customize ) {
 		'input_attrs' => array( 'placeholder' => 'https://wa.me/...' ),
 	) );
 
+	// YouTube URL
+	$wp_customize->add_setting( 'care_youtube_url', array(
+		'default'           => 'https://youtube.com/@ctchomoeo',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( 'care_youtube_url', array(
+		'label'       => __( 'YouTube URL', 'care-towards-cure' ),
+		'description' => __( 'Enter your YouTube channel URL', 'care-towards-cure' ),
+		'section'     => 'care_social_media',
+		'type'        => 'url',
+		'input_attrs' => array( 'placeholder' => 'https://youtube.com/@...' ),
+	) );
+
 	// =============================================
 	// WELCOME SECTION PANEL
 	// =============================================
