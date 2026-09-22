@@ -786,9 +786,9 @@ get_header();
 									</svg>
 								</div>
 								<div class="contact-details">
-									<p class="contact-label"><a href="https://www.google.com/maps/search/?api=1&query=26.8666793,75.7812467" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer; font-weight: 600;"><?php esc_html_e( 'Triveni Nagar Branch', 'care-towards-cure' ); ?></a></p>
+									<p class="contact-label"><a href="#contact-map-section" style="color: inherit; text-decoration: none; cursor: pointer; font-weight: 600;"><?php esc_html_e( 'Triveni Nagar Branch', 'care-towards-cure' ); ?></a></p>
 									<p class="contact-value">
-										<a href="https://www.google.com/maps/search/?api=1&query=26.8666793,75.7812467" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer;">
+										<a href="#contact-map-section" style="color: inherit; text-decoration: none; cursor: pointer;">
 											<?php esc_html_e( 'C-114, Triveni Nagar Rd, opposite Triveni Heights, Shopping Centre, Vishveshvariya Nagar, Arjun Nagar, Jaipur, Rajasthan 302019', 'care-towards-cure' ); ?>
 										</a>
 									</p>
@@ -805,9 +805,9 @@ get_header();
 								</svg>
 							</div>
 							<div class="contact-details">
-								<p class="contact-label"><a href="https://www.google.com/maps/search/?api=1&query=26.8116667,75.8233333" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer; font-weight: 600;"><?php esc_html_e( 'Gangori Bazar Branch', 'care-towards-cure' ); ?></a></p>
+								<p class="contact-label"><a href="#contact-map-section" style="color: inherit; text-decoration: none; cursor: pointer; font-weight: 600;"><?php esc_html_e( 'Gangori Bazar Branch', 'care-towards-cure' ); ?></a></p>
 								<p class="contact-value">
-									<a href="https://www.google.com/maps/search/?api=1&query=26.8116667,75.8233333" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer;">
+									<a href="#contact-map-section" style="color: inherit; text-decoration: none; cursor: pointer;">
 										<?php esc_html_e( 'PN 2147, opposite Gangori Bazar Road, Gangori Bazar, Purani Basti, Jaipur, Rajasthan 302001', 'care-towards-cure' ); ?>
 									</a>
 								</p>
@@ -882,7 +882,7 @@ get_header();
 
 
 			<!-- Branch Locations Map -->
-			<div class="contact-map-section" style="margin-top: 60px; padding: 40px 20px; background: #f8f9fa;">
+			<div id="contact-map-section" class="contact-map-section" style="margin-top: 60px; padding: 40px 20px; background: #f8f9fa;">
 				<div class="container">
 					<h3 style="text-align: center; font-size: 1.8rem; margin-bottom: 40px; font-weight: 700;"><?php esc_html_e( 'Our Clinic Locations', 'care-towards-cure' ); ?></h3>
 
