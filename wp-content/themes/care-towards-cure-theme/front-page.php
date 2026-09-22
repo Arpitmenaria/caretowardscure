@@ -788,7 +788,7 @@ get_header();
 								<div class="contact-details">
 									<p class="contact-label"><?php esc_html_e( 'Triveni Nagar Branch', 'care-towards-cure' ); ?></p>
 									<p class="contact-value">
-										<a href="https://www.google.com/maps/place/Care+Towards+Cure/@26.8666793,75.7812467,17z" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+										<a href="https://maps.app.goo.gl/e6F8CtKWT7vKEh1N7" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer;">
 											<?php esc_html_e( 'C-114, Triveni Nagar Rd, opposite Triveni Heights, Shopping Centre, Vishveshvariya Nagar, Arjun Nagar, Jaipur, Rajasthan 302019', 'care-towards-cure' ); ?>
 										</a>
 									</p>
@@ -886,7 +886,7 @@ get_header();
 				<div class="container">
 					<h3 style="text-align: center; font-size: 1.8rem; margin-bottom: 40px; font-weight: 700;"><?php esc_html_e( 'Our Clinic Locations', 'care-towards-cure' ); ?></h3>
 					<div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.8157!2d75.77858!3d26.86389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db5b581ba7fad%3A0xff2dc658bdf92ade!2sCare%20Towards%20Cure!5e0!3m2!1sen!2sin!4v1695000000000" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+						<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3557.9!2d75.8!3d26.87!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1&markers=color:red%7Clabel:Triveni%7C26.8666793,75.7812467&markers=color:blue%7Clabel:Gangori%7C26.8116667,75.8233333" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 					</div>
 				</div>
 			</div>
