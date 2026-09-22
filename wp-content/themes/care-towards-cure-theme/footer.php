@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 						<?php esc_html_e( 'Personalised healthcare consultation with a patient-first approach.', 'care-towards-cure' ); ?>
 					</p>
 					<!-- Social Media Icons -->
-					<div class="footer-social-media">
+					<div class="footer-social-media" style="display: flex; gap: 12px; margin-top: 15px;">
 						<?php
 						$facebook_url = get_theme_mod( 'care_facebook_url', 'https://www.facebook.com/share/1C77R1zW6E/?mibextid=wwXIfr' );
 						$instagram_url = get_theme_mod( 'care_instagram_url', 'https://www.instagram.com/care_towards_cure?stkn=djByem5oMDgydTdj' );
@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 						?>
 
 						<?php if ( $facebook_url ) : ?>
-							<a href="<?php echo esc_url( $facebook_url ); ?>" class="social-icon facebook" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'Facebook', 'care-towards-cure' ); ?>">
+							<a href="<?php echo esc_url( $facebook_url ); ?>" class="social-icon facebook" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'Facebook', 'care-towards-cure' ); ?>" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: rgba(255,255,255,0.1); transition: all 300ms ease;">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
 									<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
 								</svg>
@@ -38,7 +38,7 @@ defined( 'ABSPATH' ) || exit;
 						<?php endif; ?>
 
 						<?php if ( $instagram_url ) : ?>
-							<a href="<?php echo esc_url( $instagram_url ); ?>" class="social-icon instagram" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'Instagram', 'care-towards-cure' ); ?>">
+							<a href="<?php echo esc_url( $instagram_url ); ?>" class="social-icon instagram" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'Instagram', 'care-towards-cure' ); ?>" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: rgba(255,255,255,0.1); transition: all 300ms ease;">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
 									<path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.117.6c-.628.24-1.159.547-1.688 1.078-.53.529-.84 1.06-1.079 1.688-.27.708-.471 1.578-.53 2.856C.032 8.333.016 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.53 2.856.24.628.549 1.159 1.078 1.688.53.529 1.06.84 1.688 1.078.708.269 1.577.47 2.856.53 1.28.058 1.687.072 4.947.072s3.667-.015 4.947-.072c1.277-.06 2.148-.261 2.856-.53.628-.24 1.159-.549 1.688-1.078.53-.529.84-1.06 1.078-1.688.269-.708.47-1.577.53-2.856.058-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.261-2.148-.53-2.856-.24-.628-.549-1.159-1.078-1.688-.529-.53-1.06-.84-1.688-1.078-.708-.27-1.577-.471-2.856-.53C15.667.048 15.26.032 12 0zm0 2.16c3.203 0 3.585.009 4.849.070 1.171.054 1.805.244 2.227.414.562.217.96.477 1.382.896.419.42.679.819.896 1.381.17.422.36 1.057.413 2.227.061 1.264.07 1.645.07 4.849 0 3.203-.009 3.585-.07 4.849-.054 1.171-.244 1.805-.414 2.227-.217.562-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.17-1.057.36-2.227.413-1.264.061-1.645.07-4.849.07-3.203 0-3.585-.009-4.849-.07-1.171-.054-1.805-.244-2.227-.414-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.17-.422-.36-1.057-.413-2.227-.061-1.264-.07-1.645-.07-4.849 0-3.203.009-3.585.07-4.849.054-1.171.244-1.805.414-2.227.217-.562.477-.96.896-1.382.42-.419.819-.679 1.381-.896.422-.17 1.057-.36 2.227-.413 1.264-.061 1.645-.07 4.849-.07zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/>
 								</svg>
@@ -46,7 +46,7 @@ defined( 'ABSPATH' ) || exit;
 						<?php endif; ?>
 
 						<?php if ( $whatsapp_url ) : ?>
-							<a href="<?php echo esc_url( $whatsapp_url ); ?>" class="social-icon whatsapp" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'WhatsApp', 'care-towards-cure' ); ?>">
+							<a href="<?php echo esc_url( $whatsapp_url ); ?>" class="social-icon whatsapp" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'WhatsApp', 'care-towards-cure' ); ?>" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: rgba(255,255,255,0.1); transition: all 300ms ease;">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
 									<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.946 1.23l-.356.214-3.71-.974.992 3.63-.235.374a9.86 9.86 0 001.33 4.815l.166.331 3.84.822-.25 1.53c.27.19.747.48 1.29.792.27.149.546.28.816.28.533 0 1.083-.222 1.45-.64l1.46-1.646c.33.178.738.408 1.168.612l.427.201c4.206 1.984 8.35-1.175 8.35-1.175l-4.705-1.22.473-.783c1.023-1.692 1.603-3.682 1.603-5.81 0-6.437-5.23-11.66-11.667-11.66"/>
 								</svg>
@@ -54,7 +54,7 @@ defined( 'ABSPATH' ) || exit;
 						<?php endif; ?>
 
 						<?php if ( $youtube_url ) : ?>
-							<a href="<?php echo esc_url( $youtube_url ); ?>" class="social-icon youtube" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'YouTube', 'care-towards-cure' ); ?>">
+							<a href="<?php echo esc_url( $youtube_url ); ?>" class="social-icon youtube" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'YouTube', 'care-towards-cure' ); ?>" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: rgba(255,255,255,0.1); transition: all 300ms ease;">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
 									<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
 								</svg>
