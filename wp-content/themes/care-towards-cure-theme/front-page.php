@@ -786,15 +786,33 @@ get_header();
 									</svg>
 								</div>
 								<div class="contact-details">
-									<p class="contact-label"><?php esc_html_e( 'Clinic Address', 'care-towards-cure' ); ?></p>
+									<p class="contact-label"><?php esc_html_e( 'Triveni Nagar Branch', 'care-towards-cure' ); ?></p>
 									<p class="contact-value">
-										<a href="https://maps.app.goo.gl/5tx4B5ngJrVzMGRW8" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-											<?php esc_html_e( '2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020', 'care-towards-cure' ); ?>
+										<a href="https://www.google.com/maps/place/Care+Towards+Cure/@26.8666793,75.7812467,17z" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+											<?php esc_html_e( 'C-114, Triveni Nagar Rd, opposite Triveni Heights, Shopping Centre, Vishveshvariya Nagar, Arjun Nagar, Jaipur, Rajasthan 302019', 'care-towards-cure' ); ?>
 										</a>
 									</p>
 								</div>
 							</div>
 
+
+						<!-- Gangori Bazar Branch -->
+						<div class="contact-item">
+							<div class="contact-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+									<circle cx="12" cy="10" r="3"></circle>
+								</svg>
+							</div>
+							<div class="contact-details">
+								<p class="contact-label"><?php esc_html_e( 'Gangori Bazar Branch', 'care-towards-cure' ); ?></p>
+								<p class="contact-value">
+									<a href="https://www.google.com/maps/place/Gangori+Bazar,+Jaipur" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+										<?php esc_html_e( 'PN 2147, opposite Gangori Bazar Road, Gangori Bazar, Purani Basti, Jaipur, Rajasthan 302001', 'care-towards-cure' ); ?>
+									</a>
+								</p>
+							</div>
+						</div>
 							<!-- Phone -->
 							<div class="contact-item">
 								<div class="contact-icon">
@@ -861,6 +879,17 @@ get_header();
 						</a>
 					</div>
 				</div>
+
+
+			<!-- Branch Locations Map -->
+			<div class="contact-map-section" style="margin-top: 60px; padding: 40px 20px; background: #f8f9fa;">
+				<div class="container">
+					<h3 style="text-align: center; font-size: 1.8rem; margin-bottom: 40px; font-weight: 700;"><?php esc_html_e( 'Our Clinic Locations', 'care-towards-cure' ); ?></h3>
+					<div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.6789!2d75.7812467!3d26.8666793!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db5b581ba7fad%3A0xff2dc658bdf92ade!2sCare%20Towards%20Cure!5e0!3m2!1sen!2sin!4v1695000000000" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+					</div>
+				</div>
+			</div>
 			</div>
 		</section>
 
