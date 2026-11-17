@@ -142,6 +142,111 @@ function care_enqueue_styles(): void {
 		'all'
 	);
 
+	// Inline gallery CSS for Hostinger compatibility
+	$gallery_css = '
+		.gallery-section {
+			padding: 60px 20px;
+			background-color: #f8f9fa;
+		}
+		.gallery-section .container {
+			max-width: 1200px;
+			margin: 0 auto;
+		}
+		.gallery-header {
+			text-align: center;
+			margin-bottom: 50px;
+		}
+		.gallery-header h2 {
+			font-size: 2.5rem;
+			font-weight: 700;
+			color: #1a1a1a;
+			margin: 0 0 15px 0;
+		}
+		.gallery-header p {
+			font-size: 1.1rem;
+			color: #666;
+			margin: 0;
+		}
+		.gallery-grid {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			auto-rows: 300px;
+			gap: 16px;
+			padding: 20px 0;
+		}
+		.gallery-item {
+			overflow: hidden;
+			border-radius: 12px;
+			background: white;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			cursor: pointer;
+			position: relative;
+		}
+		.gallery-item:hover {
+			transform: translateY(-8px);
+			box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+		}
+		.gallery-image-wrapper {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			transition: transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		}
+		.gallery-image-wrapper img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+		.gallery-item:hover .gallery-image-wrapper img {
+			transform: scale(1.08) rotate(1deg);
+		}
+		@media (max-width: 768px) {
+			.gallery-header h2 {
+				font-size: 1.8rem;
+			}
+			.gallery-grid {
+				grid-template-columns: repeat(2, 1fr);
+				auto-rows: 220px;
+				gap: 12px;
+			}
+		}
+		@media (max-width: 480px) {
+			.gallery-section {
+				padding: 40px 15px;
+			}
+			.gallery-header h2 {
+				font-size: 1.5rem;
+			}
+			.gallery-header p {
+				font-size: 1rem;
+			}
+			.gallery-grid {
+				grid-template-columns: 1fr;
+				auto-rows: 250px;
+				gap: 10px;
+			}
+		}
+	';
+	wp_add_inline_style( 'care-new-sections', $gallery_css );
+
+	// Doctor styles
+	wp_enqueue_style(
+		'care-doctors',
+		CARE_THEME_URI . '/css/doctors.css',
+		array( 'care-main' ),
+		CARE_THEME_VERSION,
+		'all'
+	);
+
+	// Inline CSS for navbar (fixes right-alignment on Hostinger)
+	$navbar_css = '
+		.main-navigation {
+			justify-content: flex-end !important;
+		}
+	';
+	wp_add_inline_style( 'care-main', $navbar_css );
+
 	// Inline CSS for welcome section (fixes deployment issue)
 	$welcome_css = '
 	.welcome-section {
@@ -246,6 +351,15 @@ function care_enqueue_scripts(): void {
 			true
 		);
 	}
+
+	// Doctor profile script
+	wp_enqueue_script(
+		'care-doctor-profile',
+		CARE_THEME_URI . '/js/doctor-profile.js',
+		array(),
+		CARE_THEME_VERSION,
+		true
+	);
 
 	// Localize script for AJAX and other frontend data
 	wp_localize_script(
@@ -489,7 +603,7 @@ add_filter( 'script_loader_tag', 'care_defer_scripts', 10, 2 );
  * Handles saving inquiry and sending email to admin
  */
 function care_save_inquiry_handler( $data ): void {
-	$admin_email = get_theme_mod( 'care_footer_email', 'enquiry@caretowardscure.com' );
+	$admin_email = get_theme_mod( 'care_footer_email', 'info@caretowardscure.com' );
 
 	$subject = 'New Appointment Inquiry - Care Towards Cure';
 
@@ -518,7 +632,12 @@ add_action( 'care_save_inquiry', 'care_save_inquiry_handler' );
  * Handles secure AJAX submission for the appointment inquiry form.
  */
 function care_handle_inquiry_form(): void {
-	check_ajax_referer( 'care_nonce', 'nonce' );
+	// Verify nonce
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'care_nonce' ) ) {
+		wp_send_json_error( array(
+			'message' => __( 'Security check failed. Please refresh and try again.', 'care-towards-cure' ),
+		) );
+	}
 
 	// Sanitize and validate input
 	$patient_name = sanitize_text_field( $_POST['patient_name'] ?? '' );
@@ -549,16 +668,39 @@ function care_handle_inquiry_form(): void {
 		) );
 	}
 
-	// If a custom inquiry plugin exists, delegate to it
-	if ( has_action( 'care_save_inquiry' ) ) {
-		do_action( 'care_save_inquiry', array(
-			'patient_name' => $patient_name,
-			'phone'        => $phone,
-			'email'        => $email,
-			'date'         => $date,
-			'time'         => $time,
-			'message'      => $message,
-		) );
+	// Save inquiry to database
+	$post_title = $patient_name . ' - ' . $date . ' ' . $time;
+	$inquiry_id = wp_insert_post( array(
+		'post_type'    => 'care_inquiry',
+		'post_title'   => $post_title,
+		'post_status'  => 'publish',
+		'post_author'  => get_current_user_id() ?: 1,
+	) );
+
+	if ( ! is_wp_error( $inquiry_id ) ) {
+		// Save inquiry meta data
+		update_post_meta( $inquiry_id, 'inquiry_patient_name', $patient_name );
+		update_post_meta( $inquiry_id, 'inquiry_patient_phone', $phone );
+		update_post_meta( $inquiry_id, 'inquiry_patient_email', $email );
+		update_post_meta( $inquiry_id, 'inquiry_appointment_date', $date );
+		update_post_meta( $inquiry_id, 'inquiry_appointment_time', $time );
+		update_post_meta( $inquiry_id, 'inquiry_reason', $message );
+		update_post_meta( $inquiry_id, 'inquiry_submitted_date', current_time( 'mysql' ) );
+
+		// Send email notification
+		$admin_email = get_theme_mod( 'care_footer_email', 'info@caretowardscure.com' );
+		$subject     = __( 'New Appointment Inquiry from ', 'care-towards-cure' ) . $patient_name;
+		$body        = sprintf(
+			__( "New appointment inquiry received:\n\nName: %s\nPhone: %s\nEmail: %s\nPreferred Date: %s\nPreferred Time: %s\nReason: %s\n\nView this inquiry in WordPress Admin", 'care-towards-cure' ),
+			$patient_name,
+			$phone,
+			$email,
+			$date,
+			$time,
+			$message
+		);
+
+		wp_mail( $admin_email, $subject, $body );
 
 		wp_send_json_success( array(
 			'message' => __( 'Your inquiry has been submitted successfully. We will contact you soon.', 'care-towards-cure' ),
@@ -671,7 +813,7 @@ function care_customize_register( $wp_customize ) {
 
 	// Button 2 - Secondary
 	$wp_customize->add_setting( 'care_hero_btn2_text', array(
-		'default'           => __( 'Call Now', 'care-towards-cure' ),
+		'default'           => __( 'Inquire Now', 'care-towards-cure' ),
 		'sanitize_callback' => 'sanitize_text_field',
 		'transport'         => 'postMessage',
 	) );
@@ -1954,6 +2096,71 @@ function care_customize_register( $wp_customize ) {
 	) );
 
 	// =============================================
+	// SOCIAL MEDIA SECTION
+	// =============================================
+	$wp_customize->add_section( 'care_social_media', array(
+		'title'       => __( 'Social Media', 'care-towards-cure' ),
+		'panel'       => 'care_footer_panel',
+		'priority'    => 50,
+	) );
+
+	// Facebook URL
+	$wp_customize->add_setting( 'care_facebook_url', array(
+		'default'           => 'https://www.facebook.com/share/1C77R1zW6E/?mibextid=wwXIfr',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( 'care_facebook_url', array(
+		'label'       => __( 'Facebook URL', 'care-towards-cure' ),
+		'description' => __( 'Enter your Facebook page/profile URL', 'care-towards-cure' ),
+		'section'     => 'care_social_media',
+		'type'        => 'url',
+		'input_attrs' => array( 'placeholder' => 'https://facebook.com/...' ),
+	) );
+
+	// Instagram URL
+	$wp_customize->add_setting( 'care_instagram_url', array(
+		'default'           => 'https://www.instagram.com/care_towards_cure?stkn=djByem5oMDgydTdj',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( 'care_instagram_url', array(
+		'label'       => __( 'Instagram URL', 'care-towards-cure' ),
+		'description' => __( 'Enter your Instagram profile URL', 'care-towards-cure' ),
+		'section'     => 'care_social_media',
+		'type'        => 'url',
+		'input_attrs' => array( 'placeholder' => 'https://instagram.com/...' ),
+	) );
+
+	// WhatsApp URL
+	$wp_customize->add_setting( 'care_whatsapp_url', array(
+		'default'           => 'https://wa.me/919414311475',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( 'care_whatsapp_url', array(
+		'label'       => __( 'WhatsApp URL', 'care-towards-cure' ),
+		'description' => __( 'Enter WhatsApp link (e.g., https://wa.me/919414311475)', 'care-towards-cure' ),
+		'section'     => 'care_social_media',
+		'type'        => 'url',
+		'input_attrs' => array( 'placeholder' => 'https://wa.me/...' ),
+	) );
+
+	// YouTube URL
+	$wp_customize->add_setting( 'care_youtube_url', array(
+		'default'           => 'https://youtube.com/@ctchomoeo',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( 'care_youtube_url', array(
+		'label'       => __( 'YouTube URL', 'care-towards-cure' ),
+		'description' => __( 'Enter your YouTube channel URL', 'care-towards-cure' ),
+		'section'     => 'care_social_media',
+		'type'        => 'url',
+		'input_attrs' => array( 'placeholder' => 'https://youtube.com/@...' ),
+	) );
+
+	// =============================================
 	// WELCOME SECTION PANEL
 	// =============================================
 	$wp_customize->add_panel( 'care_welcome_panel', array(
@@ -2023,9 +2230,227 @@ function care_customize_register( $wp_customize ) {
 add_action( 'customize_register', 'care_customize_register' );
 
 /**
+ * Register Doctor Custom Post Type
+ *
+ * Creates a custom post type for managing doctor profiles with custom fields.
+ */
+function care_register_doctor_cpt(): void {
+	$args = array(
+		'label'               => __( 'Doctors', 'care-towards-cure' ),
+		'description'         => __( 'Doctor profiles and information', 'care-towards-cure' ),
+		'public'              => true,
+		'hierarchical'        => false,
+		'exclude_from_search' => false,
+		'publicly_queryable'  => true,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => true,
+		'show_in_admin_bar'   => true,
+		'supports'            => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+		'rewrite'             => array(
+			'slug'       => 'doctor',
+			'with_front' => true,
+		),
+		'menu_icon'           => 'dashicons-businessman',
+	);
+
+	register_post_type( 'care_doctor', $args );
+}
+add_action( 'init', 'care_register_doctor_cpt' );
+
+/**
+ * Add Doctor Meta Boxes
+ *
+ * Adds custom fields for doctor information in the admin.
+ */
+function care_add_doctor_meta_boxes(): void {
+	add_meta_box(
+		'doctor_info',
+		__( 'Doctor Information', 'care-towards-cure' ),
+		'care_render_doctor_meta_box',
+		'care_doctor',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'care_add_doctor_meta_boxes' );
+
+/**
+ * Render Doctor Meta Box
+ *
+ * @param WP_Post $post The post object.
+ */
+function care_render_doctor_meta_box( WP_Post $post ): void {
+	wp_nonce_field( 'care_doctor_nonce', 'care_doctor_nonce' );
+
+	$designation   = get_post_meta( $post->ID, 'doctor_designation', true );
+	$qualifications = get_post_meta( $post->ID, 'doctor_qualifications', true );
+	$specialties   = get_post_meta( $post->ID, 'doctor_specialties', true );
+	$experience    = get_post_meta( $post->ID, 'doctor_experience', true );
+	?>
+	<div style="padding: 20px 0;">
+		<p>
+			<label for="doctor_designation"><?php esc_html_e( 'Designation/Title:', 'care-towards-cure' ); ?></label><br>
+			<input type="text" id="doctor_designation" name="doctor_designation" value="<?php echo esc_attr( $designation ); ?>" style="width: 100%; padding: 8px; margin-top: 5px;" placeholder="e.g., General Physician, Cardiologist">
+		</p>
+
+		<p>
+			<label for="doctor_qualifications"><?php esc_html_e( 'Qualifications:', 'care-towards-cure' ); ?></label><br>
+			<textarea id="doctor_qualifications" name="doctor_qualifications" style="width: 100%; padding: 8px; margin-top: 5px; height: 100px;" placeholder="e.g., MBBS, MD, etc."><?php echo esc_textarea( $qualifications ); ?></textarea>
+		</p>
+
+		<p>
+			<label for="doctor_specialties"><?php esc_html_e( 'Specialties:', 'care-towards-cure' ); ?></label><br>
+			<textarea id="doctor_specialties" name="doctor_specialties" style="width: 100%; padding: 8px; margin-top: 5px; height: 100px;" placeholder="List the doctor's specialties"><?php echo esc_textarea( $specialties ); ?></textarea>
+		</p>
+
+		<p>
+			<label for="doctor_experience"><?php esc_html_e( 'Experience:', 'care-towards-cure' ); ?></label><br>
+			<textarea id="doctor_experience" name="doctor_experience" style="width: 100%; padding: 8px; margin-top: 5px; height: 100px;" placeholder="Years of experience and background"><?php echo esc_textarea( $experience ); ?></textarea>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Save Doctor Meta Box Data
+ *
+ * @param int $post_id The post ID.
+ */
+function care_save_doctor_meta_box( int $post_id ): void {
+	if ( ! isset( $_POST['care_doctor_nonce'] ) || ! wp_verify_nonce( $_POST['care_doctor_nonce'], 'care_doctor_nonce' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	$fields = array( 'doctor_designation', 'doctor_qualifications', 'doctor_specialties', 'doctor_experience' );
+
+	foreach ( $fields as $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			update_post_meta( $post_id, $field, sanitize_textarea_field( $_POST[ $field ] ) );
+		}
+	}
+}
+add_action( 'save_post_care_doctor', 'care_save_doctor_meta_box' );
+
+/**
+ * Register FAQ Custom Post Type
+ *
+ * Creates a custom post type for managing FAQs with admin interface.
+ */
+function care_register_faq_cpt(): void {
+	$args = array(
+		'label'               => __( 'FAQs', 'care-towards-cure' ),
+		'description'         => __( 'Frequently Asked Questions', 'care-towards-cure' ),
+		'public'              => false,
+		'hierarchical'        => false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => true,
+		'supports'            => array( 'title', 'editor' ),
+		'menu_icon'           => 'dashicons-format-chat',
+		'menu_position'       => 22,
+	);
+
+	register_post_type( 'care_faq', $args );
+}
+add_action( 'init', 'care_register_faq_cpt' );
+
+/**
+ * Add FAQ Meta Boxes
+ *
+ * Adds custom fields for FAQ visibility and ordering in the admin.
+ */
+function care_add_faq_meta_boxes(): void {
+	add_meta_box(
+		'faq_visibility',
+		__( 'FAQ Settings', 'care-towards-cure' ),
+		'care_render_faq_meta_box',
+		'care_faq',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'care_add_faq_meta_boxes' );
+
+/**
+ * Render FAQ Meta Box
+ *
+ * @param WP_Post $post The post object.
+ */
+function care_render_faq_meta_box( WP_Post $post ): void {
+	wp_nonce_field( 'care_faq_nonce', 'care_faq_nonce' );
+
+	$visible = get_post_meta( $post->ID, 'faq_visible', true );
+	$order   = get_post_meta( $post->ID, 'faq_order', true );
+
+	if ( ! $visible ) {
+		$visible = 'yes';
+	}
+	if ( ! $order ) {
+		$order = $post->menu_order;
+	}
+	?>
+	<div style="padding: 20px 0;">
+		<p>
+			<label for="faq_visible"><?php esc_html_e( 'Display on Website:', 'care-towards-cure' ); ?></label><br>
+			<select id="faq_visible" name="faq_visible" style="width: 100%; padding: 8px; margin-top: 5px;">
+				<option value="yes" <?php selected( $visible, 'yes' ); ?>><?php esc_html_e( 'Yes, display this FAQ', 'care-towards-cure' ); ?></option>
+				<option value="no" <?php selected( $visible, 'no' ); ?>><?php esc_html_e( 'No, hide this FAQ', 'care-towards-cure' ); ?></option>
+			</select>
+		</p>
+
+		<p>
+			<label for="faq_order"><?php esc_html_e( 'Display Order:', 'care-towards-cure' ); ?></label><br>
+			<input type="number" id="faq_order" name="faq_order" value="<?php echo esc_attr( $order ); ?>" style="width: 100%; padding: 8px; margin-top: 5px;" placeholder="0" min="0">
+			<small style="color: #666;"><?php esc_html_e( 'Lower numbers appear first. Increment by 10 for easier reordering.', 'care-towards-cure' ); ?></small>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Save FAQ Meta Box Data
+ *
+ * @param int $post_id The post ID.
+ */
+function care_save_faq_meta_box( int $post_id ): void {
+	if ( ! isset( $_POST['care_faq_nonce'] ) || ! wp_verify_nonce( $_POST['care_faq_nonce'], 'care_faq_nonce' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['faq_visible'] ) ) {
+		update_post_meta( $post_id, 'faq_visible', sanitize_text_field( $_POST['faq_visible'] ) );
+	}
+
+	if ( isset( $_POST['faq_order'] ) ) {
+		update_post_meta( $post_id, 'faq_order', intval( $_POST['faq_order'] ) );
+	}
+}
+add_action( 'save_post_care_faq', 'care_save_faq_meta_box' );
+
+/**
  * Create Policy Pages
  *
- * Creates Privacy Policy, Terms & Conditions, and Refund & Cancellation Policy pages
+ * Creates Privacy Policy and Terms & Conditions pages
  * if they don't already exist. Hooked to after_theme_switch for automatic creation.
  */
 function care_create_policy_pages(): void {
@@ -2193,107 +2618,6 @@ Phone: 9414311475
 
 By using this Site, you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions.',
 		),
-		array(
-			'post_title'   => 'Refund & Cancellation Policy',
-			'post_name'    => 'refund-cancellation-policy',
-			'post_content' => '# Refund & Cancellation Policy
-
-**Last Updated: August 11, 2026**
-
-At Care Towards Cure, we understand that plans can change. This policy outlines our procedures for appointment cancellations, rescheduling, and refunds.
-
-## 1. Appointment Cancellations
-
-- Patients may cancel or reschedule an appointment up to **24 hours before** the scheduled time without any charge.
-- Cancellations made **less than 24 hours** before the appointment may be subject to a cancellation fee equivalent to 50% of the consultation fee.
-- **No-shows** (failure to attend without prior notice) will be charged the full consultation fee.
-- Emergency cancellations may be subject to management discretion and case-by-case review.
-
-## 2. How to Cancel or Reschedule
-
-You can cancel or reschedule your appointment by:
-- **Calling us:** 9414311475
-- **Emailing us:** info@caretowardscure.com
-- **Using our online booking portal:** care-towards-cure.local
-- **Visiting our clinic:** 2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020
-
-Please provide your appointment details and reason for cancellation to expedite the process.
-
-## 3. Refunds for Paid Consultations
-
-- If you paid in advance and cancel **within 24 hours of booking**, you will receive a **full refund** (100%).
-- If you cancel **24-48 hours before** your appointment, you will receive a **75% refund**.
-- If you cancel **less than 24 hours before** your appointment, you will receive a **50% refund**.
-- **No-shows** and cancellations made **after** the appointment time are generally **non-refundable**.
-- **Exception:** Refunds may be considered in cases of documented medical emergencies, serious illness, or service failure on our part (subject to management discretion).
-
-## 4. Refund Processing
-
-- Approved refunds will be processed within **5-7 business days** and credited back via the original payment method.
-- Processing times may vary depending on your bank or payment provider — some banks may take an additional 2-3 business days.
-- If you do not see the refund within 7-10 business days, please contact us immediately at info@caretowardscure.com.
-
-## 5. Clinic-Initiated Cancellations
-
-If **we** need to cancel or reschedule your appointment due to:
-- Doctor unavailability
-- Medical emergencies
-- Unforeseen circumstances
-- System/technical issues
-
-We will notify you **as soon as possible** and offer:
-- A **rescheduled appointment** at your earliest convenience, or
-- A **full refund** if a new appointment time does not work for you
-
-In cases of clinic-initiated cancellations, you may also request to be placed on a priority cancellation list for future appointments.
-
-## 6. Online Consultation Refunds
-
-- **Online consultations** follow the same cancellation and refund policy as in-clinic appointments.
-- If technical issues prevent the consultation from occurring on our end, a full refund will be issued immediately.
-- If the patient is unavailable at the scheduled time, the standard cancellation policy applies.
-
-## 7. Package/Subscription Refunds
-
-- Clinic packages or subscription services are **generally non-refundable** once purchased and any services have commenced.
-- Unused portions of a package may be refunded at management discretion if requested within 30 days of purchase.
-- Partial refunds for completed services are evaluated on a case-by-case basis.
-
-## 8. Special Circumstances
-
-The following situations may qualify for full or partial refund consideration:
-- Documented medical emergency or severe illness preventing attendance
-- Death in the family or major personal hardship (with supporting documentation)
-- Significant miscommunication regarding appointment time/date
-- Service failure or negligence on our part
-
-Please contact us at info@caretowardscure.com or call 9414311475 to discuss your specific situation.
-
-## 9. Dispute Resolution
-
-If you believe a cancellation fee or refund decision was made in error:
-1. Contact us within **14 days** of the disputed charge
-2. Provide your appointment details, proof of payment, and reason for dispute
-3. Our management team will review and respond within **5 business days**
-4. If you remain unsatisfied, you may escalate to our clinic director for final review
-
-## 10. Changes to This Policy
-
-We reserve the right to update this Refund & Cancellation Policy at any time. Changes will be effective immediately upon posting to this website, with an updated "Last Updated" date. Continued use of our services after policy changes constitutes acceptance of the updated policy.
-
-## 11. Contact for Refund or Cancellation Requests
-
-**Phone:** 9414311475
-**Email:** info@caretowardscure.com
-**Address:** 2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020
-
-**Operating Hours:**
-- Monday – Friday: 9:00 AM – 6:00 PM
-- Saturday: 10:00 AM – 4:00 PM
-- Sunday: Closed
-
-For any questions regarding refunds, cancellations, or our policies, please don\'t hesitate to contact us. Your satisfaction and trust are important to us.',
-		),
 	);
 
 	foreach ( $pages as $page ) {
@@ -2321,10 +2645,412 @@ For any questions regarding refunds, cancellations, or our policies, please don\
 	}
 }
 
+/**
+ * Create Sample Doctors
+ *
+ * Creates sample doctor posts if none exist. Can be removed once doctors are manually created.
+ */
+function care_create_sample_doctors(): void {
+	$doctors_count = new WP_Query(
+		array(
+			'post_type'  => 'care_doctor',
+			'posts_per_page' => -1,
+			'fields'     => 'ids',
+		)
+	);
+
+	// Only create sample doctors if none exist
+	if ( $doctors_count->found_posts === 0 ) {
+		$sample_doctors = array(
+			array(
+				'title'           => 'Dr. M.K. Saini',
+				'content'         => 'Dr. M.K. Saini believes that effective healthcare begins with understanding the patient as an individual.',
+				'designation'     => 'General Physician',
+				'qualifications'  => 'MBBS, MD',
+				'specialties'     => 'General Medicine, Internal Medicine',
+				'experience'      => '15+ years of clinical experience in patient care and consultation',
+			),
+			array(
+				'title'           => 'Dr. Jyoti Jain',
+				'content'         => 'Dr. Jyoti Jain is committed to providing compassionate and patient-centred care.',
+				'designation'     => 'General Physician',
+				'qualifications'  => 'MBBS, MD',
+				'specialties'     => 'General Medicine, Pediatrics',
+				'experience'      => '12+ years of experience in comprehensive healthcare management',
+			),
+		);
+
+		foreach ( $sample_doctors as $doctor ) {
+			$post_id = wp_insert_post(
+				array(
+					'post_type'    => 'care_doctor',
+					'post_title'   => $doctor['title'],
+					'post_content' => $doctor['content'],
+					'post_excerpt' => $doctor['content'],
+					'post_status'  => 'publish',
+				)
+			);
+
+			if ( ! is_wp_error( $post_id ) ) {
+				update_post_meta( $post_id, 'doctor_designation', $doctor['designation'] );
+				update_post_meta( $post_id, 'doctor_qualifications', $doctor['qualifications'] );
+				update_post_meta( $post_id, 'doctor_specialties', $doctor['specialties'] );
+				update_post_meta( $post_id, 'doctor_experience', $doctor['experience'] );
+			}
+		}
+	}
+}
+
+/**
+ * Create Sample FAQs
+ *
+ * Creates sample FAQ posts if none exist. Can be removed once FAQs are manually created.
+ */
+function care_create_sample_faqs(): void {
+	$faqs_count = new WP_Query(
+		array(
+			'post_type'  => 'care_faq',
+			'posts_per_page' => -1,
+			'fields'     => 'ids',
+		)
+	);
+
+	// Only create sample FAQs if none exist
+	if ( $faqs_count->found_posts === 0 ) {
+		$sample_faqs = array(
+			array(
+				'title'   => 'Is online consultation available?',
+				'content' => 'Yes. Care Towards Cure provides online consultation for conditions that can be appropriately assessed through a remote consultation.',
+				'order'   => 10,
+			),
+			array(
+				'title'   => 'How do I book an appointment?',
+				'content' => 'Click Book Appointment, select your preferred consultation option and complete the appointment form.',
+				'order'   => 20,
+			),
+			array(
+				'title'   => 'Will I receive a prescription?',
+				'content' => 'A prescription may be provided when clinically appropriate following the doctor\'s consultation and assessment.',
+				'order'   => 30,
+			),
+			array(
+				'title'   => 'Can I share my previous medical reports?',
+				'content' => 'Yes. You can upload or share relevant medical reports and prescriptions during the appointment process.',
+				'order'   => 40,
+			),
+			array(
+				'title'   => 'Can I book a follow-up consultation?',
+				'content' => 'Yes. Follow-up consultations can be booked when recommended or required.',
+				'order'   => 50,
+			),
+			array(
+				'title'   => 'Can I cancel my appointment?',
+				'content' => 'Please refer to our cancellation and refund policy for the applicable terms.',
+				'order'   => 60,
+			),
+			array(
+				'title'   => 'Is online consultation suitable for every medical condition?',
+				'content' => 'No. Some conditions require physical examination, investigations or emergency medical care. The doctor will advise you if an in-person consultation is necessary.',
+				'order'   => 70,
+			),
+		);
+
+		foreach ( $sample_faqs as $faq ) {
+			$post_id = wp_insert_post(
+				array(
+					'post_type'   => 'care_faq',
+					'post_title'  => $faq['title'],
+					'post_content' => $faq['content'],
+					'post_status' => 'publish',
+					'menu_order'  => $faq['order'],
+				)
+			);
+
+			if ( ! is_wp_error( $post_id ) ) {
+				update_post_meta( $post_id, 'faq_visible', 'yes' );
+				update_post_meta( $post_id, 'faq_order', $faq['order'] );
+			}
+		}
+	}
+}
+
 // Create policy pages on theme activation
+/**
+ * Register Services Custom Post Type
+ *
+ * Creates a custom post type for managing clinic services with admin interface.
+ */
+function care_register_services_cpt(): void {
+	$args = array(
+		'label'               => __( 'Services', 'care-towards-cure' ),
+		'description'         => __( 'Clinic services and offerings', 'care-towards-cure' ),
+		'public'              => true,
+		'hierarchical'        => false,
+		'exclude_from_search' => false,
+		'publicly_queryable'  => true,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => true,
+		'supports'            => array( 'title', 'editor', 'thumbnail' ),
+		'menu_icon'           => 'dashicons-heart',
+		'menu_position'       => 21,
+	);
+
+	register_post_type( 'care_service', $args );
+}
+add_action( 'init', 'care_register_services_cpt' );
+
+/**
+ * Add Service Meta Boxes
+ *
+ * Adds custom fields for service visibility in the admin.
+ */
+function care_add_service_meta_boxes(): void {
+	add_meta_box(
+		'service_visibility',
+		__( 'Service Settings', 'care-towards-cure' ),
+		'care_render_service_meta_box',
+		'care_service',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'care_add_service_meta_boxes' );
+
+/**
+ * Render Service Meta Box
+ *
+ * @param WP_Post $post The post object.
+ */
+function care_render_service_meta_box( WP_Post $post ): void {
+	wp_nonce_field( 'care_service_nonce', 'care_service_nonce' );
+
+	$visible = get_post_meta( $post->ID, 'service_visible', true );
+	$order   = get_post_meta( $post->ID, 'service_order', true );
+
+	if ( ! $visible ) {
+		$visible = 'yes';
+	}
+	if ( ! $order ) {
+		$order = $post->menu_order;
+	}
+	?>
+	<div style="padding: 20px 0;">
+		<p>
+			<label for="service_visible"><?php esc_html_e( 'Display on Website:', 'care-towards-cure' ); ?></label><br>
+			<select id="service_visible" name="service_visible" style="width: 100%; padding: 8px; margin-top: 5px;">
+				<option value="yes" <?php selected( $visible, 'yes' ); ?>><?php esc_html_e( 'Yes, display this service', 'care-towards-cure' ); ?></option>
+				<option value="no" <?php selected( $visible, 'no' ); ?>><?php esc_html_e( 'No, hide this service', 'care-towards-cure' ); ?></option>
+			</select>
+		</p>
+
+		<p>
+			<label for="service_order"><?php esc_html_e( 'Display Order:', 'care-towards-cure' ); ?></label><br>
+			<input type="number" id="service_order" name="service_order" value="<?php echo esc_attr( $order ); ?>" style="width: 100%; padding: 8px; margin-top: 5px;" placeholder="0" min="0">
+			<small style="color: #666;"><?php esc_html_e( 'Lower numbers appear first. Increment by 10 for easier reordering.', 'care-towards-cure' ); ?></small>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Save Service Meta Box Data
+ *
+ * @param int $post_id The post ID.
+ */
+function care_save_service_meta_box( int $post_id ): void {
+	if ( ! isset( $_POST['care_service_nonce'] ) || ! wp_verify_nonce( $_POST['care_service_nonce'], 'care_service_nonce' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['service_visible'] ) ) {
+		update_post_meta( $post_id, 'service_visible', sanitize_text_field( $_POST['service_visible'] ) );
+	}
+
+	if ( isset( $_POST['service_order'] ) ) {
+		update_post_meta( $post_id, 'service_order', intval( $_POST['service_order'] ) );
+	}
+}
+add_action( 'save_post_care_service', 'care_save_service_meta_box' );
+
+/**
+ * Register Gallery Custom Post Type
+ *
+ * Creates a custom post type for managing clinic gallery images.
+ */
+function care_register_gallery_cpt(): void {
+	$args = array(
+		'label'               => __( 'Gallery', 'care-towards-cure' ),
+		'description'         => __( 'Clinic gallery and images', 'care-towards-cure' ),
+		'public'              => false,
+		'hierarchical'        => false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => false,
+		'supports'            => array( 'thumbnail' ),
+		'menu_icon'           => 'dashicons-format-gallery',
+		'menu_position'       => 23,
+	);
+
+	register_post_type( 'care_gallery', $args );
+}
+add_action( 'init', 'care_register_gallery_cpt' );
+
+/**
+ * Auto-generate Gallery Post Title from Image
+ *
+ * Automatically creates a title based on the featured image when saving.
+ */
+function care_auto_title_gallery_image( int $post_id ): void {
+	if ( get_post_type( $post_id ) !== 'care_gallery' ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	$post = get_post( $post_id );
+
+	// If post has no title, generate one from featured image
+	if ( empty( $post->post_title ) ) {
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+
+		if ( $thumbnail_id ) {
+			$image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
+			$image_alt = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
+
+			$title = $image_alt ?: wp_get_attachment_caption( $thumbnail_id ) ?: 'Gallery Image ' . $post_id;
+
+			// Remove the 'auto_title_gallery_image' action to avoid infinite loop
+			remove_action( 'save_post', 'care_auto_title_gallery_image' );
+
+			wp_update_post( array(
+				'ID'         => $post_id,
+				'post_title' => sanitize_text_field( $title ),
+			) );
+
+			// Re-add the action
+			add_action( 'save_post', 'care_auto_title_gallery_image' );
+		}
+	}
+}
+add_action( 'save_post', 'care_auto_title_gallery_image' );
+
+/**
+ * Register Inquiry Custom Post Type
+ *
+ * Creates a custom post type for storing submitted appointment inquiries.
+ */
+function care_register_inquiry_cpt(): void {
+	$args = array(
+		'label'               => __( 'Inquiries', 'care-towards-cure' ),
+		'description'         => __( 'Appointment inquiry submissions', 'care-towards-cure' ),
+		'public'              => false,
+		'hierarchical'        => false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => true,
+		'supports'            => array( 'title' ),
+		'menu_icon'           => 'dashicons-email-alt',
+		'menu_position'       => 24,
+		'capability_type'     => 'post',
+		'capabilities'        => array(
+			'create_posts' => false,
+		),
+		'map_meta_cap'        => true,
+	);
+
+	register_post_type( 'care_inquiry', $args );
+}
+add_action( 'init', 'care_register_inquiry_cpt' );
+
+/**
+ * Add Inquiry Meta Boxes
+ *
+ * Displays inquiry details in the admin.
+ */
+function care_add_inquiry_meta_boxes(): void {
+	add_meta_box(
+		'inquiry_details',
+		__( 'Inquiry Details', 'care-towards-cure' ),
+		'care_render_inquiry_meta_box',
+		'care_inquiry',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'care_add_inquiry_meta_boxes' );
+
+/**
+ * Render Inquiry Meta Box
+ *
+ * @param WP_Post $post The post object.
+ */
+function care_render_inquiry_meta_box( WP_Post $post ): void {
+	$patient_name     = get_post_meta( $post->ID, 'inquiry_patient_name', true );
+	$patient_phone    = get_post_meta( $post->ID, 'inquiry_patient_phone', true );
+	$patient_email    = get_post_meta( $post->ID, 'inquiry_patient_email', true );
+	$appointment_date = get_post_meta( $post->ID, 'inquiry_appointment_date', true );
+	$appointment_time = get_post_meta( $post->ID, 'inquiry_appointment_time', true );
+	$reason           = get_post_meta( $post->ID, 'inquiry_reason', true );
+	$submitted_date   = get_post_meta( $post->ID, 'inquiry_submitted_date', true );
+	?>
+	<div style="padding: 20px 0;">
+		<table style="width: 100%; border-collapse: collapse;">
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; width: 30%;">Patient Name:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><?php echo esc_html( $patient_name ); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Phone:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="tel:<?php echo esc_attr( $patient_phone ); ?>"><?php echo esc_html( $patient_phone ); ?></a></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Email:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:<?php echo esc_attr( $patient_email ); ?>"><?php echo esc_html( $patient_email ); ?></a></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Preferred Date:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><?php echo esc_html( $appointment_date ); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Preferred Time:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><?php echo esc_html( $appointment_time ); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Reason:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #eee;"><?php echo esc_html( $reason ); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; font-weight: bold;">Submitted:</td>
+				<td style="padding: 10px;"><?php echo esc_html( $submitted_date ); ?></td>
+			</tr>
+		</table>
+	</div>
+	<?php
+}
+
 add_action( 'after_switch_theme', 'care_create_policy_pages' );
 
 // Also run on every admin page load as a fallback (can be removed later once pages are created)
 if ( is_admin() ) {
 	add_action( 'admin_init', 'care_create_policy_pages' );
+	add_action( 'admin_init', 'care_create_sample_doctors' );
+	add_action( 'admin_init', 'care_create_sample_faqs' );
 }

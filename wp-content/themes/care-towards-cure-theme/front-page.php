@@ -20,7 +20,7 @@ get_header();
 		$hero_title     = get_theme_mod( 'care_hero_title', __( 'Your Health Deserves Personalised Care.', 'care-towards-cure' ) );
 		$hero_subtitle  = get_theme_mod( 'care_hero_subtitle', __( 'Professional healthcare consultation designed around you — with convenient online access from wherever you are.', 'care-towards-cure' ) );
 		$hero_btn1_text = get_theme_mod( 'care_hero_btn1_text', __( 'Book an Appointment', 'care-towards-cure' ) );
-		$hero_btn2_text = get_theme_mod( 'care_hero_btn2_text', __( 'Start Online Consultation', 'care-towards-cure' ) );
+		$hero_btn2_text = get_theme_mod( 'care_hero_btn2_text', __( 'Inquire Now', 'care-towards-cure' ) );
 
 		// Slides come from Customizer → Hero → Carousel Images (4 optional slots).
 		$hero_slides = array();
@@ -145,6 +145,46 @@ get_header();
 			</div>
 		</section>
 
+		<!-- ===== CLINIC GALLERY SECTION ===== -->
+		<section class="gallery-section" id="gallery" data-reveal>
+			<div class="container">
+				<div class="gallery-header">
+					<h2><?php esc_html_e( 'OUR CLINIC', 'care-towards-cure' ); ?></h2>
+					<p class="gallery-subtitle"><?php esc_html_e( 'A Look Inside Care Towards Cure', 'care-towards-cure' ); ?></p>
+				</div>
+
+				<?php
+				// Get all gallery images from the Gallery CPT
+				$gallery_query = new WP_Query( array(
+					'post_type'      => 'care_gallery',
+					'posts_per_page' => -1,
+					'orderby'        => 'menu_order date',
+					'order'          => 'ASC',
+				) );
+				?>
+
+				<?php if ( $gallery_query->have_posts() ) : ?>
+					<div class="gallery-grid" data-reveal-group>
+						<?php
+						while ( $gallery_query->have_posts() ) {
+							$gallery_query->the_post();
+							if ( has_post_thumbnail() ) {
+								?>
+								<div class="gallery-item">
+									<div class="gallery-image-wrapper">
+										<?php the_post_thumbnail( 'care-card' ); ?>
+									</div>
+								</div>
+								<?php
+							}
+						}
+						wp_reset_postdata();
+						?>
+					</div>
+				<?php endif; ?>
+			</div>
+		</section>
+
 		<!-- ===== HEALTHCARE THAT LISTENS SECTION ===== -->
 		<section class="listens-section" data-reveal>
 			<div class="container">
@@ -252,7 +292,7 @@ get_header();
 				</div>
 				<div class="consultation-button">
 					<button type="button" class="btn btn-primary btn-lg" data-open-modal="consultationModal">
-						<?php esc_html_e( 'Book Online Consultation', 'care-towards-cure' ); ?>
+						<?php esc_html_e( 'Inquire Now', 'care-towards-cure' ); ?>
 					</button>
 				</div>
 			</div>
@@ -276,54 +316,50 @@ get_header();
 				</div>
 
 				<?php
-				$doctor_1_image_id = get_theme_mod( 'care_doctor_image_1' );
-				$doctor_1_image_url = $doctor_1_image_id ? wp_get_attachment_url( $doctor_1_image_id ) : get_template_directory_uri() . '/images/placeholder-doctor-1.svg';
-
-				$doctor_2_image_id = get_theme_mod( 'care_doctor_image_2' );
-				$doctor_2_image_url = $doctor_2_image_id ? wp_get_attachment_url( $doctor_2_image_id ) : get_template_directory_uri() . '/images/placeholder-doctor-2.svg';
+				// Get all doctors from the Doctor CPT
+				$doctors_query = new WP_Query( array(
+					'post_type'      => 'care_doctor',
+					'posts_per_page' => -1,
+					'orderby'        => 'menu_order',
+					'order'          => 'ASC',
+				) );
 				?>
 				<div class="doctors-grid" data-reveal-group>
-					<!-- Doctor 1 -->
-					<div class="doctor-card">
-						<div class="doctor-image-wrapper">
-							<img src="<?php echo esc_url( $doctor_1_image_url ); ?>" alt="<?php esc_attr_e( 'Dr. M.K. Saini', 'care-towards-cure' ); ?>" class="doctor-image">
-						</div>
-						<div class="doctor-info">
-							<h3 class="doctor-name"><?php esc_html_e( 'Dr. M.K. Saini', 'care-towards-cure' ); ?></h3>
-							<p class="doctor-title"><?php esc_html_e( 'Doctor | Care Towards Cure', 'care-towards-cure' ); ?></p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'Dr. M.K. Saini believes that effective healthcare begins with understanding the patient as an individual.', 'care-towards-cure' ); ?>
-							</p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'Every consultation is an opportunity to listen to the patient\'s concerns, understand their health history and provide thoughtful guidance based on their individual needs.', 'care-towards-cure' ); ?>
-							</p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'At Care Towards Cure, Dr. M.K. Saini focuses on clear communication and personalised care, helping patients better understand their health concerns and the treatment approach recommended for them.', 'care-towards-cure' ); ?>
-							</p>
-							<a href="#" class="doctor-button"><?php esc_html_e( 'View Profile', 'care-towards-cure' ); ?></a>
-						</div>
-					</div>
-
-					<!-- Doctor 2 -->
-					<div class="doctor-card">
-						<div class="doctor-image-wrapper">
-							<img src="<?php echo esc_url( $doctor_2_image_url ); ?>" alt="<?php esc_attr_e( 'Dr. Jyoti Jain', 'care-towards-cure' ); ?>" class="doctor-image">
-						</div>
-						<div class="doctor-info">
-							<h3 class="doctor-name"><?php esc_html_e( 'Dr. Jyoti Jain', 'care-towards-cure' ); ?></h3>
-							<p class="doctor-title"><?php esc_html_e( 'Doctor | Care Towards Cure', 'care-towards-cure' ); ?></p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'Dr. Jyoti Jain is committed to providing compassionate and patient-centred care.', 'care-towards-cure' ); ?>
-							</p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'Her approach focuses on listening to patients carefully, understanding their concerns and creating a comfortable environment where patients can openly discuss their health.', 'care-towards-cure' ); ?>
-							</p>
-							<p class="doctor-description">
-								<?php esc_html_e( 'At Care Towards Cure, Dr. Jyoti Jain believes in treating every patient with individual attention and providing healthcare guidance based on their specific needs.', 'care-towards-cure' ); ?>
-							</p>
-							<a href="#" class="doctor-button"><?php esc_html_e( 'View Profile', 'care-towards-cure' ); ?></a>
-						</div>
-					</div>
+					<?php
+					if ( $doctors_query->have_posts() ) {
+						while ( $doctors_query->have_posts() ) {
+							$doctors_query->the_post();
+							$doctor_id = get_the_ID();
+							$designation = get_post_meta( $doctor_id, 'doctor_designation', true );
+							$excerpt = get_the_excerpt();
+							?>
+							<div class="doctor-card">
+								<?php if ( has_post_thumbnail() ) : ?>
+									<div class="doctor-image">
+										<?php the_post_thumbnail( 'care-card' ); ?>
+									</div>
+								<?php endif; ?>
+								<div class="doctor-content">
+									<h3 class="doctor-name"><?php the_title(); ?></h3>
+									<?php if ( $designation ) : ?>
+										<p class="doctor-designation"><?php echo esc_html( $designation ); ?></p>
+									<?php endif; ?>
+									<?php if ( $excerpt ) : ?>
+										<p class="doctor-bio"><?php echo wp_kses_post( $excerpt ); ?></p>
+										<?php if ( strlen( wp_strip_all_tags( get_the_content() ) ) > 150 ) : ?>
+											<button class="doctor-show-more-btn" type="button"><?php esc_html_e( 'Show More', 'care-towards-cure' ); ?></button>
+										<?php endif; ?>
+									<?php endif; ?>
+									<div class="doctor-actions">
+										<a href="<?php the_permalink(); ?>" class="btn btn-secondary"><?php esc_html_e( 'View Profile', 'care-towards-cure' ); ?></a>
+									</div>
+								</div>
+							</div>
+							<?php
+						}
+						wp_reset_postdata();
+					}
+					?>
 				</div>
 
 				<div class="doctors-footer">
@@ -344,9 +380,10 @@ get_header();
 		<!-- ===== ABOUT CARE TOWARDS CURE SECTION ===== -->
 		<section class="about-section" id="about" data-reveal>
 			<div class="container">
+				<!-- 1. WELCOME TO CARE TOWARDS CURE -->
 				<div class="about-header">
-					<h2><?php esc_html_e( 'ABOUT CARE TOWARDS CURE', 'care-towards-cure' ); ?></h2>
-					<h3 class="about-subtitle"><?php esc_html_e( 'More Than a Consultation', 'care-towards-cure' ); ?></h3>
+					<h2><?php esc_html_e( 'WELCOME TO CARE TOWARDS CURE', 'care-towards-cure' ); ?></h2>
+					<h3 class="about-subtitle"><?php esc_html_e( 'Personalised Healthcare With a Patient-First Approach', 'care-towards-cure' ); ?></h3>
 				</div>
 
 				<div class="about-content">
@@ -364,8 +401,43 @@ get_header();
 					</p>
 				</div>
 
-				<div class="about-values">
-					<h3 class="values-title"><?php esc_html_e( 'Our Values', 'care-towards-cure' ); ?></h3>
+				<!-- 2. OUR APPROACH -->
+				<div class="about-approach" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #e0e0e0;">
+					<h3 style="font-size: 2rem; font-weight: 700; color: #1a1a1a; margin-bottom: 30px; text-align: center;"><?php esc_html_e( 'OUR APPROACH', 'care-towards-cure' ); ?></h3>
+					<p style="text-align: center; font-size: 1.1rem; color: #666; margin-bottom: 40px;">
+						<?php esc_html_e( 'Listen. Understand. Treat. Follow Up.', 'care-towards-cure' ); ?>
+					</p>
+					<p style="text-align: center; color: #555; line-height: 1.8; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+						<?php esc_html_e( 'Every patient is different, and healthcare should not follow a one-size-fits-all approach. At Care Towards Cure, we take time to understand your concerns before recommending a treatment approach. Our consultation process focuses on:', 'care-towards-cure' ); ?>
+					</p>
+					<div class="approach-steps" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px;">
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Understanding your symptoms and concerns', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Reviewing your relevant medical history', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Assessing your individual needs', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Providing personalised treatment guidance', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Explaining the recommended treatment clearly', 'care-towards-cure' ); ?></h4>
+						</div>
+						<div class="step" style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+							<h4 style="color: #1a1a1a; font-weight: 600; margin-bottom: 10px;"><?php esc_html_e( 'Following up on your progress when required', 'care-towards-cure' ); ?></h4>
+						</div>
+					</div>
+					<p style="text-align: center; color: #555; line-height: 1.8; font-size: 1.05rem;">
+						<?php esc_html_e( 'Our aim is to create a healthcare experience where patients feel heard, informed and supported.', 'care-towards-cure' ); ?>
+					</p>
+				</div>
+
+				<!-- 3. OUR VALUES -->
+				<div class="about-values" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #e0e0e0;">
+					<h3 class="values-title" style="font-size: 2rem; font-weight: 700; color: #1a1a1a; margin-bottom: 40px; text-align: center;"><?php esc_html_e( 'OUR VALUES', 'care-towards-cure' ); ?></h3>
 
 					<div class="values-grid">
 						<div class="value-card">
@@ -443,46 +515,43 @@ get_header();
 					<h3 class="services-subtitle"><?php esc_html_e( 'Consultation & Treatment', 'care-towards-cure' ); ?></h3>
 				</div>
 
+				<?php
+				// Get all services from the Service CPT
+				$services_query = new WP_Query( array(
+					'post_type'      => 'care_service',
+					'posts_per_page' => -1,
+					'orderby'        => 'menu_order',
+					'order'          => 'ASC',
+					'meta_query'     => array(
+						array(
+							'key'     => 'service_visible',
+							'value'   => 'yes',
+							'compare' => '=',
+						),
+					),
+				) );
+				?>
+
 				<div class="services-grid" data-reveal-group>
-					<!-- Service 1 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Online Doctor Consultation', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'Consult with our doctor remotely from the comfort of your home.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- Service 2 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Personalised Treatment Guidance', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'Treatment recommendations based on your individual health concerns and consultation.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- Service 3 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Follow-Up Consultation', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'Continue monitoring your progress and discuss changes or concerns during follow-up consultations.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- Service 4 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Medical Document Review', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'Relevant reports, prescriptions and medical documents can be reviewed as part of the consultation when required.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- Service 5 -->
-					<div class="service-card">
-						<h4 class="service-title"><?php esc_html_e( 'Second Opinion', 'care-towards-cure' ); ?></h4>
-						<p class="service-description">
-							<?php esc_html_e( 'If you have already received a diagnosis or treatment recommendation, you can discuss your case with our doctor for an additional professional opinion.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
+					<?php
+					if ( $services_query->have_posts() ) {
+						while ( $services_query->have_posts() ) {
+							$services_query->the_post();
+							?>
+							<a href="<?php the_permalink(); ?>" class="service-card service-card-link">
+								<h4 class="service-title"><?php the_title(); ?></h4>
+								<p class="service-description">
+									<?php echo wp_kses_post( get_the_excerpt() ); ?>
+								</p>
+								<div class="service-cta">
+									<?php esc_html_e( 'Learn More →', 'care-towards-cure' ); ?>
+								</div>
+							</a>
+							<?php
+						}
+						wp_reset_postdata();
+					}
+					?>
 				</div>
 
 				<div class="services-disclaimer">
@@ -595,7 +664,6 @@ get_header();
 			<div class="container">
 				<div class="appointment-header">
 					<h2><?php esc_html_e( 'APPOINTMENT & ONLINE CONSULTATION', 'care-towards-cure' ); ?></h2>
-					<h3 class="appointment-subtitle"><?php esc_html_e( 'How to Book an Appointment', 'care-towards-cure' ); ?></h3>
 				</div>
 
 				<div class="steps-container">
@@ -674,253 +742,59 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ===== PATIENT INFORMATION SECTION ===== -->
-		<section class="patient-info-section" id="patient-info" data-reveal>
-			<div class="container">
-				<div class="patient-info-header">
-					<h2><?php esc_html_e( 'PATIENT INFORMATION', 'care-towards-cure' ); ?></h2>
-					<h3 class="patient-info-subtitle"><?php esc_html_e( 'Before Your Consultation', 'care-towards-cure' ); ?></h3>
-				</div>
-
-				<div class="patient-info-content">
-					<p class="patient-info-intro">
-						<?php esc_html_e( 'To make your consultation more useful, please keep the following information ready:', 'care-towards-cure' ); ?>
-					</p>
-
-					<div class="info-items">
-						<!-- Item 1 -->
-						<div class="info-item">
-							<div class="info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<p class="info-text"><?php esc_html_e( 'Current symptoms and concerns', 'care-towards-cure' ); ?></p>
-						</div>
-
-						<!-- Item 2 -->
-						<div class="info-item">
-							<div class="info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<p class="info-text"><?php esc_html_e( 'Previous medical history', 'care-towards-cure' ); ?></p>
-						</div>
-
-						<!-- Item 3 -->
-						<div class="info-item">
-							<div class="info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<p class="info-text"><?php esc_html_e( 'Current medicines', 'care-towards-cure' ); ?></p>
-						</div>
-
-						<!-- Item 4 -->
-						<div class="info-item">
-							<div class="info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<p class="info-text"><?php esc_html_e( 'Previous prescriptions', 'care-towards-cure' ); ?></p>
-						</div>
-
-						<!-- Item 5 -->
-						<div class="info-item">
-							<div class="info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<p class="info-text"><?php esc_html_e( 'Relevant laboratory reports', 'care-towards-cure' ); ?></p>
-						</div>
-
-						<!-- Item 6 -->
-						<div class="info-item">
-							<div class="info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<p class="info-text"><?php esc_html_e( 'Imaging or diagnostic reports, if applicable', 'care-towards-cure' ); ?></p>
-						</div>
-
-						<!-- Item 7 -->
-						<div class="info-item">
-							<div class="info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<p class="info-text"><?php esc_html_e( 'Any other medical documents relevant to your condition', 'care-towards-cure' ); ?></p>
-						</div>
-					</div>
-
-					<div class="patient-info-note">
-						<p><?php esc_html_e( 'Please provide accurate and complete information to the doctor.', 'care-towards-cure' ); ?></p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ===== FREQUENTLY ASKED QUESTIONS SECTION ===== -->
+<!-- ===== FREQUENTLY ASKED QUESTIONS SECTION ===== -->
 		<section class="faq-section" id="faq" data-reveal>
 			<div class="container">
 				<div class="faq-header">
 					<h2><?php esc_html_e( 'FREQUENTLY ASKED QUESTIONS', 'care-towards-cure' ); ?></h2>
 				</div>
 
+				<?php
+				// Get all FAQs from the FAQ CPT
+				$faqs_query = new WP_Query( array(
+					'post_type'      => 'care_faq',
+					'posts_per_page' => -1,
+					'orderby'        => 'menu_order',
+					'order'          => 'ASC',
+					'meta_query'     => array(
+						array(
+							'key'     => 'faq_visible',
+							'value'   => 'yes',
+							'compare' => '=',
+						),
+					),
+				) );
+				?>
+
 				<div class="faq-grid" data-reveal-group>
-					<!-- FAQ 1 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<circle cx="12" cy="12" r="10"></circle>
-								<path d="M12 16v-4"></path>
-								<path d="M12 8h.01"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Is online consultation available?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Yes. Care Towards Cure provides online consultation for conditions that can be appropriately assessed through a remote consultation.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 2 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-								<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'How do I book an appointment?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Click Book Appointment, select your preferred consultation option and complete the appointment form.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 3 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Will I receive a prescription?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'A prescription may be provided when clinically appropriate following the doctor\'s consultation and assessment.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 4 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-								<polyline points="14 2 14 8 20 8"></polyline>
-								<path d="M12 19l-4-4 1-1 3 3 6-6"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Can I share my previous medical reports?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Yes. You can upload or share relevant medical reports and prescriptions during the appointment process.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 5 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M12 2c6.627 0 12 5.373 12 12s-5.373 12-12 12S0 20.627 0 14 5.373 2 12 2z"></path>
-								<path d="M12 6v6l4 2.5"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Can I book a follow-up consultation?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Yes. Follow-up consultations can be booked when recommended or required.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 6 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<polyline points="3 6 5 4 7 6"></polyline>
-								<line x1="4" y1="4" x2="4" y2="16"></line>
-								<polyline points="21 18 19 20 17 18"></polyline>
-								<line x1="20" y1="20" x2="20" y2="8"></line>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Can I cancel my appointment?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'Please refer to our cancellation and refund policy for the applicable terms.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<!-- FAQ 7 -->
-					<div class="faq-card">
-						<div class="faq-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
-								<path d="M15.5 11H9v3h6.5"></path>
-							</svg>
-						</div>
-						<h3 class="faq-question"><?php esc_html_e( 'Is online consultation suitable for every medical condition?', 'care-towards-cure' ); ?></h3>
-						<p class="faq-answer">
-							<?php esc_html_e( 'No. Some conditions require physical examination, investigations or emergency medical care. The doctor will advise you if an in-person consultation is necessary.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
+					<?php
+					if ( $faqs_query->have_posts() ) {
+						while ( $faqs_query->have_posts() ) {
+							$faqs_query->the_post();
+							?>
+							<div class="faq-card">
+								<div class="faq-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<circle cx="12" cy="12" r="10"></circle>
+										<path d="M12 16v-4"></path>
+										<path d="M12 8h.01"></path>
+									</svg>
+								</div>
+								<h3 class="faq-question"><?php the_title(); ?></h3>
+								<p class="faq-answer">
+									<?php echo wp_kses_post( get_the_content() ); ?>
+								</p>
+							</div>
+							<?php
+						}
+						wp_reset_postdata();
+					}
+					?>
 				</div>
 			</div>
 		</section>
 
-		<!-- ===== MEDICAL DISCLAIMER SECTION ===== -->
-		<section class="disclaimer-section" id="disclaimer" data-reveal>
-			<div class="container">
-				<div class="disclaimer-header">
-					<div class="disclaimer-icon">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<circle cx="12" cy="12" r="10"></circle>
-							<path d="M12 16v-4"></path>
-							<path d="M12 8h.01"></path>
-						</svg>
-					</div>
-					<h2><?php esc_html_e( 'MEDICAL DISCLAIMER', 'care-towards-cure' ); ?></h2>
-				</div>
-
-				<div class="disclaimer-content">
-					<div class="disclaimer-item">
-						<p>
-							<?php esc_html_e( 'Care Towards Cure provides healthcare consultation services for eligible medical concerns.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<div class="disclaimer-item">
-						<p>
-							<?php esc_html_e( 'Online consultation has limitations and may not be appropriate for every medical condition. A remote consultation cannot always replace a physical examination, diagnostic testing or in-person medical care.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<div class="disclaimer-item warning">
-						<p>
-							<?php esc_html_e( 'In case of a medical emergency, severe symptoms or a rapidly deteriorating condition, please seek immediate medical attention at the nearest emergency healthcare facility.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-
-					<div class="disclaimer-item">
-						<p>
-							<?php esc_html_e( 'Treatment recommendations are based on the information provided by the patient and the doctor\'s clinical assessment.', 'care-towards-cure' ); ?>
-						</p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ===== PRIVACY & PATIENT CONFIDENTIALITY SECTION ===== -->
+<!-- ===== PRIVACY & PATIENT CONFIDENTIALITY SECTION ===== -->
 		<section class="privacy-section" id="privacy" data-reveal>
 			<div class="container">
 				<div class="privacy-content">
@@ -977,15 +851,33 @@ get_header();
 									</svg>
 								</div>
 								<div class="contact-details">
-									<p class="contact-label"><?php esc_html_e( 'Clinic Address', 'care-towards-cure' ); ?></p>
+									<p class="contact-label"><a href="https://maps.app.goo.gl/1UzVF9bSzAeHunMbA" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer; font-weight: 600;"><?php esc_html_e( 'Triveni Nagar Branch', 'care-towards-cure' ); ?></a></p>
 									<p class="contact-value">
-										<a href="https://maps.app.goo.gl/5tx4B5ngJrVzMGRW8" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-											<?php esc_html_e( '2147, Gul Ji Dhabai Ki Gali, Gangauri Bazar, Jaipur-302020', 'care-towards-cure' ); ?>
+										<a href="https://maps.app.goo.gl/1UzVF9bSzAeHunMbA" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer;">
+											<?php esc_html_e( 'C-114, Triveni Nagar Rd, opposite Triveni Heights, Shopping Centre, Vishveshvariya Nagar, Arjun Nagar, Jaipur, Rajasthan 302019', 'care-towards-cure' ); ?>
 										</a>
 									</p>
 								</div>
 							</div>
 
+
+						<!-- Gangori Bazar Branch -->
+						<div class="contact-item">
+							<div class="contact-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+									<circle cx="12" cy="10" r="3"></circle>
+								</svg>
+							</div>
+							<div class="contact-details">
+								<p class="contact-label"><a href="https://maps.app.goo.gl/7oKefSf4GhnEc2Qx8" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer; font-weight: 600;"><?php esc_html_e( 'Gangori Bazar Branch', 'care-towards-cure' ); ?></a></p>
+								<p class="contact-value">
+									<a href="https://maps.app.goo.gl/7oKefSf4GhnEc2Qx8" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: pointer;">
+										<?php esc_html_e( 'PN 2147, opposite Gangori Bazar Road, Gangori Bazar, Purani Basti, Jaipur, Rajasthan 302001', 'care-towards-cure' ); ?>
+									</a>
+								</p>
+							</div>
+						</div>
 							<!-- Phone -->
 							<div class="contact-item">
 								<div class="contact-icon">
@@ -1015,7 +907,7 @@ get_header();
 									<p class="contact-label"><?php esc_html_e( 'Email', 'care-towards-cure' ); ?></p>
 									<p class="contact-value">
 										<?php
-										$contact_email = get_theme_mod( 'care_footer_email', 'enquiry@caretowardscure.com' );
+										$contact_email = get_theme_mod( 'care_footer_email', 'info@caretowardscure.com' );
 										?>
 										<a href="mailto:<?php echo esc_attr( $contact_email ); ?>">
 											<?php echo esc_html( $contact_email ); ?>
@@ -1036,7 +928,7 @@ get_header();
 									<p class="contact-label"><?php esc_html_e( 'Consultation Hours', 'care-towards-cure' ); ?></p>
 									<p class="contact-value">
 										<?php esc_html_e( 'Morning 10 AM to 2 PM', 'care-towards-cure' ); ?><br>
-										<?php esc_html_e( 'Evening 6 PM to 10 PM', 'care-towards-cure' ); ?>
+										<?php esc_html_e( 'Evening 5:30 PM to 9 PM', 'care-towards-cure' ); ?>
 									</p>
 								</div>
 							</div>
@@ -1052,6 +944,21 @@ get_header();
 						</a>
 					</div>
 				</div>
+
+
+			<!-- Branch Locations Map -->
+			<div id="contact-map-section" class="contact-map-section" style="margin-top: 60px; padding: 40px 20px; background: #f8f9fa;">
+				<div class="container">
+					<h3 style="text-align: center; font-size: 1.8rem; margin-bottom: 40px; font-weight: 700;"><?php esc_html_e( 'Our Clinic Locations', 'care-towards-cure' ); ?></h3>
+
+					<div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+						<iframe src="https://www.google.com/maps?q=care+towards+cure+jaipur&output=embed" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+					</div>
+					<p style="text-align: center; margin-top: 20px; color: #666; font-size: 0.95rem;">
+						📍 Triveni Nagar Branch | 📍 Gangori Bazar Branch - Both locations visible on the map above
+					</p>
+				</div>
+			</div>
 			</div>
 		</section>
 

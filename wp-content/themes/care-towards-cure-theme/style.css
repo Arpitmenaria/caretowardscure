@@ -491,11 +491,11 @@ textarea {
 .main-navigation {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-end;
 	gap: 0;
 	order: 2;
 	flex: 1;
-	margin: 0 2rem;
+	margin: 0 2rem 0 0;
 }
 
 .navbar-menu {
