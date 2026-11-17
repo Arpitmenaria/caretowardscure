@@ -195,22 +195,20 @@ defined( 'ABSPATH' ) || exit;
 	<!-- ===== FLOATING ACTION BUTTONS ===== -->
 	<?php if ( get_theme_mod( 'care_float_show', true ) ) : ?>
 		<?php
-		// Call: a custom URL wins, otherwise a tel: link is built from the footer phone number.
+		// Call: a custom link wins; a bare number is turned into a tel: link.
 		$call_label = get_theme_mod( 'care_float_call_label', __( 'Call', 'care-towards-cure' ) );
-		$call_url   = trim( (string) get_theme_mod( 'care_float_call_url', '' ) );
+		$call_url   = care_format_contact_link( (string) get_theme_mod( 'care_float_call_url', '' ), 'tel' );
 
 		if ( '' === $call_url ) {
-			$tel_digits = preg_replace( '/[^0-9+]/', '', (string) get_theme_mod( 'care_footer_phone', '+91 9414311475' ) );
-			$call_url   = $tel_digits ? 'tel:' . $tel_digits : '';
+			$call_url = care_format_contact_link( (string) get_theme_mod( 'care_footer_phone', '+91 9414311475' ), 'tel' );
 		}
 
-		// Chat: a custom URL wins, otherwise a wa.me link is built from the WhatsApp number.
+		// Chat: a custom link wins; a bare number becomes a wa.me link.
 		$chat_label = get_theme_mod( 'care_float_chat_label', __( 'Chat', 'care-towards-cure' ) );
-		$chat_url   = trim( (string) get_theme_mod( 'care_float_chat_url', '' ) );
+		$chat_url   = care_format_contact_link( (string) get_theme_mod( 'care_float_chat_url', '' ), 'whatsapp' );
 
 		if ( '' === $chat_url ) {
-			$wa_digits = preg_replace( '/[^0-9]/', '', (string) get_theme_mod( 'care_whatsapp_number', '919414311475' ) );
-			$chat_url  = $wa_digits ? 'https://wa.me/' . $wa_digits : '';
+			$chat_url = care_format_contact_link( (string) get_theme_mod( 'care_whatsapp_number', '919414311475' ), 'whatsapp' );
 		}
 
 		// Book: always opens the appointment enquiry modal.

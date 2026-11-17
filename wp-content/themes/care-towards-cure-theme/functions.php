@@ -526,7 +526,43 @@ function care_sanitize_link( $value ): string {
 		return sanitize_text_field( $value );
 	}
 
+	// Allow a bare phone number; care_format_contact_link() turns it into a link.
+	if ( preg_match( '/^[0-9+][0-9\s()+-]*$/', $value ) ) {
+		return sanitize_text_field( $value );
+	}
+
 	return esc_url_raw( $value, array( 'http', 'https', 'tel', 'mailto' ) );
+}
+
+/**
+ * Turn a Customizer link value into a usable href.
+ *
+ * Accepts a full URL, a tel:/mailto: link, an anchor, or a bare phone number.
+ * A bare number becomes a tel: link, or a wa.me link when $type is 'whatsapp'.
+ *
+ * @param string $value Raw Customizer value.
+ * @param string $type  'tel' or 'whatsapp'.
+ * @return string
+ */
+function care_format_contact_link( string $value, string $type = 'tel' ): string {
+	$value = trim( $value );
+
+	if ( '' === $value ) {
+		return '';
+	}
+
+	// Already a usable link or an on-page anchor.
+	if ( preg_match( '~^(https?://|tel:|mailto:|\#)~i', $value ) ) {
+		return $value;
+	}
+
+	$digits = preg_replace( '/[^0-9]/', '', $value );
+
+	if ( '' === $digits ) {
+		return '';
+	}
+
+	return ( 'whatsapp' === $type ) ? 'https://wa.me/' . $digits : 'tel:+' . $digits;
 }
 
 
@@ -1893,13 +1929,13 @@ function care_customize_register( $wp_customize ) {
 			'default'   => __( 'Call', 'care-towards-cure' ),
 			'label_name' => __( 'Call — Button Text', 'care-towards-cure' ),
 			'url_name'   => __( 'Call — Custom Link', 'care-towards-cure' ),
-			'url_help'   => __( 'Leave empty to dial the phone number set in Footer → Contact Details.', 'care-towards-cure' ),
+			'url_help'   => __( 'Phone number (e.g. 91 75685 47177) or a full link. Leave empty to use the Footer → Contact Details number.', 'care-towards-cure' ),
 		),
 		'chat' => array(
 			'default'   => __( 'Chat', 'care-towards-cure' ),
 			'label_name' => __( 'Chat — Button Text', 'care-towards-cure' ),
 			'url_name'   => __( 'Chat — Custom Link', 'care-towards-cure' ),
-			'url_help'   => __( 'Leave empty to open WhatsApp using the number set in Footer → Contact Details.', 'care-towards-cure' ),
+			'url_help'   => __( 'WhatsApp number with country code (e.g. 91 75685 47177) or a full link. Leave empty to use the Footer → Contact Details number.', 'care-towards-cure' ),
 		),
 		'book' => array(
 			'default'    => __( 'Book Appointment', 'care-towards-cure' ),
