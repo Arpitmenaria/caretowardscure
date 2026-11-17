@@ -160,5 +160,70 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 
+	<!-- ===== FLOATING ACTION BUTTONS ===== -->
+	<?php if ( get_theme_mod( 'care_float_show', true ) ) : ?>
+		<?php
+		// Call: a custom URL wins, otherwise a tel: link is built from the footer phone number.
+		$call_label = get_theme_mod( 'care_float_call_label', __( 'Call', 'care-towards-cure' ) );
+		$call_url   = trim( (string) get_theme_mod( 'care_float_call_url', '' ) );
+
+		if ( '' === $call_url ) {
+			$tel_digits = preg_replace( '/[^0-9+]/', '', (string) get_theme_mod( 'care_footer_phone', '+91 9414311475' ) );
+			$call_url   = $tel_digits ? 'tel:' . $tel_digits : '';
+		}
+
+		// Chat: a custom URL wins, otherwise a wa.me link is built from the WhatsApp number.
+		$chat_label = get_theme_mod( 'care_float_chat_label', __( 'Chat', 'care-towards-cure' ) );
+		$chat_url   = trim( (string) get_theme_mod( 'care_float_chat_url', '' ) );
+
+		if ( '' === $chat_url ) {
+			$wa_digits = preg_replace( '/[^0-9]/', '', (string) get_theme_mod( 'care_whatsapp_number', '919414311475' ) );
+			$chat_url  = $wa_digits ? 'https://wa.me/' . $wa_digits : '';
+		}
+
+		// Book: always opens the appointment enquiry modal.
+		$book_label = get_theme_mod( 'care_float_book_label', __( 'Book Appointment', 'care-towards-cure' ) );
+
+		$icon_call = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>';
+		$icon_chat = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.15h-.01c-1.52 0-3.01-.41-4.3-1.18l-.31-.18-3.2.84.85-3.12-.2-.32a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.24 8.23z"></path><path d="M16.9 14.03c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.13-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.18-1.34-.8-.72-1.35-1.6-1.51-1.87-.16-.27-.02-.42.12-.55.12-.12.27-.32.4-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.44-.46-.61-.47h-.52c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.26s.97 2.62 1.11 2.8c.14.18 1.91 2.92 4.63 4.09.65.28 1.15.45 1.54.57.65.21 1.24.18 1.71.11.52-.08 1.6-.65 1.83-1.29.23-.63.23-1.18.16-1.29-.07-.11-.25-.18-.52-.31z"></path></svg>';
+		$icon_book = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>';
+
+		$icon_allowed = array(
+			'svg'    => array( 'xmlns' => true, 'viewbox' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true, 'aria-hidden' => true, 'focusable' => true ),
+			'path'   => array( 'd' => true ),
+			'rect'   => array( 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true ),
+			'line'   => array( 'x1' => true, 'y1' => true, 'x2' => true, 'y2' => true ),
+			'circle' => array( 'cx' => true, 'cy' => true, 'r' => true ),
+		);
+		?>
+		<div class="floating-actions" role="complementary" aria-label="<?php esc_attr_e( 'Quick contact', 'care-towards-cure' ); ?>">
+			<?php if ( ! empty( $call_url ) && ! empty( $call_label ) ) : ?>
+				<a class="floating-action floating-action-call" href="<?php echo esc_url( $call_url, array( 'http', 'https', 'tel', 'mailto' ) ); ?>">
+					<?php echo wp_kses( $icon_call, $icon_allowed ); ?>
+					<span class="floating-action-label"><?php echo esc_html( $call_label ); ?></span>
+				</a>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $chat_url ) && ! empty( $chat_label ) ) : ?>
+				<a
+					class="floating-action floating-action-chat"
+					href="<?php echo esc_url( $chat_url, array( 'http', 'https', 'tel', 'mailto' ) ); ?>"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<?php echo wp_kses( $icon_chat, $icon_allowed ); ?>
+					<span class="floating-action-label"><?php echo esc_html( $chat_label ); ?></span>
+				</a>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $book_label ) ) : ?>
+				<button type="button" class="floating-action floating-action-book" data-open-modal="appointmentModal">
+					<?php echo wp_kses( $icon_book, $icon_allowed ); ?>
+					<span class="floating-action-label"><?php echo esc_html( $book_label ); ?></span>
+				</button>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+
 </body>
 </html>

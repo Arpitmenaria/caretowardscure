@@ -13,38 +13,103 @@ get_header();
 ?>
 
 	<main id="main-content">
-		<!-- ===== HERO SECTION ===== -->
+		<!-- ===== HERO SLIDER SECTION ===== -->
 		<?php
-		$hero_image = get_theme_mod( 'care_hero_image_1' );
-		$hero_style = $hero_image ? ' style="background-image: url(' . esc_url( $hero_image ) . '); background-size: cover; background-position: center;"' : '';
-
-		// Get customizer values (these can be edited by client in admin)
-		$hero_badge = get_theme_mod( 'care_hero_badge', __( 'TRUSTED HEALTHCARE PROVIDER', 'care-towards-cure' ) );
-		$hero_title = get_theme_mod( 'care_hero_title', __( 'Your Health Deserves Personalised Care.', 'care-towards-cure' ) );
-		$hero_subtitle = get_theme_mod( 'care_hero_subtitle', __( 'Professional healthcare consultation designed around you — with convenient online access from wherever you are.', 'care-towards-cure' ) );
+		// Text content (editable by the client under Customizer → Hero).
+		$hero_badge     = get_theme_mod( 'care_hero_badge', __( 'TRUSTED HEALTHCARE PROVIDER', 'care-towards-cure' ) );
+		$hero_title     = get_theme_mod( 'care_hero_title', __( 'Your Health Deserves Personalised Care.', 'care-towards-cure' ) );
+		$hero_subtitle  = get_theme_mod( 'care_hero_subtitle', __( 'Professional healthcare consultation designed around you — with convenient online access from wherever you are.', 'care-towards-cure' ) );
 		$hero_btn1_text = get_theme_mod( 'care_hero_btn1_text', __( 'Book an Appointment', 'care-towards-cure' ) );
 		$hero_btn2_text = get_theme_mod( 'care_hero_btn2_text', __( 'Start Online Consultation', 'care-towards-cure' ) );
+
+		// Slides come from Customizer → Hero → Carousel Images (4 optional slots).
+		$hero_slides = array();
+		for ( $i = 1; $i <= 4; $i++ ) {
+			$slide_id = (int) get_theme_mod( 'care_hero_image_' . $i, 0 );
+
+			if ( $slide_id ) {
+				$hero_slides[] = $slide_id;
+			}
+		}
+
+		$slide_count = count( $hero_slides );
 		?>
-		<section class="hero-section" role="region" aria-label="<?php esc_attr_e( 'Hero Section', 'care-towards-cure' ); ?>" data-reveal<?php echo $hero_style; // phpcs:ignore WordPress.Security.EscapedOutput ?>>
-			<div class="container">
-				<div class="hero-content">
-					<?php if ( ! empty( $hero_badge ) ) : ?>
-						<div class="hero-badge"><?php echo esc_html( $hero_badge ); ?></div>
-					<?php endif; ?>
-					<h1 class="hero-title"><?php echo esc_html( $hero_title ); ?></h1>
-					<p class="hero-description">
-						<?php echo esc_html( $hero_subtitle ); ?>
-					</p>
-					<div class="hero-buttons">
-						<button type="button" class="btn btn-primary" data-open-modal="appointmentModal">
-							<?php echo esc_html( $hero_btn1_text ); ?>
-						</button>
-						<a href="#contact" class="btn btn-secondary">
-							<?php echo esc_html( $hero_btn2_text ); ?>
-						</a>
+		<section
+			class="hero-slider<?php echo 0 === $slide_count ? ' hero-slider-empty' : ''; ?>"
+			id="hero"
+			role="region"
+			aria-roledescription="<?php esc_attr_e( 'carousel', 'care-towards-cure' ); ?>"
+			aria-label="<?php esc_attr_e( 'Clinic highlights', 'care-towards-cure' ); ?>"
+			data-slide-count="<?php echo esc_attr( (string) max( 1, $slide_count ) ); ?>"
+		>
+			<?php if ( $slide_count > 0 ) : ?>
+				<div class="hero-slider-track">
+					<?php foreach ( $hero_slides as $index => $slide_id ) : ?>
+						<div
+							class="hero-slide"
+							role="group"
+							aria-roledescription="<?php esc_attr_e( 'slide', 'care-towards-cure' ); ?>"
+							aria-label="<?php echo esc_attr( sprintf( /* translators: 1: current slide number, 2: total slides */ __( 'Slide %1$d of %2$d', 'care-towards-cure' ), $index + 1, $slide_count ) ); ?>"
+						>
+							<?php
+							// Alt text is pulled from the Media Library entry for each image.
+							echo wp_get_attachment_image(
+								$slide_id,
+								'care-hero',
+								false,
+								array(
+									'class'         => 'hero-slide-img',
+									'loading'       => 0 === $index ? 'eager' : 'lazy',
+									'fetchpriority' => 0 === $index ? 'high' : 'auto',
+								)
+							);
+							?>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+
+			<div class="hero-slider-content">
+				<div class="container">
+					<div class="hero-content">
+						<?php if ( ! empty( $hero_badge ) ) : ?>
+							<div class="hero-badge"><?php echo esc_html( $hero_badge ); ?></div>
+						<?php endif; ?>
+						<h1 class="hero-title"><?php echo esc_html( $hero_title ); ?></h1>
+						<p class="hero-description">
+							<?php echo esc_html( $hero_subtitle ); ?>
+						</p>
+						<div class="hero-buttons">
+							<button type="button" class="btn btn-primary" data-open-modal="appointmentModal">
+								<?php echo esc_html( $hero_btn1_text ); ?>
+							</button>
+							<a href="#contact" class="btn btn-secondary">
+								<?php echo esc_html( $hero_btn2_text ); ?>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<?php if ( $slide_count > 1 ) : ?>
+				<button type="button" class="hero-slider-nav hero-slider-prev" aria-label="<?php esc_attr_e( 'Previous slide', 'care-towards-cure' ); ?>">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 19l-7-7 7-7"></path></svg>
+				</button>
+				<button type="button" class="hero-slider-nav hero-slider-next" aria-label="<?php esc_attr_e( 'Next slide', 'care-towards-cure' ); ?>">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"></path></svg>
+				</button>
+
+				<div class="hero-slider-dots">
+					<?php foreach ( $hero_slides as $index => $slide_id ) : ?>
+						<button
+							type="button"
+							class="hero-slider-dot"
+							aria-current="<?php echo 0 === $index ? 'true' : 'false'; ?>"
+							aria-label="<?php echo esc_attr( sprintf( /* translators: %d: slide number */ __( 'Go to slide %d', 'care-towards-cure' ), $index + 1 ) ); ?>"
+						></button>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 		</section>
 
 		<!-- ===== WELCOME SECTION ===== -->

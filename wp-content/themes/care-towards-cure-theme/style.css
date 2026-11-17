@@ -4,7 +4,7 @@ Theme URI: https://www.caretowartscure.com
 Description: A modern, responsive WordPress theme for Care Towards Cure clinic landing page with integrated inquiry management.
 Author: Care Towards Cure
 Author URI: https://www.caretowartscure.com
-Version: 1.0.0
+Version: 1.1.0
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: care-towards-cure
@@ -511,6 +511,11 @@ textarea {
 	position: relative;
 }
 
+/* Mobile-only Book Appointment item inside the dropdown menu */
+.navbar-cta-mobile {
+	display: none;
+}
+
 .navbar-link {
 	display: block;
 	padding: 12px 20px;
@@ -561,7 +566,9 @@ textarea {
 
 .site-header-cta {
 	flex-shrink: 0;
-	display: none;
+	display: flex;
+	align-items: center;
+	order: 3;
 }
 
 .mobile-menu-toggle {
@@ -769,7 +776,7 @@ textarea {
 	}
 
 	.main-navigation.active {
-		max-height: 400px;
+		max-height: 520px;
 	}
 
 	.navbar-menu {
@@ -799,6 +806,17 @@ textarea {
 
 	.mobile-menu-toggle {
 		display: flex;
+	}
+
+	/* Book Appointment inside the open mobile menu */
+	.navbar-cta-mobile {
+		display: block;
+		padding: 12px 20px;
+	}
+
+	.navbar-cta-mobile-btn {
+		width: 100%;
+		min-height: 48px;
 	}
 }
 

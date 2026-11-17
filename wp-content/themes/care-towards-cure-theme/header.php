@@ -51,8 +51,24 @@ defined( 'ABSPATH' ) || exit;
 					<li><a href="<?php echo esc_url( home_url( '/#services' ) ); ?>" class="navbar-link" data-scroll-target="services"><?php esc_html_e( 'Services', 'care-towards-cure' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/#doctors' ) ); ?>" class="navbar-link" data-scroll-target="doctors"><?php esc_html_e( 'Doctors', 'care-towards-cure' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="navbar-link" data-scroll-target="contact"><?php esc_html_e( 'Contact', 'care-towards-cure' ); ?></a></li>
+					<li class="navbar-cta-mobile">
+						<button type="button" class="btn btn-primary navbar-cta-mobile-btn" data-open-modal="appointmentModal">
+							<?php esc_html_e( 'Book Appointment', 'care-towards-cure' ); ?>
+						</button>
+					</li>
 				</ul>
 			</nav>
+
+			<!-- Header Call To Action -->
+			<div class="site-header-cta">
+				<button
+					type="button"
+					class="btn btn-primary site-header-cta-btn"
+					data-open-modal="appointmentModal"
+				>
+					<?php esc_html_e( 'Book Appointment', 'care-towards-cure' ); ?>
+				</button>
+			</div>
 
 			<!-- Mobile Menu Toggle -->
 			<button

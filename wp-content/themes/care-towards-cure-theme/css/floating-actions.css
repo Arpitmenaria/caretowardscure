@@ -1,0 +1,189 @@
+/**
+ * Floating Action Buttons
+ *
+ * Fixed Call / Chat / Book Appointment buttons, WhatsApp-widget style.
+ * Desktop: stacked pills bottom-right. Mobile: full-width bottom bar.
+ *
+ * @package Care_Towards_Cure_Theme
+ */
+
+.floating-actions {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	z-index: 9990;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 12px;
+}
+
+.floating-action {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 20px 12px 16px;
+	border: none;
+	border-radius: 999px;
+	box-shadow: var(--shadow-md);
+	color: var(--white);
+	font-family: inherit;
+	font-size: 0.95rem;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+		background-color var(--transition-fast);
+}
+
+.floating-action:hover,
+.floating-action:focus-visible {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-lg);
+	color: var(--white);
+	outline: none;
+}
+
+.floating-action:focus-visible {
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85), 0 0 0 6px var(--primary-color);
+}
+
+.floating-action svg {
+	flex-shrink: 0;
+	width: 22px;
+	height: 22px;
+}
+
+.floating-action-label {
+	display: inline-block;
+}
+
+/* ===== Per-button colours (white + blue theme) ===== */
+.floating-action-call {
+	background-color: var(--white);
+	color: var(--primary-color);
+	border: 2px solid var(--primary-color);
+}
+
+.floating-action-call:hover,
+.floating-action-call:focus-visible {
+	background-color: var(--primary-color);
+	color: var(--white);
+}
+
+.floating-action-chat {
+	position: relative;
+	background-color: var(--white);
+	color: var(--secondary-color);
+	border: 2px solid var(--secondary-color);
+}
+
+.floating-action-chat:hover,
+.floating-action-chat:focus-visible {
+	background-color: var(--secondary-color);
+	color: var(--white);
+}
+
+.floating-action-book {
+	background-color: var(--primary-color);
+	color: var(--white);
+	border: 2px solid var(--primary-color);
+}
+
+.floating-action-book:hover,
+.floating-action-book:focus-visible {
+	background-color: #0052a3;
+	border-color: #0052a3;
+	color: var(--white);
+}
+
+/* Subtle attention pulse on the chat button */
+.floating-action-chat::before {
+	content: "";
+	position: absolute;
+	inset: -2px;
+	border-radius: 999px;
+	box-shadow: 0 0 0 0 rgba(0, 180, 216, 0.55);
+	animation: care-float-pulse 2.4s infinite;
+	pointer-events: none;
+}
+
+@keyframes care-float-pulse {
+	70% { box-shadow: 0 0 0 14px rgba(0, 180, 216, 0); }
+	100% { box-shadow: 0 0 0 0 rgba(0, 180, 216, 0); }
+}
+
+/* ===== Mobile: full-width bottom bar ===== */
+@media (max-width: 600px) {
+	.floating-actions {
+		right: 0;
+		left: 0;
+		bottom: 0;
+		flex-direction: row;
+		align-items: stretch;
+		gap: 0;
+		background-color: var(--white);
+		box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.18);
+	}
+
+	.floating-action {
+		flex: 1 1 0;
+		flex-direction: column;
+		justify-content: center;
+		gap: 5px;
+		padding: 10px 6px;
+		border-radius: 0;
+		box-shadow: none;
+		font-size: 0.72rem;
+		text-align: center;
+		white-space: normal;
+	}
+
+	.floating-action:hover,
+	.floating-action:focus-visible {
+		transform: none;
+		box-shadow: none;
+	}
+
+	.floating-action svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.floating-action-chat::before {
+		display: none;
+	}
+
+	/* Flat tab-bar look on the white bar; Book stays the solid blue CTA */
+	.floating-action-call,
+	.floating-action-chat {
+		border: none;
+		background-color: var(--white);
+	}
+
+	.floating-action-book {
+		border: none;
+	}
+
+	/* Stop the bar covering the end of the page */
+	body {
+		padding-bottom: 66px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.floating-action,
+	.floating-action-chat::before {
+		transition: none;
+		animation: none;
+	}
+}
+
+/* Keep the bar out of print output */
+@media print {
+	.floating-actions {
+		display: none;
+	}
+}

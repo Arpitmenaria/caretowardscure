@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Theme constants
-define( 'CARE_THEME_VERSION', '1.0.0' );
+define( 'CARE_THEME_VERSION', '1.1.0' );
 define( 'CARE_THEME_DIR', get_template_directory() );
 define( 'CARE_THEME_URI', get_template_directory_uri() );
 
@@ -122,6 +122,26 @@ function care_enqueue_styles(): void {
 		'all'
 	);
 
+	// Hero slider styles (front page only)
+	if ( is_front_page() ) {
+		wp_enqueue_style(
+			'care-hero-slider',
+			CARE_THEME_URI . '/css/hero-slider.css',
+			array( 'care-main' ),
+			CARE_THEME_VERSION,
+			'all'
+		);
+	}
+
+	// Floating action button styles (site-wide)
+	wp_enqueue_style(
+		'care-floating-actions',
+		CARE_THEME_URI . '/css/floating-actions.css',
+		array( 'care-main' ),
+		CARE_THEME_VERSION,
+		'all'
+	);
+
 	// Inline CSS for welcome section (fixes deployment issue)
 	$welcome_css = '
 	.welcome-section {
@@ -215,6 +235,17 @@ function care_enqueue_scripts(): void {
 		CARE_THEME_VERSION,
 		true
 	);
+
+	// Hero slider script (front page only)
+	if ( is_front_page() ) {
+		wp_enqueue_script(
+			'care-hero-slider',
+			CARE_THEME_URI . '/js/hero-slider.js',
+			array(),
+			CARE_THEME_VERSION,
+			true
+		);
+	}
 
 	// Localize script for AJAX and other frontend data
 	wp_localize_script(
@@ -352,6 +383,38 @@ function care_elementor_support() {
 	add_theme_support( 'elementor' );
 }
 add_action( 'after_setup_theme', 'care_elementor_support' );
+
+/**
+ * Sanitize a Customizer checkbox value.
+ *
+ * @param mixed $checked Raw value from the Customizer.
+ * @return bool
+ */
+function care_sanitize_checkbox( $checked ): bool {
+	return ( isset( $checked ) && true === (bool) $checked );
+}
+
+/**
+ * Sanitize a link that may be a URL, a tel:/mailto: link, or an on-page anchor.
+ *
+ * @param mixed $value Raw value from the Customizer.
+ * @return string
+ */
+function care_sanitize_link( $value ): string {
+	$value = trim( (string) $value );
+
+	if ( '' === $value ) {
+		return '';
+	}
+
+	// Allow same-page anchors such as #contact.
+	if ( 0 === strpos( $value, '#' ) ) {
+		return sanitize_text_field( $value );
+	}
+
+	return esc_url_raw( $value, array( 'http', 'https', 'tel', 'mailto' ) );
+}
+
 
 /**
  * Sanitize HTML in custom fields
@@ -1664,6 +1727,75 @@ function care_customize_register( $wp_customize ) {
 	) );
 
 	// =============================================
+	// FLOATING ACTION BUTTONS SECTION
+	// =============================================
+	$wp_customize->add_section( 'care_floating_buttons', array(
+		'title'       => __( 'Floating Buttons', 'care-towards-cure' ),
+		'priority'    => 95,
+		'description' => __( 'The fixed Call / Chat / Book Appointment buttons shown on every page.', 'care-towards-cure' ),
+	) );
+
+	// Master on/off switch
+	$wp_customize->add_setting( 'care_float_show', array(
+		'default'           => true,
+		'sanitize_callback' => 'care_sanitize_checkbox',
+	) );
+	$wp_customize->add_control( 'care_float_show', array(
+		'label'   => __( 'Show floating buttons', 'care-towards-cure' ),
+		'section' => 'care_floating_buttons',
+		'type'    => 'checkbox',
+	) );
+
+	$care_float_fields = array(
+		'call' => array(
+			'default'   => __( 'Call', 'care-towards-cure' ),
+			'label_name' => __( 'Call — Button Text', 'care-towards-cure' ),
+			'url_name'   => __( 'Call — Custom Link', 'care-towards-cure' ),
+			'url_help'   => __( 'Leave empty to dial the phone number set in Footer → Contact Details.', 'care-towards-cure' ),
+		),
+		'chat' => array(
+			'default'   => __( 'Chat', 'care-towards-cure' ),
+			'label_name' => __( 'Chat — Button Text', 'care-towards-cure' ),
+			'url_name'   => __( 'Chat — Custom Link', 'care-towards-cure' ),
+			'url_help'   => __( 'Leave empty to open WhatsApp using the number set in Footer → Contact Details.', 'care-towards-cure' ),
+		),
+		'book' => array(
+			'default'    => __( 'Book Appointment', 'care-towards-cure' ),
+			'label_name' => __( 'Book — Button Text', 'care-towards-cure' ),
+			'label_help' => __( 'Always opens the appointment enquiry form. Clear the text to hide the button.', 'care-towards-cure' ),
+		),
+	);
+
+	foreach ( $care_float_fields as $care_float_key => $care_float_field ) {
+		$wp_customize->add_setting( 'care_float_' . $care_float_key . '_label', array(
+			'default'           => $care_float_field['default'],
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
+		$wp_customize->add_control( 'care_float_' . $care_float_key . '_label', array(
+			'label'       => $care_float_field['label_name'],
+			'description' => isset( $care_float_field['label_help'] ) ? $care_float_field['label_help'] : '',
+			'section'     => 'care_floating_buttons',
+			'type'        => 'text',
+		) );
+
+		// The Book button always opens the enquiry modal, so it gets no link field.
+		if ( empty( $care_float_field['url_name'] ) ) {
+			continue;
+		}
+
+		$wp_customize->add_setting( 'care_float_' . $care_float_key . '_url', array(
+			'default'           => '',
+			'sanitize_callback' => 'care_sanitize_link',
+		) );
+		$wp_customize->add_control( 'care_float_' . $care_float_key . '_url', array(
+			'label'       => $care_float_field['url_name'],
+			'description' => $care_float_field['url_help'],
+			'section'     => 'care_floating_buttons',
+			'type'        => 'text',
+		) );
+	}
+
+	// =============================================
 	// FOOTER PANEL
 	// =============================================
 	$wp_customize->add_panel( 'care_footer_panel', array(
@@ -1757,6 +1889,18 @@ function care_customize_register( $wp_customize ) {
 	) );
 	$wp_customize->add_control( 'care_footer_phone', array(
 		'label'       => __( 'Phone Number', 'care-towards-cure' ),
+		'section'     => 'care_footer_contact',
+		'type'        => 'text',
+	) );
+
+	// Floating Chat Button WhatsApp Number
+	$wp_customize->add_setting( 'care_whatsapp_number', array(
+		'default'           => '919414311475',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'care_whatsapp_number', array(
+		'label'       => __( 'WhatsApp Number', 'care-towards-cure' ),
+		'description' => __( 'Country code + number, digits only (e.g. 919414311475). Used by the floating Chat button.', 'care-towards-cure' ),
 		'section'     => 'care_footer_contact',
 		'type'        => 'text',
 	) );

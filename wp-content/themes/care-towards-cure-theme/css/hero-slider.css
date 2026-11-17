@@ -1,0 +1,234 @@
+/**
+ * Hero Slider Styles
+ *
+ * Full-width image carousel that replaces the static hero banner.
+ *
+ * @package Care_Towards_Cure_Theme
+ */
+
+.hero-slider {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	background-color: #00264d;
+	min-height: 520px;
+}
+
+/* ===== Track & Slides ===== */
+.hero-slider-track {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	transition: transform 600ms cubic-bezier(0.45, 0, 0.15, 1);
+	will-change: transform;
+}
+
+.hero-slide {
+	position: relative;
+	flex: 0 0 100%;
+	width: 100%;
+	min-height: 520px;
+}
+
+.hero-slide img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 520px;
+	object-fit: cover;
+	object-position: center;
+}
+
+/* Readability scrim so the overlaid text stays legible on any photo */
+.hero-slide::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		100deg,
+		rgba(0, 38, 77, 0.78) 0%,
+		rgba(0, 38, 77, 0.55) 45%,
+		rgba(0, 38, 77, 0.28) 100%
+	);
+}
+
+/* Fallback when no images have been uploaded yet */
+.hero-slider-empty {
+	background: linear-gradient(120deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+/* ===== Overlaid Content ===== */
+.hero-slider-content {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	pointer-events: none;
+}
+
+.hero-slider-content .container {
+	width: 100%;
+}
+
+.hero-slider-content .hero-content {
+	max-width: 640px;
+	color: var(--white);
+	pointer-events: auto;
+}
+
+.hero-slider-content .hero-badge {
+	display: inline-block;
+	margin-bottom: 1rem;
+	padding: 7px 16px;
+	border-radius: 999px;
+	background-color: rgba(255, 255, 255, 0.16);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	color: var(--white);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.hero-slider-content .hero-title {
+	margin: 0 0 1rem;
+	color: var(--white);
+	font-size: clamp(2rem, 4.5vw, 3.25rem);
+	font-weight: 700;
+	line-height: 1.15;
+}
+
+.hero-slider-content .hero-description {
+	margin: 0 0 2rem;
+	color: rgba(255, 255, 255, 0.92);
+	font-size: clamp(1rem, 1.6vw, 1.15rem);
+	line-height: 1.65;
+}
+
+.hero-slider-content .hero-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+/* ===== Arrows ===== */
+.hero-slider-nav {
+	position: absolute;
+	top: 50%;
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	padding: 0;
+	transform: translateY(-50%);
+	border: 1px solid rgba(255, 255, 255, 0.45);
+	border-radius: 50%;
+	background-color: rgba(0, 38, 77, 0.45);
+	color: var(--white);
+	cursor: pointer;
+	transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.hero-slider-nav:hover,
+.hero-slider-nav:focus-visible {
+	background-color: var(--primary-color);
+	border-color: var(--primary-color);
+	outline: none;
+}
+
+.hero-slider-prev { left: 20px; }
+.hero-slider-next { right: 20px; }
+
+/* ===== Dots ===== */
+.hero-slider-dots {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 24px;
+	z-index: 3;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+
+.hero-slider-dot {
+	width: 11px;
+	height: 11px;
+	padding: 0;
+	border: 1px solid rgba(255, 255, 255, 0.85);
+	border-radius: 50%;
+	background-color: transparent;
+	cursor: pointer;
+	transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.hero-slider-dot[aria-current="true"] {
+	background-color: var(--white);
+	transform: scale(1.25);
+}
+
+/* Hide controls when there is only one slide */
+.hero-slider[data-slide-count="1"] .hero-slider-nav,
+.hero-slider[data-slide-count="1"] .hero-slider-dots {
+	display: none;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+	.hero-slider,
+	.hero-slide,
+	.hero-slide img {
+		min-height: 440px;
+	}
+
+	.hero-slider-nav {
+		width: 40px;
+		height: 40px;
+	}
+
+	.hero-slider-prev { left: 10px; }
+	.hero-slider-next { right: 10px; }
+
+	.hero-slider-content .hero-content {
+		max-width: 100%;
+		text-align: center;
+	}
+
+	.hero-slider-content .hero-buttons {
+		justify-content: center;
+	}
+
+	.hero-slide::after {
+		background: linear-gradient(
+			180deg,
+			rgba(0, 38, 77, 0.55) 0%,
+			rgba(0, 38, 77, 0.72) 100%
+		);
+	}
+}
+
+@media (max-width: 480px) {
+	.hero-slider,
+	.hero-slide,
+	.hero-slide img {
+		min-height: 400px;
+	}
+
+	.hero-slider-content .hero-buttons .btn {
+		width: 100%;
+	}
+
+	.hero-slider-dots {
+		bottom: 16px;
+	}
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+	.hero-slider-track {
+		transition: none;
+	}
+}
